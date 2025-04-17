@@ -1,0 +1,159 @@
+/* Body Styling */
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Navbar Adjustments */
+nav {
+    padding-left: 4rem;
+    padding-right: 4rem;
+}
+
+/* Navbar Logo Position */
+nav a:first-child {
+    margin-left: 3rem;
+}
+
+
+nav div {
+    margin-right: 3rem;
+}
+
+
+.unique-button {
+    border: 2px solid #f97316; 
+    background-color: #f97316; 
+    color: white; 
+    transition: none; 
+}
+
+.unique-button:hover {
+    background-color: #f97316; 
+    color: white; 
+}
+
+
+.relative img {
+    width: 80%;
+    max-width: 800px;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.relative .bg-orange-500 {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    transform: rotate(3deg);
+}
+
+.scrollable-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory; 
+}
+
+.scrollable-container::-webkit-scrollbar {
+    display: none; 
+}
+
+.scrollable-container {
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+}
+
+
+.scrollable-container {
+    scroll-behavior: smooth;
+}
+
+
+#loadingScreen {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(255, 255, 255, 0.8); 
+    z-index: 50; 
+    justify-content: center;
+    align-items: center;
+}
+
+
+.rotating-t {
+    font-family: 'Poppins', sans-serif; 
+    font-size: 12rem;
+    font-weight: 800; 
+    color: #FF7F50; 
+    letter-spacing: 10px;
+    text-shadow: 0 0 15px rgba(255, 127, 80, 0.7), 0 0 30px rgba(255, 127, 80, 0.5); 
+    animation: rotateT 3s linear infinite, glow 1.5s ease-in-out infinite alternate; 
+}
+
+
+@keyframes rotateT {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+@keyframes glow {
+    0% { text-shadow: 0 0 15px rgba(255, 127, 80, 0.7), 0 0 30px rgba(255, 127, 80, 0.5); }
+    100% { text-shadow: 0 0 30px rgba(255, 127, 80, 1), 0 0 60px rgba(255, 127, 80, 0.8); }
+}
+
+nav {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+nav a {
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+
+
+footer {
+    background-color: #f7fafc;
+    padding: 1.5rem 2.5rem;
+    margin-top: 40px;
+}
+
+footer .text-gray-500 {
+    font-size: 0.875rem;
+    color: #6B7280;
+}
+
+footer .text-gray-700 {
+    font-size: 1rem;
+    color: #4B5563;
+}
+
+footer .space-x-4 {
+    margin-left: 20px;
+}
+
+footer img {
+    transition: transform 0.3s;
+}
+
+footer img:hover {
+    transform: scale(1.1);
+}
+
+
+
+
+@media (max-width: 768px) {
+    nav {
+        padding: 1rem;
+    }
+
+    footer {
+        padding: 1rem;
+    }
+
+    footer img {
+        width: 80px;
+        height: 80px;
+    }
+}
+
