@@ -49,6 +49,12 @@
                     <i class="ri-arrow-right-s-line ml-auto group-[.selected]:rotate-90"></i>
                 </a>
                 <ul class="pl-7 mt-2 hidden group-[.selected]:block">
+                    <li class="mb-1 group {{ Request::is('admin/tasks/all-tasks') ? 'active' : '' }}">
+                    <a href="{{ url('admin/tasks/all-tasks') }}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/all-tasks') ? 'bg-orange-700 text-gray-100' : '' }}">
+                            <img src="{{ asset('css/pictures/Tasks.png') }}" alt="All Tasks" class="w-7 h-7 rounded ">
+                            <span class="text-sm font-small text-white ml-3">All Tasks</span>
+                        </a>
+                    </li>
                     <li class="mb-1 group {{ Request::is('admin/tasks/to-do') ? 'active' : '' }}">
                         <a href="{{ url('admin/tasks/to-do') }}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/to-do') ? 'bg-orange-700 text-gray-100' : '' }}">
                             <img src="{{ asset('css/pictures/To do (1).png') }}" alt="To do" class="w-7 h-7 rounded ">
