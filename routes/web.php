@@ -13,10 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/admin/tasks', function () {
+    return view('admin.tasks.all-tasks');
+})->name('admin.tasks');
+
 Route::get('/admin/dashboard', action: function () {
     return view('admin.dashboard');
 })->name('admin-dashboard');
-
 
 Route::get('/', function () {
     return view('landing_page.index');

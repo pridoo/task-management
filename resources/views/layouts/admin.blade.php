@@ -16,9 +16,11 @@
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+
 </head>
 
-<body class="flex">
+<body class="overflow-x-hidden bg-gray-100">
 
     <!-- start: Sidebar -->
     <div class="fixed left-0 top-0 w-64 h-full bg-orange-500 p-4 z-50 sidebar-menu transition-transform">
@@ -121,7 +123,9 @@
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     @if(session('success'))
     <script>
