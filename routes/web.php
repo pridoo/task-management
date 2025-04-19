@@ -13,8 +13,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/admin/tasks', function () {
+Route::get('/admin/reports', function () {
+    return view('admin.reports');
+})->name('admin.reports');
+
+Route::get('/admin/tasks/all-tasks', function () {
     return view('admin.tasks.all-tasks');
+})->name('admin.tasks');
+
+Route::get('/admin/tasks/to-do', function () {
+    return view('admin.tasks.to-do');
+})->name('admin.tasks');
+
+Route::get('/admin/tasks/in-progress', function () {
+    return view('admin.tasks.in-progress');
+})->name('admin.tasks');
+
+Route::get('/admin/tasks/completed', function () {
+    return view('admin.tasks.completed');
 })->name('admin.tasks');
 
 Route::get('/admin/dashboard', action: function () {

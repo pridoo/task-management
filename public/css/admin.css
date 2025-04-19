@@ -1,0 +1,33 @@
+
+#loadingScreen {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(255, 255, 255, 0.8); 
+    z-index: 50; 
+    justify-content: center;
+    align-items: center;
+}
+
+
+.rotating-t {
+    font-family: 'Poppins', sans-serif; 
+    font-size: 12rem;
+    font-weight: 800; 
+    color: #FF7F50; 
+    letter-spacing: 10px;
+    text-shadow: 0 0 15px rgba(255, 127, 80, 0.7), 0 0 30px rgba(255, 127, 80, 0.5); 
+    animation: rotateT 3s linear infinite, glow 1.5s ease-in-out infinite alternate; 
+}
+
+
+@keyframes rotateT {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+@keyframes glow {
+    0% { text-shadow: 0 0 15px rgba(255, 127, 80, 0.7), 0 0 30px rgba(255, 127, 80, 0.5); }
+    100% { text-shadow: 0 0 30px rgba(255, 127, 80, 1), 0 0 60px rgba(255, 127, 80, 0.8); }
+}

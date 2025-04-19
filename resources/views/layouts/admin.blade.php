@@ -16,23 +16,29 @@
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 
 
 </head>
 
 <body class="overflow-x-hidden bg-gray-100">
 
-    <!-- start: Sidebar -->
+    <div id="loadingScreen" class="fixed inset-0 flex items-center justify-center bg-white z-50">
+        <div class="rotating-t text-orange-500">T</div>
+    </div>
+
     <div class="fixed left-0 top-0 w-64 h-full bg-orange-500 p-4 z-50 sidebar-menu transition-transform">
         <a href="#" class="flex items-center pb-4 border-b border-b-white">
             <img src="{{ asset('css/pictures/username.png') }}" alt="ID Card" class="w-8 h-8 rounded ">
             <span class="text-lg font-bold text-white ml-3">Username</span>
         </a>
         <ul class="mt-4">
-            <li class="mb-1 group active">
-                <a href="#" class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md group-[.active]:text-white group-[.selected]:bg-orange-700 group-[.selected]:text-gray-100 sidebar-dropdown-toggle">
-                    <img src="{{ asset('css/pictures/home.png') }}" alt="Home" class="w-8 h-8 rounded ">
-                    <span class="text-sm font-bold text-white ml-3">Home</span>
+            <li class="mb-1 group">
+                <a href="{{ url('admin/dashboard') }}" 
+                class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md 
+                {{ Request::is('admin/dashboard') ? 'bg-orange-700 text-white' : '' }}">
+                    <img src="{{ asset('css/pictures/home.png') }}" alt="Home" class="w-8 h-8 rounded">
+                    <span class="text-sm font-bold ml-3">Home</span>
                 </a>
             </li>
             <li class="mb-1 group">
@@ -43,29 +49,28 @@
                     <i class="ri-arrow-right-s-line ml-auto group-[.selected]:rotate-90"></i>
                 </a>
                 <ul class="pl-7 mt-2 hidden group-[.selected]:block">
-                    <li class="mb-2">
-                        <a href="#" class="flex items-center py-2 px-4 text-gray-300">
+                    <li class="mb-1 group {{ Request::is('admin/tasks/all-tasks') ? 'active' : '' }}">
+                    <a href="{{ url('admin/tasks/all-tasks') }}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/all-tasks') ? 'bg-orange-700 text-gray-100' : '' }}">
                             <img src="{{ asset('css/pictures/Tasks.png') }}" alt="All Tasks" class="w-7 h-7 rounded ">
                             <span class="text-sm font-small text-white ml-3">All Tasks</span>
                         </a>
                     </li>
-                    <li class="mb-2">
-                        <a href="#" class="flex items-center py-2 px-4 text-gray-300">
-                            <img src="{{ asset('css/pictures/completed.png') }}" alt="Completed" class="w-7 h-7 rounded ">
-                            <span class="text-sm font-small text-white ml-3">Completed</span>
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="#" class="flex items-center py-2 px-4 text-gray-300">
+                    <li class="mb-1 group {{ Request::is('admin/tasks/to-do') ? 'active' : '' }}">
+                        <a href="{{ url('admin/tasks/to-do') }}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/to-do') ? 'bg-orange-700 text-gray-100' : '' }}">
                             <img src="{{ asset('css/pictures/To do (1).png') }}" alt="To do" class="w-7 h-7 rounded ">
                             <span class="text-sm font-small text-white ml-3">To do</span>
                         </a>
                     </li>
-                    <li class="mb-2">
-                        <a href="#" class="flex items-center py-2 px-4 text-gray-300">
-                            <img src="{{ asset('css/pictures/In progress.png') }}" alt="In progress"
-                                class="w-7 h-7 rounded ">
+                    <li class="mb-1 group {{ Request::is('admin/tasks/in-progress') ? 'active' : '' }}">
+                        <a href="{{ url('admin/tasks/in-progress') }}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/in-progress') ? 'bg-orange-700 text-gray-100' : '' }}">
+                            <img src="{{ asset('css/pictures/In progress.png') }}" alt="In progress" class="w-7 h-7 rounded ">
                             <span class="text-sm font-small text-white ml-3">In progress</span>
+                        </a>
+                    </li>
+                    <li class="mb-1 group {{ Request::is('admin/tasks/completed') ? 'active' : '' }}">
+                        <a href="{{ url('admin/tasks/completed') }}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/completed') ? 'bg-orange-700 text-gray-100' : '' }}">
+                            <img src="{{ asset('css/pictures/completed.png') }}" alt="Completed" class="w-7 h-7 rounded ">
+                            <span class="text-sm font-small text-white ml-3">Completed</span>
                         </a>
                     </li>
                 </ul>
@@ -120,7 +125,7 @@
     </main>
     
     <!-- Scripts -->
-    <script src="{{ asset('js/script.js') }}"></script>
+
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
@@ -173,6 +178,10 @@
                     menu.classList.add('hidden');
                 });
             }
+
+            window.onload = function() {
+                document.getElementById('loadingScreen').style.display = 'none';
+            };
         });
     </script>
 </body>
