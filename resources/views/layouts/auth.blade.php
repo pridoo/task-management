@@ -62,8 +62,8 @@
         <span class="text-gray-500">&copy; {{ date('Y') }} Tekflow. All rights reserved.</span>
         <div class="flex items-center space-x-4">
             <span class="text-gray-700 font-medium">Visit our website for more services</span>
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://teknainc.com/" 
-                alt="QR Code" class="w-16 h-16">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://teknainc.com/" alt="QR Code"
+                class="w-16 h-16">
         </div>
     </footer>
 
