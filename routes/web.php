@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/admin/reports', function () {
+    return view('admin.reports');
+})->name('admin.reports');
+
 Route::get('/admin/tasks/all-tasks', function () {
     return view('admin.tasks.all-tasks');
 })->name('admin.tasks');
