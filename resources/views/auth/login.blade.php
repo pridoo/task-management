@@ -1,11 +1,11 @@
 @extends('layouts.app')
 @section('content')
 
-    <!-- Large Screen Hero Section -->
-    <section class="px-2 py-20 bg-white md:px-0 hidden md:block">
-        <div class="container items-center max-w-8xl mx-auto xl:px-4">
+    <!-- Hero Section -->
+    <section class="px-2 py-2 bg-white md:px-0 dark:bg-gray-900">
+        <div class="container items-center max-w-6xl px-3 mx-auto xl:px-5">
             <div class="flex flex-wrap items-center sm:-mx-3">
-                <div class="w-full md:w-1/2 pl-10">
+                <div class="w-full px-4 md:w-1/2 md:px-6">
                     <div class="w-full pb-6 space-y-6 sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl md:pb-0">
                         <h1
                             class="flex items-center text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl md:text-5xl lg:text-6xl">
@@ -26,103 +26,81 @@
                         </p>
                     </div>
                 </div>
-                <div class="w-full md:w-1/2 pr-10">
-                    <div class="max-w-9xl bg-white rounded-2xl shadow-2xl flex overflow-hidden transform">
-                        <!-- Left Side - Login -->
-                        <div class="flex-1 basis-1/2 p-12 bg-gray-50 flex flex-col justify-center">
-                            <h2 class="text-4xl font-extrabold text-orange-500 text-center mb-8">Log In</h2>
 
-                            <form action="{{ route('login') }}" method="POST" class="space-y-3">
-                                @csrf
-                                <input type="email" name="email" placeholder="Email"
-                                    class="w-full p-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 text-lg">
-                                <input type="password" name="password" placeholder="Password"
-                                    class="w-full p-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 text-lg">
-                                <button type="submit"
-                                    class="w-full bg-orange-500 text-white py-3 rounded-full font-semibold shadow-lg hover:bg-orange-600 transition-all duration-300 text-lg">Login</button>
-                            </form>
+                <div class="w-full md:w-1/2">
+                    <section class="bg-gray-50 dark:bg-gray-900">
+                        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+                            <div
+                                class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+                                <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                                    <h1
+                                        class="text-3xl font-extrabold leading-tight tracking-tight text-orange-600 md:text-2xl dark:text-white text-center">
+                                        Login
+                                    </h1>
+                                    @if ($errors->any())
+                                        <div class="mb-4 text-red-600 bg-red-100 border border-red-400 rounded p-4">
+                                            <ul class="list-disc list-inside text-sm">
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+                                    <form method="POST" class="space-y-4 md:space-y-6" action="{{ route('login') }}">
+                                        @csrf
+                                        <div>
+                                            <label for="email"
+                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"></label>
+                                            <input type="email" name="email" id="email"
+                                                class="rounded-lg bg-gray-100 border dark:border-gray-700  text-sm font-light text-gray-500 dark:text-gray-400 focus:border-orange-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                placeholder="Email" required="">
+                                        </div>
 
-                            <div class="text-center mt-6">
-                                <a href="#" class="text-gray-500 hover:underline">Forgot your password?</a>
-                                <p class="text-gray-500 mt-1">or</p>
-                                <p class="text-gray-500 hover:underline">Login with ID Number</p>
-                            </div>
+                                        <div>
+                                            <label for="password"
+                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"></label>
+                                            <input type="password" name="password" id="password" placeholder="Password"
+                                                class="rounded-lg bg-gray-100 border dark:border-gray-700  text-sm font-light text-gray-500 dark:text-gray-400 focus:border-orange-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                required="">
+                                        </div>
+                                        <button type="submit"
+                                            class="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold shadow-lg hover:bg-orange-600 transition-all duration-300">Log
+                                            In</button>
 
-                            <div class="flex justify-center mt-3">
-                                <a href="{{ route('login2') }}">
-                                    <img src="{{ asset('css/pictures/idcard.png') }}" alt="ID Card"
-                                        class="w-20 h-20 object-contain hover:scale-105 transition-all duration-300">
-                                </a>
+                                        <div class="text-center mt-4">
+                                            <a href="#"
+                                                class="text-sm font-light text-gray-500 dark:text-gray-400 hover:underline">Forgot
+                                                your password?</a>
+                                            <p class="text-gray-500 mt-2">or</p>
+                                            <p class="text-sm font-light text-gray-500 dark:text-gray-400 py-2">Login with
+                                                ID Number</p>
+                                        </div>
+
+                                        <div class="flex justify-center">
+                                            <a href="{{ route('login2') }}">
+                                                <img src="{{ asset('css/pictures/idcard (1).png') }}" alt="ID Card"
+                                                    class="w-24 h-24 object-contain hover:scale-105 transition-all duration-300">
+                                            </a>
+                                        </div>
+                                        <p class="text-center text-sm font-light text-gray-500 dark:text-gray-400">
+                                            Don't have an account? 
+                                            <a href="{{ route('register') }}"
+                                                class="font-medium text-primary-900 hover:underline hover:text-black dark:text-primary-500">Sign
+                                                Up
+                                                here</a>
+                                        </p>
+                                    </form>
+                                </div>
                             </div>
                         </div>
+                    </section>
 
-                        <!-- Right Side - Sign Up -->
-                        <div
-                            class="flex-1 basis-1/2 bg-gradient-to-r from-orange-500 to-orange-700 p-12 flex flex-col justify-center text-white text-center">
-                            <h2 class="text-4xl font-extrabold mb-4">New Here?</h2>
-                            <p class="text-lg mb-6 leading-relaxed">Sign up now to experience a smooth and efficient
-                                workflow!</p>
-                            <a href="{{ route('register') }}"
-                                class="bg-white text-orange-500 px-8 py-3 rounded-full font-semibold shadow-lg hover:bg-gray-200 transition-all duration-300 text-lg">Sign
-                                Up</a>
-                        </div>
-                    </div>
+                    
+
                 </div>
 
-            </div>
-
-
-        </div>
-        </div>
-    </section>
-    <!-- Responsive Login Section -->
-    <section class="bg-gray-50 dark:bg-gray-900 block md:hidden">
-        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen">
-            <div
-                class="w-full bg-white rounded-lg shadow dark:border sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-                <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-                    <h1
-                        class="text-3xl font-extrabold leading-tight tracking-tight text-orange-600 dark:text-white text-center">
-                        Login
-                    </h1>
-                    <form class="space-y-4 md:space-y-6" action="{{ route('login') }}">
-                        @csrf
-                        <div>
-                            <input type="email" name="email" id="email"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Email" required="">
-                        </div>
-
-                        <div>
-                            <input type="password" name="password" id="password" placeholder="Password"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                required="">
-                        </div>
-                        <button type="submit"
-                            class="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold shadow-lg hover:bg-orange-600 transition-all duration-300">Log
-                            In</button>
-
-                        <div class="text-center mt-4">
-                            <a href="#" class="text-sm font-light text-gray-500 dark:text-gray-400 hover:underline">Forgot
-                                your password?</a>
-                            <p class="text-gray-500 mt-2">or</p>
-                            <p class="text-sm font-light text-gray-500 dark:text-gray-400 py-2">Login with ID Number</p>
-                        </div>
-
-                        <div class="flex justify-center">
-                            <a href="{{ route('login2') }}">
-                                <img src="{{ asset('css/pictures/idcard (1).png') }}" alt="ID Card"
-                                    class="w-24 h-24 object-contain hover:scale-105 transition-all duration-300">
-                            </a>
-                        </div>
-                        <p class="text-center text-sm font-light text-black-500 dark:text-gray-400">
-                            Don't have an account? <a href="{{ route('register') }}"
-                                class="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign Up here</a>
-                        </p>
-                    </form>
-                </div>
+                
             </div>
         </div>
     </section>
-
 @endsection
