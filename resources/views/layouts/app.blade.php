@@ -49,9 +49,9 @@
         <!-- Nav Links -->
         <div
             class="hidden peer-checked:flex flex-col sm:flex sm:flex-row gap-4 sm:gap-4 mt-4 sm:mt-0 absolute sm:static top-full right-6 sm:right-0 bg-white sm:bg-transparent p-4 sm:p-0 rounded-lg shadow sm:shadow-none z-10">
-            <a class="rounded-xl border-2 border-orange-600 px-6 py-2 font-medium text-white bg-orange-600 hover:bg-white hover:text-orange-600"
-            href="{{ route('login') }}">Login</a>
             <a class="rounded-xl border-2 border-orange-600 px-6 py-2 font-medium text-orange-600 bg-white hover:bg-orange-600 hover:text-white"
+            href="{{ route('login') }}">Login</a>
+            <a class=" rounded-xl border-2 border-orange-600 px-6 py-2 font-medium text-white bg-orange-600 hover:bg-white hover:text-orange-600"
             href="{{ route('register') }}">Get Started</a>
         </div>
     </nav>

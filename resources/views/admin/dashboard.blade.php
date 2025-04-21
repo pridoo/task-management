@@ -3,70 +3,70 @@
 
 <body class="text-gray-800 font-inter">
     <!-- start: Main -->
-    <main class="w-full md:w-[calc(100%-256px)] md:ml-64 bg-gray-50 min-h-screen transition-all main overflow-y-auto"> 
-        <div class="p-4">
-            <div class="py-2 px-6 bg-white flex items-center shadow-md shadow-black/5 sticky top-0 left-0 z-30 rounded-md border border-gray-200">
-                <button type="button" class="text-lg text-gray-600 sidebar-toggle">
-                    <i class="ri-menu-line"></i>
-                </button>
-                <ul class="flex items-center text-sm ml-4">
-                    <li class="mr-2">
-                        <a href="#" class="text-gray-400 hover:text-gray-600 font-medium">Admin Dashboard</a>
-                    </li>
-                </ul>
-                <ul class="ml-auto flex items-center">
-                    <li class="relative">
-                        <button type="button"
-                            class="msg-btn text-gray-400 w-8 h-8 rounded flex items-center justify-center hover:bg-gray-50 hover:text-gray-600">
-                            <i class="ri-chat-1-line"></i>
-                        </button>
-                        <div class="msg-menu absolute right-0 mt-2 hidden max-w-xs w-80 bg-white rounded-md border border-gray-100 shadow-md z-30">
-                            <div class="px-4 pt-4 border-b border-b-gray-100">
-                                <div class="text-gray-600 text-sm font-semibold mb-2">Messages</div>
-                            </div>
-                            <ul class="my-2 max-h-64 overflow-y-auto">
-                                <li>
-                                    <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <div class="w-8 h-8 bg-blue-500 text-white flex items-center justify-center rounded-full">
-                                            <i class="ri-user-3-line"></i>
-                                        </div>
-                                        <div class="ml-2">
-                                            <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">John Doe</div>
-                                            <div class="text-[11px] text-gray-400">Hello there!</div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="relative ml-4">
-                        <button type="button"
-                            class="notif-btn text-gray-400 w-8 h-8 rounded flex items-center justify-center hover:bg-gray-50 hover:text-gray-600">
-                            <i class="ri-notification-4-line"></i>
-                        </button>
-                        <div class="notif-menu absolute right-0 mt-2 hidden max-w-xs w-80 bg-white rounded-md border border-gray-100 shadow-md z-30">
-                            <div class="px-4 pt-4 border-b border-b-gray-100">
-                                <div class="text-gray-600 text-sm font-semibold mb-2">Notifications</div>
-                            </div>
-                            <ul class="my-2 max-h-64 overflow-y-auto">
-                                <li>
-                                    <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <div class="w-8 h-8 bg-yellow-500 text-white flex items-center justify-center rounded-full">
-                                            <i class="ri-checkbox-circle-line"></i>
-                                        </div>
-                                        <div class="ml-2">
-                                            <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Tasks completed</div>
-                                            <div class="text-[11px] text-gray-400">from a user</div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
+    <main class="w-full md:w-[calc(100%-256px)] md:ml-64 bg-gray-50 min-h-screen transition-all main overflow-y-auto"> <!-- Added overflow-y-auto here for scrolling -->
+        <div class="py-2 px-6 bg-white flex items-center shadow-md shadow-black/5 sticky top-0 left-0 z-30">
+            <button type="button" class="text-lg text-gray-600 sidebar-toggle">
+                <i class="ri-menu-line"></i>
+            </button>
+            <ul class="flex items-center text-sm ml-4">
+                <li class="mr-2">
+                    <a href="#" class="text-gray-400 hover:text-gray-600 font-medium">Admin Dashboard</a>
+                </li>
+            </ul>
+            <ul class="ml-auto flex items-center">
 
+                <li class="relative">
+                    <button type="button"
+                        class="msg-btn text-gray-400 w-8 h-8 rounded flex items-center justify-center hover:bg-gray-50 hover:text-gray-600">
+                        <i class="ri-chat-1-line"></i>
+                    </button>
+                    <div class="msg-menu absolute right-0 mt-2 hidden max-w-xs w-80 bg-white rounded-md border border-gray-100 shadow-md z-30">
+                        <div class="px-4 pt-4 border-b border-b-gray-100">
+                            <div class="text-gray-600 text-sm font-semibold mb-2">Messages</div>
+                        </div>
+                        <ul class="my-2 max-h-64 overflow-y-auto">
+                            <li>
+                                <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
+                                    <div class="w-8 h-8 bg-blue-500 text-white flex items-center justify-center rounded-full">
+                                        <i class="ri-user-3-line"></i>
+                                    </div>
+                                    <div class="ml-2">
+                                        <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">John Doe</div>
+                                        <div class="text-[11px] text-gray-400">Hello there!</div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+
+                <li class="relative ml-4">
+                    <button type="button"
+                        class="notif-btn text-gray-400 w-8 h-8 rounded flex items-center justify-center hover:bg-gray-50 hover:text-gray-600">
+                        <i class="ri-notification-4-line"></i>
+                    </button>
+                    <div class="notif-menu absolute right-0 mt-2 hidden max-w-xs w-80 bg-white rounded-md border border-gray-100 shadow-md z-30">
+                        <div class="px-4 pt-4 border-b border-b-gray-100">
+                            <div class="text-gray-600 text-sm font-semibold mb-2">Notifications</div>
+                        </div>
+                        <ul class="my-2 max-h-64 overflow-y-auto">
+                            <li>
+                                <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
+                                    <div class="w-8 h-8 bg-yellow-500 text-white flex items-center justify-center rounded-full">
+                                        <i class="ri-checkbox-circle-line"></i>
+                                    </div>
+                                    <div class="ml-2">
+                                        <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Tasks completed</div>
+                                        <div class="text-[11px] text-gray-400">from a user</div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
 
         <div class="p-6">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
@@ -241,7 +241,7 @@
                 </table>
             </div>
 
-
+            <!-- Pagination (optional) -->
             <div class="flex justify-end mt-4 space-x-2">
                 <button class="w-10 h-10 border rounded-md text-gray-500 hover:bg-gray-100">&lt;</button>
                 <button class="w-10 h-10 border rounded-md text-gray-500 hover:bg-gray-100">&gt;</button>
@@ -251,6 +251,7 @@
         </div>
     </main>
 
+    <!-- Inline JavaScript -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const notifBtn = document.querySelector(".notif-btn");

@@ -51,7 +51,7 @@
                 <ul class="pl-7 mt-2 hidden group-[.selected]:block">
                     <li class="mb-1 group {{ Request::is('admin/tasks/all-tasks') ? 'active' : '' }}">
                     <a href="{{ url('admin/tasks/all-tasks') }}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/all-tasks') ? 'bg-orange-700 text-gray-100' : '' }}">
-                            <img src="{{ asset('css/pictures/Tasks.png') }}" alt="All Tasks" class="w-7 h-7 rounded ">
+                            <img src="{{ asset('css/pictures/all task.png') }}" alt="All Tasks" class="w-7 h-7 rounded ">
                             <span class="text-sm font-small text-white ml-3">All Tasks</span>
                         </a>
                     </li>
@@ -78,39 +78,31 @@
 
             <li class="mb-1 group">
                 <a href="#"
-                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md group-[.active]:text-white group-[.selected]:bg-orange-700 group-[.selected]:text-gray-100 sidebar-dropdown-toggle">
-                    <img src="{{ asset('css/pictures/Users.png') }}" alt="Users" class="w-8 h-8 rounded ">
+                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-orange-700 group-[.selected]:text-gray-100 sidebar-dropdown-toggle">
+                    <img src="{{ asset('css/pictures/Users.png') }}" alt="Tasks" class="w-8 h-8 rounded ">
                     <span class="text-sm font-bold text-white ml-3">Users</span>
                     <i class="ri-arrow-right-s-line ml-auto group-[.selected]:rotate-90"></i>
                 </a>
                 <ul class="pl-7 mt-2 hidden group-[.selected]:block">
                     <li class="mb-1 group {{ Request::is('admin/users/active-users') ? 'active' : '' }}">
-                    <a href="{{ url('admin/users/active-users') }}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/all-tasks') ? 'bg-orange-700 text-gray-100' : '' }}">
-                            <img src="{{ asset('css/pictures/Users.png') }}" alt="Approved Users" class="w-7 h-7 rounded ">
+                    <a href="{{ url('admin/users/approved-users') }}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/all-tasks') ? 'bg-orange-700 text-gray-100' : '' }}">
+                            <img src="{{ asset('css/pictures/Approved.png') }}" alt="Approved Users" class="w-7 h-7 rounded ">
                             <span class="text-sm font-small text-white ml-3">Approved Users</span>
                         </a>
                     </li>
                     <li class="mb-1 group {{ Request::is('admin/tasks/to-do') ? 'active' : '' }}">
                         <a href="{{ url('admin/tasks/to-do') }}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/to-do') ? 'bg-orange-700 text-gray-100' : '' }}">
-                            <img src="{{ asset('css/pictures/Users.png') }}" alt="Pending Users" class="w-7 h-7 rounded ">
+                            <img src="{{ asset('css/pictures/Active.png') }}" alt="Pending Users" class="w-7 h-7 rounded ">
                             <span class="text-sm font-small text-white ml-3">Pending Users</span>
                         </a>
                     </li>
                 </ul>
             </li>
-            <li class="mb-1 group">
-                <a href="{{ url('admin/settings') }}" 
-                class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md 
-                {{ Request::is('admin/settings') ? 'bg-orange-700 text-white' : '' }}">
-                    <img src="{{ asset('css/pictures/Settings.png') }}" alt="Settings" class="w-8 h-8 rounded">
-                    <span class="text-sm font-bold ml-3">Settings</span>
-                </a>
-            </li>
-            <li class="mb-1 group">
-                <a href="#"
-                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md group-[.active]:text-white group-[.selected]:bg-orange-700 group-[.selected]:text-gray-100 sidebar-dropdown-toggle">
+            <li class="mb-1 group {{ Request::is('admin/trash') ? 'active' : '' }}">
+                <a href="{{ url('admin/trash') }}"
+                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/trash') ? 'bg-orange-700 text-gray-100' : '' }}">
                     <img src="{{ asset('css/pictures/Trash.png') }}" alt="Trash" class="w-8 h-8 rounded ">
-                    <span class="text-sm font-bold text-white ml-3">Trash</span>
+                    <span class="text-sm font-bold text-white ml-3">Archived</span>
                 </a>
             </li>
             <li class="mb-1 group {{ Request::is('admin/reports') ? 'active' : '' }}">
@@ -118,6 +110,14 @@
                     class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/reports') ? 'bg-orange-700 text-gray-100' : '' }}">
                     <img src="{{ asset('css/pictures/Report.png') }}" alt="Report" class="w-8 h-8 rounded ">
                     <span class="text-sm font-bold text-white ml-3">Report</span>
+                </a>
+            </li>
+            <li class="mb-1 group">
+                <a href="{{ url('admin/settings') }}" 
+                class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md 
+                {{ Request::is('admin/settings') ? 'bg-orange-700 text-white' : '' }}">
+                    <img src="{{ asset('css/pictures/Settings.png') }}" alt="Settings" class="w-8 h-8 rounded">
+                    <span class="text-sm font-bold ml-3">Settings</span>
                 </a>
             </li>
             <!-- Log Out -->

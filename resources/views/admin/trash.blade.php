@@ -12,7 +12,6 @@
         <div class="max-w-6xl mx-auto bg-white shadow rounded-md border border-gray-200 px-6 py-4">
             <div class="flex justify-end items-center">
                 <ul class="flex items-center space-x-4">
-
                     <!-- Messages -->
                     <li class="relative" x-data="{ open: false }" x-init="open = false">
                         <button @click="open = !open"
@@ -66,80 +65,79 @@
                             </ul>
                         </div>
                     </li>
-
                 </ul>
             </div>
         </div>
     </header>
 
-
-
     <main class="pt-24 px-6 ml-64">
-        <div class="flex justify-between items-center mb-6 ">
-            <h2 class="text-2xl font-semibold text-gray-800">Approved Users</h2>
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-semibold text-gray-800">Archived</h2>
+            <button @click="open = true" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm">
+                + Delete All
+            </button>
         </div>
 
-        <!-- Legend -->
-        <div class="mb-4 border border-gray-300 rounded-lg p-4 bg-white shadow-sm w-fit">
-            <div class="flex space-x-4">
-                <div class="flex items-center space-x-1">
-                    <span class="w-3 h-3 bg-yellow-500 rounded-full"></span>
-                    <span class="text-sm text-gray-700">Pending Users</span>
-                </div>
-            </div>
-        </div>
+        <div class="bg-white shadow rounded-md border border-gray-200 p-4">
+            <table class="w-full text-sm text-left text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                    <tr>
+                        <th class="px-4 py-3"><input type="checkbox"></th>
+                        <th class="px-4 py-3">Title</th>
+                        <th class="px-4 py-3">Priority</th>
+                        <th class="px-4 py-3">Stage</th>
+                        <th class="px-4 py-3">Date</th>
+                        <th class="px-4 py-3">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-        <div class="bg-white p-4 rounded-lg shadow border border-gray-200 mt-6">
-            <div class="overflow-x-auto">
-                <table class="min-w-full text-sm text-gray-700">
-                    <thead class="bg-gray-100 text-xs uppercase text-gray-600">
-                        <tr>
-                            <th class="px-6 py-3 text-left">Fullname</th>
-                            <th class="px-6 py-3 text-left">Email</th>
-                            <th class="px-6 py-3 text-left">Role</th>
-                            <th class="px-6 py-3 text-left">Status</th>
-                            <th class="px-6 py-3 text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
+                    <tr class="bg-white border-b hover:bg-gray-50">
+                        <td class="px-4 py-3"><input type="checkbox"></td>
+                        <td class="px-4 py-3">Things to create</td>
+                        <td class="px-4 py-3">Medium Priority</td>
+                        <td class="px-4 py-3">
+                            <span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full">Completed</span>
+                        </td>
+                        <td class="px-4 py-3">Fri, 03 Jan 7:00 AM</td>
+                        <td class="px-4 py-3 flex space-x-2">
+                            <button class="text-gray-500 hover:text-black"><i class="ri-refresh-line"></i></button>
+                            <button class="text-red-500 hover:text-red-700"><i class="ri-delete-bin-line"></i></button>
+                        </td>
+                    </tr>
 
+                    <tr class="bg-white border-b hover:bg-gray-50">
+                        <td class="px-4 py-3"><input type="checkbox"></td>
+                        <td class="px-4 py-3">Things to create</td>
+                        <td class="px-4 py-3">High Priority</td>
+                        <td class="px-4 py-3">
+                            <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full">To do</span>
+                        </td>
+                        <td class="px-4 py-3">Fri, 03 Jan 7:00 AM</td>
+                        <td class="px-4 py-3 flex space-x-2">
+                            <button class="text-gray-500 hover:text-black"><i class="ri-refresh-line"></i></button>
+                            <button class="text-red-500 hover:text-red-700"><i class="ri-delete-bin-line"></i></button>
+                        </td>
+                    </tr>
 
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="px-6 py-4 whitespace-nowrap">Alfred Cabato</td>
-                            <td class="px-6 py-4 whitespace-nowrap">alfredpogi@example.com</td>
-                            <td class="px-6 py-4 whitespace-nowrap">Developer</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2 py-1 rounded-full">
-                                    Pending
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 text-center space-x-2">
-          
-                                <form method="POST" action="" class="inline">
-                                    @csrf
-                                    <button type="submit" class="text-red-600 hover:text-red-800">
-                                        <i class="ri-close-line text-xl"></i>
-                                    </button>
-                                </form>
-
-   
-                                <form method="POST" action="" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-green-600 hover:text-green-800">
-                                        <i class="ri-check-line text-xl"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                    <tr class="bg-white hover:bg-gray-50">
+                        <td class="px-4 py-3"><input type="checkbox"></td>
+                        <td class="px-4 py-3">Things to create</td>
+                        <td class="px-4 py-3">Low Priority</td>
+                        <td class="px-4 py-3">
+                            <span class="bg-yellow-400 text-white text-xs px-2 py-1 rounded-full">In progress</span>
+                        </td>
+                        <td class="px-4 py-3">Fri, 03 Jan 7:00 AM</td>
+                        <td class="px-4 py-3 flex space-x-2">
+                            <button class="text-gray-500 hover:text-black"><i class="ri-refresh-line"></i></button>
+                            <button class="text-red-500 hover:text-red-700"><i class="ri-delete-bin-line"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </main>
-
 </div>
-
 
 <script src="//unpkg.com/alpinejs" defer></script>
 

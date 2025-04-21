@@ -292,19 +292,19 @@
                         <div class="flex flex-col">
                             <label for="name" class="hidden">Full Name</label>
                             <input type="name" name="name" id="name" placeholder="Full Name"
-                                class="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-100 border dark:border-gray-700 text-gray-800 text-sm sm:text-base font-semibold focus:border-orange-500 focus:outline-none">
+                                class="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-100 border dark:border-gray-700  text-sm font-light text-gray-500 focus:border-orange-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
 
                         <div class="flex flex-col mt-2">
                             <label for="email" class="hidden">Email</label>
                             <input type="email" name="email" id="email" placeholder="Email"
-                                class="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-100 border dark:border-gray-700 text-gray-800 text-sm sm:text-base font-semibold focus:border-orange-500 focus:outline-none">
+                                class="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-100 border dark:border-gray-700  text-sm font-light text-gray-500 focus:border-orange-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
 
                         <div class="flex flex-col mt-2">
                             <label for="message" class="hidden">Message</label>
                             <textarea name="message" id="message" placeholder="How can our team help you?"
-                                class="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-100 border dark:border-gray-700 text-gray-800 text-sm sm:text-base font-semibold focus:border-orange-500 focus:outline-none"></textarea>
+                                class="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-100 border dark:border-gray-700  text-sm font-light text-gray-500 focus:border-orange-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
 
                         <button type="submit"

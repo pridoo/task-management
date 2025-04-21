@@ -12,9 +12,18 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/admin/trash', function () {
+    return view('admin.trash');
+})->name('admin.users');
+
+
 
 Route::get('/admin/users/approved-users', function () {
     return view('admin.users.approved-users');
+})->name('admin.users');
+
+Route::get('/admin/users/pending-users', function () {
+    return view('admin.users.pending-users');
 })->name('admin.users');
 
 
