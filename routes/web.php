@@ -17,6 +17,18 @@ Route::get('/admin/reports', function () {
     return view('admin.reports');
 })->name('admin.reports');
 
+Route::get('/admin/settings', function () {
+    return view('admin.settings.index');
+})->name('admin.settings');
+
+Route::get('/admin/settings/profile', function () {
+    return view('admin.settings.profile');
+})->name('admin.settings');
+
+Route::get('/admin/settings/password', function() {
+    return view ('admin.settings.password');
+})->name('admin.settings');
+
 Route::get('/admin/tasks/all-tasks', function () {
     return view('admin.tasks.all-tasks');
 })->name('admin.tasks');

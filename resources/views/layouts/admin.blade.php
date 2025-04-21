@@ -83,10 +83,11 @@
                 </a>
             </li>
             <li class="mb-1 group">
-                <a href="#"
-                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md group-[.active]:text-white group-[.selected]:bg-orange-700 group-[.selected]:text-gray-100 sidebar-dropdown-toggle">
-                    <img src="{{ asset('css/pictures/Settings.png') }}" alt="Settings" class="w-8 h-8 rounded ">
-                    <span class="text-sm font-bold text-white ml-3">Settings</span>
+                <a href="{{ url('admin/settings') }}" 
+                class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md 
+                {{ Request::is('admin/settings') ? 'bg-orange-700 text-white' : '' }}">
+                    <img src="{{ asset('css/pictures/Settings.png') }}" alt="Settings" class="w-8 h-8 rounded">
+                    <span class="text-sm font-bold ml-3">Settings</span>
                 </a>
             </li>
             <li class="mb-1 group">
@@ -96,9 +97,9 @@
                     <span class="text-sm font-bold text-white ml-3">Trash</span>
                 </a>
             </li>
-            <li class="mb-1 group">
-                <a href="#"
-                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md group-[.active]:text-white group-[.selected]:bg-orange-700 group-[.selected]:text-gray-100 sidebar-dropdown-toggle">
+            <li class="mb-1 group {{ Request::is('admin/reports') ? 'active' : '' }}">
+                <a href="{{ url('admin/reports') }}"
+                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/reports') ? 'bg-orange-700 text-gray-100' : '' }}">
                     <img src="{{ asset('css/pictures/Report.png') }}" alt="Report" class="w-8 h-8 rounded ">
                     <span class="text-sm font-bold text-white ml-3">Report</span>
                 </a>
