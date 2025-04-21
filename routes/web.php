@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/admin/users/approved-users', function () {
+    return view('admin.users.approved-users');
+})->name('admin.users');
+
+
 Route::get('/admin/reports', function () {
     return view('admin.reports');
 })->name('admin.reports');

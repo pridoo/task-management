@@ -1,9 +1,5 @@
-<!-- Edit Modal -->
 <div x-show="editOpen" x-transition class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
-    <div
-        @click.outside="editOpen = false"
-        class="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-lg border border-gray-200 transition-all duration-300"
-    >
+    <div @click.outside="editOpen = false" class="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-lg border border-gray-200 transition-all duration-300">
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-xl font-semibold text-gray-800">Edit Task</h2>
