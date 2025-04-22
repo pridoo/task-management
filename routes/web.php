@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+// admin side
 Route::get('/admin/trash', function () {
     return view('admin.trash');
 })->name('admin.users');
-
-
 
 Route::get('/admin/users/approved-users', function () {
     return view('admin.users.approved-users');
@@ -63,6 +63,49 @@ Route::get('/admin/dashboard', action: function () {
     return view('admin.dashboard');
 })->name('admin-dashboard');
 
+
+
+// user side
+Route::get('/user/trash', function () {
+    return view('user.trash');
+})->name('user.users');
+
+Route::get('/user/settings', function () {
+    return view('user.settings.index');
+})->name('user.settings');
+
+Route::get('/user/settings/profile', function () {
+    return view('user.settings.profile');
+})->name('user.settings');
+
+Route::get('/user/settings/password', function() {
+    return view ('user.settings.password');
+})->name('user.settings');
+
+Route::get('/user/tasks/all-tasks', function () {
+    return view('user.tasks.all-tasks');
+})->name('user.tasks');
+
+Route::get('/user/tasks/to-do', function () {
+    return view('user.tasks.to-do');
+})->name('user.tasks');
+
+Route::get('/user/tasks/in-progress', function () {
+    return view('user.tasks.in-progress');
+})->name('user.tasks');
+
+Route::get('/user/tasks/completed', function () {
+    return view('user.tasks.completed');
+})->name('user.tasks');
+
+Route::get('/dashboard', action: function () {
+    return view('user.dashboard');
+})->name('user-dashboard');
+
+
+
+
+// landing page
 Route::get('/', function () {
     return view('landing_page.index');
 })->name('home');
