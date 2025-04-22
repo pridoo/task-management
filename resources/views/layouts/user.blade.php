@@ -17,8 +17,6 @@
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
-
-
 </head>
 
 <body class="overflow-x-hidden bg-gray-100">
@@ -35,7 +33,7 @@
         <ul class="mt-4">
             <li class="mb-1 group">
                 <a href="{{ url('/dashboard') }}" 
-                class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md 
+                class="flex items-center py-2 px-4 text-white hover:bg-orange-700 hover:text-gray-100 rounded-md 
                 {{ Request::is('/dashboard') ? 'bg-orange-700 text-white' : '' }}">
                     <img src="{{ asset('css/pictures/home.png') }}" alt="Home" class="w-8 h-8 rounded">
                     <span class="text-sm font-bold ml-3">Home</span>
@@ -84,7 +82,7 @@
             </li>
             <li class="mb-1 group">
                 <a href="{{ url('user/settings') }}" 
-                class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md 
+                class="flex items-center py-2 px-4 text-white hover:bg-orange-700 hover:text-gray-100 rounded-md 
                 {{ Request::is('user/settings') ? 'bg-orange-700 text-white' : '' }}">
                     <img src="{{ asset('css/pictures/Settings.png') }}" alt="Settings" class="w-8 h-8 rounded">
                     <span class="text-sm font-bold ml-3">Settings</span>

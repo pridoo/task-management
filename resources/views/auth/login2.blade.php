@@ -85,7 +85,7 @@
                                         </div>
                                         <p class="text-center text-sm font-light text-gray-500 dark:text-gray-400">
                                             Don't have an account? <a href="{{ route('register') }}"
-                                                class="font-medium text-primary-900 hover:underline hover:text-black dark:text-primary-500">Sign
+                                                class="font-medium text-primary-900 hover:underline hover:text-orange-600 dark:text-primary-500">Sign
                                                 Up
                                                 here</a>
                                         </p>
