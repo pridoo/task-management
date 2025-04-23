@@ -32,7 +32,7 @@
         </a>
         <ul class="mt-4">
             <li class="mb-1 group">
-                <a href="{{ url('/dashboard') }}" 
+                <a href="{{ url('user/dashboard') }}" 
                 class="flex items-center py-2 px-4 text-white hover:bg-orange-700 hover:text-gray-100 rounded-md 
                 {{ Request::is('/dashboard') ? 'bg-orange-700 text-white' : '' }}">
                     <img src="{{ asset('css/pictures/home.png') }}" alt="Home" class="w-8 h-8 rounded">
@@ -90,7 +90,7 @@
             </li>
             <!-- Log Out -->
             <li class="mb-1 group">
-                <form method="POST" action="">
+                <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit"
                         class="w-full text-left flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md">

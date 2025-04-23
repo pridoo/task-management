@@ -5,18 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class Admin extends Authenticatable
 {
-    protected $guard = 'web'; 
+    protected $guard = 'admin'; 
+
     protected $fillable = ['name', 'email', 'id_number', 'password'];
 
     public function tasks()
     {
-        return $this->hasMany(Task::class, 'assigned_to');
-    }
-
-    public function updates()
-    {
-        return $this->hasMany(TaskUpdate::class);
+        return $this->hasMany(Task::class);
     }
 }

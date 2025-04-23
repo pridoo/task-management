@@ -1,123 +1,60 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\IdNumberAuthController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->group(function () {
+    Route::get('/trash', fn() => view('admin.trash'))->name('trash');
+    Route::get('/users/approved-users', fn() => view('admin.users.approved-users'))->name('approved-users');
+    Route::get('/users/pending-users', fn() => view('admin.users.pending-users'))->name('pending-users');
+    Route::get('/reports', fn() => view('admin.reports'))->name('reports');
 
-// admin side
-Route::get('/admin/trash', function () {
-    return view('admin.trash');
-})->name('admin.users');
+    Route::prefix('settings')->name('settings.')->group(function () {
+        Route::get('/', fn() => view('admin.settings.index'))->name('index');
+        Route::get('/profile', fn() => view('admin.settings.profile'))->name('profile');
+        Route::get('/password', fn() => view('admin.settings.password'))->name('password');
+    });
 
-Route::get('/admin/users/approved-users', function () {
-    return view('admin.users.approved-users');
-})->name('admin.users');
+    Route::prefix('tasks')->name('tasks.')->group(function () {
+        Route::get('/all-tasks', fn() => view('admin.tasks.all-tasks'))->name('all-tasks');
+        Route::get('/to-do', fn() => view('admin.tasks.to-do'))->name('to-do');
+        Route::get('/in-progress', fn() => view('admin.tasks.in-progress'))->name('in-progress');
+        Route::get('/completed', fn() => view('admin.tasks.completed'))->name('completed');
+    });
 
-Route::get('/admin/users/pending-users', function () {
-    return view('admin.users.pending-users');
-})->name('admin.users');
+    Route::get('/dashboard', fn() => view('admin.dashboard'))->name('dashboard');
+});
 
+Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(function () {
+    Route::get('/trash', fn() => view('user.trash'))->name('trash');
 
-Route::get('/admin/reports', function () {
-    return view('admin.reports');
-})->name('admin.reports');
+    Route::prefix('settings')->name('settings.')->group(function () {
+        Route::get('/', fn() => view('user.settings.index'))->name('index');
+        Route::get('/profile', fn() => view('user.settings.profile'))->name('profile');
+        Route::get('/password', fn() => view('user.settings.password'))->name('password');
+    });
 
-Route::get('/admin/settings', function () {
-    return view('admin.settings.index');
-})->name('admin.settings');
+    Route::prefix('tasks')->name('tasks.')->group(function () {
+        Route::get('/all-tasks', fn() => view('user.tasks.all-tasks'))->name('all-tasks');
+        Route::get('/to-do', fn() => view('user.tasks.to-do'))->name('to-do');
+        Route::get('/in-progress', fn() => view('user.tasks.in-progress'))->name('in-progress');
+        Route::get('/completed', fn() => view('user.tasks.completed'))->name('completed');
+    });
 
-Route::get('/admin/settings/profile', function () {
-    return view('admin.settings.profile');
-})->name('admin.settings');
-
-Route::get('/admin/settings/password', function() {
-    return view ('admin.settings.password');
-})->name('admin.settings');
-
-Route::get('/admin/tasks/all-tasks', function () {
-    return view('admin.tasks.all-tasks');
-})->name('admin.tasks');
-
-Route::get('/admin/tasks/to-do', function () {
-    return view('admin.tasks.to-do');
-})->name('admin.tasks');
-
-Route::get('/admin/tasks/in-progress', function () {
-    return view('admin.tasks.in-progress');
-})->name('admin.tasks');
-
-Route::get('/admin/tasks/completed', function () {
-    return view('admin.tasks.completed');
-})->name('admin.tasks');
-
-Route::get('/admin/dashboard', action: function () {
-    return view('admin.dashboard');
-})->name('admin-dashboard');
+    Route::get('/dashboard', fn() => view('user.dashboard'))->name('dashboard');
+});
 
 
-
-// user side
-Route::get('/user/trash', function () {
-    return view('user.trash');
-})->name('user.users');
-
-Route::get('/user/settings', function () {
-    return view('user.settings.index');
-})->name('user.settings');
-
-Route::get('/user/settings/profile', function () {
-    return view('user.settings.profile');
-})->name('user.settings');
-
-Route::get('/user/settings/password', function() {
-    return view ('user.settings.password');
-})->name('user.settings');
-
-Route::get('/user/tasks/all-tasks', function () {
-    return view('user.tasks.all-tasks');
-})->name('user.tasks');
-
-Route::get('/user/tasks/to-do', function () {
-    return view('user.tasks.to-do');
-})->name('user.tasks');
-
-Route::get('/user/tasks/in-progress', function () {
-    return view('user.tasks.in-progress');
-})->name('user.tasks');
-
-Route::get('/user/tasks/completed', function () {
-    return view('user.tasks.completed');
-})->name('user.tasks');
-
-Route::get('/dashboard', action: function () {
-    return view('user.dashboard');
-})->name('user-dashboard');
+Route::get('/', fn() => view('landing_page.index'))->name('home');
+Route::get('/login', fn() => view('auth.login'))->name('login');
+Route::get('/login/id-number', fn() => view('auth.login2'))->name('login2');
+Route::post('/login', [AuthController::class, 'checkLogin'])->name('checkLogin');
+Route::post('/login/id-number', [IdNumberAuthController::class, 'loginWithId'])->name('loginWithId');
 
 
+Route::get('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/register', [AuthController::class, 'store']);
 
 
-// landing page
-Route::get('/', function () {
-    return view('landing_page.index');
-})->name('home');
-
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
-
-Route::get('/login2', function () {
-    return view('auth.login2');
-})->name('login2');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
