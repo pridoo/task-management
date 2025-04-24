@@ -25,6 +25,7 @@ class IdNumberAuthController extends Controller
 
         $admin = Admin::where('id_number', $request->id_number)->first();
 
+        // checking admin credentials
         if ($admin) {
     
             if (Auth::guard('admin')->attempt($credentials, $remember)) {
@@ -35,7 +36,7 @@ class IdNumberAuthController extends Controller
                 return back()->withErrors(['id_number' => 'Invalid Admin credentials.'])->withInput();
             }
         } else {
-         
+        //  checking user credentials
             $user = User::where('id_number', $request->id_number)->first();
             if ($user) {
                 Log::info("User found, attempting login...");
