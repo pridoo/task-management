@@ -82,7 +82,7 @@
                             <ul
                                 class="dropdown-menu shadow-md shadow-black/5 z-30 hidden py-1.5 rounded-md bg-white border border-gray-100 w-full max-w-[140px]">
                                 <li>
-                                    <a href=""
+                                    <a href="{{ url('user/tasks/all-tasks') }}"
                                         class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">View
                                         Details</a>
                                 </li>
@@ -104,7 +104,7 @@
                             <ul
                                 class="dropdown-menu shadow-md shadow-black/5 z-30 hidden py-1.5 rounded-md bg-white border border-gray-100 w-full max-w-[140px]">
                                 <li>
-                                    <a href="#"
+                                    <a href="{{ url('user/tasks/completed') }}"
                                         class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">View
                                         Details</a>
                                 </li>

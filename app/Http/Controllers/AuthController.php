@@ -19,7 +19,7 @@ class AuthController extends Controller
         if (filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
             $email = $request->email;
 
-            // checking admin credentials
+ 
             if (strpos($email, '@admin.com') !== false) {
               
                 if (Auth::guard('admin')->attempt($credentials)) {
@@ -27,20 +27,17 @@ class AuthController extends Controller
                 } else {
                     return redirect()->back()->withErrors(['email' => 'Invalid Admin credentials.']);
                 }
-            // checking user credentials
-            } else { 
-
+            } else {
                 $user = User::where('email', $request->email)->first();
 
                 if ($user) {
-                    if   (Auth::attempt($credentials)) {
+                    if (Auth::attempt($credentials)) {
                         return redirect()->intended('user/dashboard'); 
                     } else {
                         return redirect()->back()->withErrors(['email' => 'Invalid User credentials.']);
                     }
-                // adding conditional statements for handling login errors
-                } else {
-                    return back()->withErrors(['email' => 'email not found.'])->withInput();
+                }else {
+                    return back()->withErrors(['id_number' => 'email not found.'])->withInput();
                 }
             }
         }

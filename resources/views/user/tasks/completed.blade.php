@@ -14,7 +14,6 @@
             <div class="flex justify-end items-center">
                 <ul class="flex items-center space-x-4">
 
-
                     <li class="relative" x-data="{ open: false }" x-init="open = false">
                         <button @click="open = !open"
                                 class="msg-btn text-gray-400 w-8 h-8 rounded flex items-center justify-center hover:bg-gray-50 hover:text-gray-600">
