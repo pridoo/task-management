@@ -114,21 +114,7 @@
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
-    @if(session('success'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            Swal.fire({
-                icon: "success",
-                title: "Login Successfully!",
-                showConfirmButton: false,
-                timer: 1500
-            });
-        });
-    </script>
-    @endif
 
     <!-- ✅ Dropdown Logic -->
     <script>

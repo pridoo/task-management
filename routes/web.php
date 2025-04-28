@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IdNumberAuthController;
+use App\Http\Controllers\Admin\TaskController;
 
 Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->group(function () {
     Route::get('/trash', fn() => view('admin.trash'))->name('trash');
@@ -17,10 +18,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->gro
     });
 
     Route::prefix('tasks')->name('tasks.')->group(function () {
-        Route::get('/all-tasks', fn() => view('admin.tasks.all-tasks'))->name('all-tasks');
-        Route::get('/to-do', fn() => view('admin.tasks.to-do'))->name('to-do');
-        Route::get('/in-progress', fn() => view('admin.tasks.in-progress'))->name('in-progress');
-        Route::get('/completed', fn() => view('admin.tasks.completed'))->name('completed');
+        Route::get('/all-tasks', [TaskController::class, 'index'])->name('tasks.all-tasks');
+        Route::post('/store', [TaskController::class, 'store'])->name('store');
+        Route::put('/{task}/update', [TaskController::class, 'update'])->name('update');
+        Route::delete('/{task}/destroy', [TaskController::class, 'destroy'])->name('destroy');
+
+        Route::get('/to-do', [TaskController::class, 'todo'])->name('tasks.to-do');
+        Route::get('/in-progress', [TaskController::class, 'inprogress'])->name('tasks.in-progress');
+        Route::get('/completed', [TaskController::class, 'completed'])->name('tasks.completed');
     });
 
     Route::get('/dashboard', fn() => view('admin.dashboard'))->name('dashboard');
@@ -58,3 +63,4 @@ Route::post('/register', [AuthController::class, 'store']);
 
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+

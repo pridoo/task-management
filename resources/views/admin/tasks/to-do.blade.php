@@ -88,19 +88,17 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            @for ($i = 0; $i < 6; $i++)
+            @forelse ($tasks as $task)
                 <div class="bg-white shadow rounded-lg p-4 border relative">
-                    <div class="absolute top-2 right-2" x-data="{ dropdownOpen: false }" x-init="dropdownOpen = false">
-
+                    <div class="absolute top-2 right-2" x-data="{ dropdownOpen: false }">
                         <button @click="dropdownOpen = !dropdownOpen" class="text-gray-500 hover:text-gray-700">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M6 10a2 2 0 114 0 2 2 0 01-4 0zm6 0a2 2 0 114 0 2 2 0 01-4 0z" />
                             </svg>
                         </button>
 
-                        <div x-show="dropdownOpen" x-cloak x-transition.opacity @click.outside="dropdownOpen = false"
-                            class="absolute top-full right-0 mt-2 w-40 bg-white border border-gray-200 rounded-xl shadow-lg z-50 py-2">
-  
+                        <div x-show="dropdownOpen" x-cloak @click.outside="dropdownOpen = false"
+                            class="absolute top-full right-0 mt-2 w-40 bg-white border rounded-xl shadow-lg z-50 py-2">
                             <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 <i class="ri-eye-line mr-2 text-lg text-gray-500"></i> Open
                             </a>
@@ -110,19 +108,24 @@
                         </div>
                     </div>
 
-
-
-                    <div class="text-xs font-semibold text-gray-500 uppercase mb-1">Title</div>
+                    <div class="text-xs font-semibold text-gray-500 uppercase mb-1">{{ $task->title }}</div>
                     <hr class="mb-2 border-gray-200">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="bg-red-500 text-white px-2 py-0.5 rounded-full text-[11px]">To do</span>
-                        <span class="text-xs text-red-500 font-semibold">High Priority</span>
+                        <span class="bg-red-500 text-white px-2 py-0.5 rounded-full text-[11px]">{{ $task->status }}</span>
+                        <span class="text-xs text-red-500 font-semibold">{{ ucfirst($task->priority) }} Priority</span>
                     </div>
-                    <div class="text-xs text-gray-500 mb-2">📅 Fri, 03 Jan 7:00 AM</div>
-                    <p class="text-sm text-gray-700 mb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <div class="text-xs text-gray-500 mb-2">
+                        📅 {{ \Carbon\Carbon::parse($task->start_date)->format('D, d M Y h:i A') }}
+                    </div>
+                    <p class="text-sm text-gray-700 mb-3">{{ $task->content }}</p>
                 </div>
-            @endfor
+            @empty
+                <div class="text-gray-500 text-center col-span-3">
+                    No tasks found.
+                </div>
+            @endforelse
         </div>
+
     </main>
 
     <div x-show="editOpen" x-cloak x-transition.opacity class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">

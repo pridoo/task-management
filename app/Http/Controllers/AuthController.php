@@ -23,7 +23,8 @@ class AuthController extends Controller
             if (strpos($email, '@admin.com') !== false) {
               
                 if (Auth::guard('admin')->attempt($credentials)) {
-                    return redirect()->intended('admin/dashboard'); 
+                    $request->session()->forget('success'); 
+                    return redirect()->intended('admin/dashboard')->with('login_success', 'Login Successfully!'); 
                 } else {
                     return redirect()->back()->withErrors(['email' => 'Invalid Admin credentials.']);
                 }
@@ -31,8 +32,9 @@ class AuthController extends Controller
                 $user = User::where('email', $request->email)->first();
 
                 if ($user) {
+                    $request->session()->forget('success'); 
                     if (Auth::attempt($credentials)) {
-                        return redirect()->intended('user/dashboard'); 
+                        return redirect()->intended('user/dashboard')->with('login_success', 'Login Successfully!'); 
                     } else {
                         return redirect()->back()->withErrors(['email' => 'Invalid User credentials.']);
                     }

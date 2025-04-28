@@ -29,8 +29,9 @@ class IdNumberAuthController extends Controller
         if ($admin) {
     
             if (Auth::guard('admin')->attempt($credentials, $remember)) {
+                $request->session()->forget('success'); 
                 Log::info("Admin login success");
-                return redirect()->intended('admin/dashboard');
+                return redirect()->intended('admin/dashboard')->with('login_success', 'Login Successfully!');
             } else {
                 Log::error("Admin login failed", ['credentials' => $credentials]);
                 return back()->withErrors(['id_number' => 'Invalid Admin credentials.'])->withInput();
@@ -40,9 +41,11 @@ class IdNumberAuthController extends Controller
             $user = User::where('id_number', $request->id_number)->first();
             if ($user) {
                 Log::info("User found, attempting login...");
+                $request->session()->forget('success'); 
                 if (Auth::attempt($credentials, $remember)) {
+                    $request->session()->forget('success'); 
                     Log::info("User login success");
-                    return redirect()->intended('user/dashboard');
+                    return redirect()->intended('user/dashboard')->with('login_success', 'Login Successfully!');
                 } else {
                     Log::error("User login failed", ['credentials' => $credentials]);
                     return back()->withErrors(['id_number' => 'Invalid User credentials.'])->withInput();
