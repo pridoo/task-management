@@ -5,21 +5,21 @@
     
     <div @click.outside="editOpen = false" class="w-full max-w-lg bg-white p-6 rounded-xl shadow-xl border border-gray-200">
 
-    
+        <!-- Header -->
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-xl font-semibold text-gray-800">Edit Task</h2>
             <button @click="editOpen = false" class="text-gray-500 hover:text-red-500 text-2xl leading-none">&times;</button>
         </div>
 
-     
+        <!-- Form for editing task -->
         <form method="POST" 
               :action="baseUrl + '/' + (currentTask ? currentTask.id : '') + '/update'" 
               enctype="multipart/form-data" 
               class="space-y-4">
             @csrf
-            @method('PUT') 
+            @method('PUT') <!-- This is needed for PUT request -->
 
-            
+            <!-- Title -->
             <div>
                 <label class="block text-sm font-medium text-gray-600 mb-1">Title</label>
                 <input type="text" name="title" x-model="currentTask.title" 
@@ -63,16 +63,34 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">Assigned To</label>
-                    <select name="assigned_to" x-model="currentTask.assigned_to" 
-                            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none">
-                        @foreach ($users as $user)
-                            <option :value="{{ $user->id }}" :selected="currentTask.assigned_to == {{ $user->id }}">
-                                {{ $user->name }}
-                            </option>
-                        @endforeach
-                    </select>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Assigned To</label>
+                <div class="relative">
+                    <button type="button" id="editDropdownButton" class="w-full border border-gray-300 rounded-lg px-4 py-2 text-left focus:ring-2 focus:ring-blue-400 focus:outline-none">
+                        Select Users
+                    </button>
+                    <div id="editDropdownMenu" class="absolute hidden w-full bg-white border border-gray-300 rounded-lg mt-1 max-h-60 overflow-y-auto z-10">
+                        <div class="px-4 py-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" id="editSelectAll" class="mr-2">
+                                Select All
+                            </label>
+                            <div class="space-y-2">
+                                @foreach ($users as $user)
+                                    <label class="flex items-center justify-between">
+                                        <span>{{ $user->name }}</span>
+                                        <input type="checkbox" 
+                                            name="assigned_to[]" 
+                                            value="{{ $user->id }}"
+                                            {{ $task->users->contains($user->id) ? 'checked' : '' }} 
+                                            class="editUserCheckbox">
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+
             </div>
 
 
@@ -103,3 +121,27 @@
 
     </div>
 </div>
+
+<!-- JavaScript to handle Select All functionality -->
+<script>
+    document.getElementById('editDropdownButton').addEventListener('click', function () {
+        const menu = document.getElementById('editDropdownMenu');
+        menu.classList.toggle('hidden');
+    });
+
+    document.getElementById('editSelectAll').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.editUserCheckbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
+    });
+
+    // Optional: Close the dropdown if clicked outside
+    document.addEventListener('click', function(event) {
+        const menu = document.getElementById('editDropdownMenu');
+        const button = document.getElementById('editDropdownButton');
+        if (!menu.contains(event.target) && event.target !== button) {
+            menu.classList.add('hidden');
+        }
+    });
+</script>

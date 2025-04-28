@@ -95,7 +95,6 @@
                             </ul>
                         </div>
                     </li>
-
                 </ul>
             </div>
         </div>
@@ -140,10 +139,15 @@
                         </button>
                         <div x-show="dropdownOpen" x-cloak @click.outside="dropdownOpen = false"
                             class="absolute top-full right-0 mt-2 w-40 bg-white border rounded-xl shadow-lg z-50 py-2">
+                            <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="ri-eye-line mr-2 text-lg text-gray-500"></i> Open
+                            </a>
                             <a href="#" @click.prevent="editOpen = true; $dispatch('open-edit-modal', { task: @js($task) })" class="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-blue-50">
                                 <i class="ri-edit-line mr-2 text-lg"></i> Edit
                             </a>
-
+                                                        <a href="#" class="flex items-center px-4 py-2 text-sm text-yellow-600 hover:bg-yellow-50">
+                                <i class="ri-file-copy-line mr-2 text-lg"></i> Duplicate
+                            </a>
                             <form method="POST" action="{{ route('admin.tasks.destroy', $task->id) }}">
                                 @csrf
                                 @method('DELETE')

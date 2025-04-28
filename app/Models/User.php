@@ -12,9 +12,8 @@ class User extends Authenticatable
 
     public function tasks()
     {
-        return $this->hasMany(Task::class, 'assigned_to');
+        return $this->belongsToMany(Task::class, 'task_user', 'task_id', 'user_id');
     }
-
     public function updates()
     {
         return $this->hasMany(TaskUpdate::class);

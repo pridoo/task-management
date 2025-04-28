@@ -21,8 +21,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->gro
         Route::get('/all-tasks', [TaskController::class, 'index'])->name('tasks.all-tasks');
         Route::post('/store', [TaskController::class, 'store'])->name('store');
         Route::put('/{task}/update', [TaskController::class, 'update'])->name('update');
+        Route::get('/{task}/edit', [TaskController::class, 'edit'])->name('edit');
         Route::delete('/{task}/destroy', [TaskController::class, 'destroy'])->name('destroy');
-
         Route::get('/to-do', [TaskController::class, 'todo'])->name('tasks.to-do');
         Route::get('/in-progress', [TaskController::class, 'inprogress'])->name('tasks.in-progress');
         Route::get('/completed', [TaskController::class, 'completed'])->name('tasks.completed');
@@ -60,7 +60,5 @@ Route::post('/login/id-number', [IdNumberAuthController::class, 'loginWithId'])-
 
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/register', [AuthController::class, 'store']);
-
-
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
