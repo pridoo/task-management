@@ -104,9 +104,6 @@
                             <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 <i class="ri-eye-line mr-2 text-lg text-gray-500"></i> Open
                             </a>
-                            <a href="#" @click.prevent="editOpen = true; $dispatch('open-edit-modal', { task: @js($task) })" class="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-blue-50">
-                                <i class="ri-edit-line mr-2 text-lg"></i> Edit
-                            </a>
                         </div>
                     </div>
 
@@ -120,6 +117,14 @@
                         📅 {{ \Carbon\Carbon::parse($task->end_date)->format('D, d M Y h:i A') }}
                     </div>
                     <p class="text-sm text-gray-700 mb-3">{{ $task->content }}</p>
+                    <div class="mt-4">
+                        <span class="text-xs text-gray-500">Assigned To: </span>
+                        <span class="text-sm text-gray-700">
+                            @foreach($task->users as $user)
+                                {{ $user->name }}@if(!$loop->last), @endif
+                            @endforeach
+                        </span>
+                    </div>
                 </div>
             @empty
                 <div class="text-gray-500 text-center col-span-3">

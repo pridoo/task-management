@@ -161,13 +161,24 @@
                     <hr class="mb-2 border-gray-200">
                     <div class="flex justify-between items-center mb-2">
                         <span class="bg-{{ $task->status == 'To do' ? 'red' : ($task->status == 'In-progress' ? 'yellow' : 'green') }}-500 text-white px-2 py-0.5 rounded-full text-[11px]">{{ $task->status }}</span>
-                        <span class="text-xs font-semibold text-{{ $task->priority == 'High' ? 'red' : ($task->priority == 'Medium' ? 'yellow' : 'green') }}-500">{{ ucfirst($task->priority) }} Priority</span>
+                        <span class="text-xs font-semibold text-{{ $task->priority === 'High' ? 'red' : ($task->priority === 'Medium' ? 'yellow' : 'green') }}-500">
+                            {{ $task->priority ? ucfirst($task->priority) : 'No Priority' }} Priority
+                        </span>
                     </div>
                     <div class="text-xs text-gray-500 mb-2">
                         📅
                         {{ $task->end_date ? \Carbon\Carbon::parse($task->end_date)->format('D, d M Y h:i A') : 'No End Date' }}
                     </div>
                     <p class="text-sm text-gray-700 mb-3">{{ $task->content }}</p>
+
+                    <div class="mt-4">
+                        <span class="text-xs text-gray-500">Assigned To: </span>
+                        <span class="text-sm text-gray-700">
+                            @foreach($task->users as $user)
+                                {{ $user->name }}@if(!$loop->last), @endif
+                            @endforeach
+                        </span>
+                    </div>
                 </div>
             @endforeach
         </div>

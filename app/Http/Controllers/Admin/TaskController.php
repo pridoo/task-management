@@ -12,22 +12,21 @@ class TaskController extends Controller
 {
     public function index()
     {
-        $tasks = Task::latest()->get();
+        $tasks = Task::with('users')->latest()->get();  
         $users = User::all(); 
         return view('admin.tasks.all-tasks', compact('tasks', 'users'));
     }
 
     public function todo()
     {
-        $tasks = Task::where('status', 'To do')->latest()->get();
-        $users = User::all();
+        $tasks = Task::with('users')->where('status', 'To do')->latest()->get();  
 
-        return view('admin.tasks.to-do', compact('tasks', 'users'));
+        return view('admin.tasks.to-do', compact('tasks'));
     }
 
     public function inprogress()
     {
-        $tasks = Task::where('status', 'In-Progress')->latest()->get();
+        $tasks = Task::with('users')->where('status', 'In-Progress')->latest()->get();
         $users = User::all();
 
         return view('admin.tasks.in-progress', compact('tasks', 'users'));
@@ -35,7 +34,7 @@ class TaskController extends Controller
 
     public function completed()
     {
-        $tasks = Task::where('status', 'Completed')->latest()->get();
+        $tasks = Task::with('users')->where('status', 'Completed')->latest()->get();
         $users = User::all();
 
         return view('admin.tasks.completed', compact('tasks', 'users'));
@@ -136,5 +135,13 @@ class TaskController extends Controller
     
         return redirect()->back();
     }
+    public function edit($taskId)
+    {
+        $task = Task::with('users')->findOrFail($taskId);  // Eager load users
+        $users = User::all();  // Fetch all users
+        
+        return view('admin.tasks.edit', compact('task', 'users'));
+    }
+    
     
 }
