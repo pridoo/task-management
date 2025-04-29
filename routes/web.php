@@ -75,3 +75,5 @@ Route::post('/login/id-number', [IdNumberAuthController::class, 'loginWithId'])-
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/register', [AuthController::class, 'store'])->name('auth.register.store');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('admin/message', fn() => view('admin.message'))->name('message');

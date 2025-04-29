@@ -105,6 +105,13 @@
                     <span class="text-sm font-bold text-white ml-3">Archived</span>
                 </a>
             </li>
+            <li class="mb-1 group {{ Request::is('admin/message') ? 'active' : '' }}">
+                <a href="{{ url('admin/message') }}"
+                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/trash') ? 'bg-orange-700 text-gray-100' : '' }}">
+                    <img src="{{ asset('css/pictures/message.png') }}" alt="Message" class="w-8 h-8 rounded ">
+                    <span class="text-sm font-bold text-white ml-3">Message</span>
+                </a>
+            </li>
             <li class="mb-1 group {{ Request::is('admin/reports') ? 'active' : '' }}">
                 <a href="{{ url('admin/reports') }}"
                     class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/reports') ? 'bg-orange-700 text-gray-100' : '' }}">
