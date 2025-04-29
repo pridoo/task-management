@@ -4,17 +4,34 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IdNumberAuthController;
 use App\Http\Controllers\Admin\TaskController;
+use App\Http\Controllers\Admin\PendingUserController;
+use App\Http\Controllers\Admin\ReportsController;
+use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\TrashController;
 
 Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->group(function () {
-    Route::get('/trash', fn() => view('admin.trash'))->name('trash');
-    Route::get('/users/approved-users', fn() => view('admin.users.approved-users'))->name('approved-users');
-    Route::get('/users/pending-users', fn() => view('admin.users.pending-users'))->name('pending-users');
-    Route::get('/reports', fn() => view('admin.reports'))->name('reports');
+
+    Route::get('users/pending-users', [PendingUserController::class, 'showPendingUsers'])->name('pending-users');
+    Route::put('users/approve-user/{userId}', [PendingUserController::class, 'approveUser'])->name('approve-user');
+    Route::put('reject-user/{userId}', [PendingUserController::class, 'rejectUser'])->name('reject-user');
+    Route::get('users/approved-users', [PendingUserController::class, 'showApprovedUsers'])->name('approved-users');
+    Route::post('users/unapprove-user/{userId}', [PendingUserController::class, 'unapproveUser'])->name('unapprove-user');
+
+    Route::get('reports', [ReportsController::class, 'showCompletedTasks'])->name('reports');
+    Route::get('reports/export', [ReportsController::class, 'exportCSV'])->name('reports.export');
+
+    Route::prefix('trash')->name('trash.')->group(function () {
+        Route::get('/', [TrashController::class, 'index'])->name('index');
+        Route::delete('/{id}', [TrashController::class, 'destroy'])->name('destroy');
+        Route::delete('/delete-all', [TrashController::class, 'deleteAll'])->name('deleteAll');
+    });
 
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('/', fn() => view('admin.settings.index'))->name('index');
-        Route::get('/profile', fn() => view('admin.settings.profile'))->name('profile');
+        Route::get('/profile', [ProfileController::class, 'showProfile'])->name('profile');
+        Route::post('/profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
         Route::get('/password', fn() => view('admin.settings.password'))->name('password');
+        Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password.update');
     });
 
     Route::prefix('tasks')->name('tasks.')->group(function () {
@@ -50,15 +67,11 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(functi
     Route::get('/dashboard', fn() => view('user.dashboard'))->name('dashboard');
 });
 
-
 Route::get('/', fn() => view('landing_page.index'))->name('home');
 Route::get('/login', fn() => view('auth.login'))->name('login');
 Route::get('/login/id-number', fn() => view('auth.login2'))->name('login2');
 Route::post('/login', [AuthController::class, 'checkLogin'])->name('checkLogin');
 Route::post('/login/id-number', [IdNumberAuthController::class, 'loginWithId'])->name('loginWithId');
-
-
 Route::get('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/register', [AuthController::class, 'store']);
+Route::post('/register', [AuthController::class, 'store'])->name('auth.register.store');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-

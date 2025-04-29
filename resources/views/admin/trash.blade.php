@@ -76,10 +76,14 @@
 
         <main class="pt-24 px-6 ml-64">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-semibold text-gray-800">Archived</h2>
-                <button @click="open = true" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm">
-                    + Delete All
-                </button>
+                <h2 class="text-2xl font-semibold text-gray-800"> Archived Tasks</h2>
+                <form action="{{ route('admin.trash.deleteAll') }}" method="POST" id="deleteAllForm">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm">
+                        + Delete All
+                    </button>
+                </form>
             </div>
             <div class="bg-white shadow rounded-md border border-gray-200 p-4">
                 <div class="overflow-x-auto">
@@ -95,77 +99,128 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="bg-white border-b hover:bg-gray-50">
-                                <td class="px-4 py-3"><input type="checkbox"></td>
-                                <td class="px-4 py-3">Things to create</td>
-                                <td class="px-4 py-3">Medium Priority</td>
-                                <td class="px-4 py-3">
-                                    <div class="relative w-[127px] h-4">
-                                        <div class="absolute left-0 top-0 w-[11px] h-[10px] bg-green-500 rounded-full">
+                            @foreach ($tasks as $task)
+                                <tr class="bg-white border-b hover:bg-gray-50">
+                                    <td class="px-4 py-3"><input type="checkbox"></td>
+                                    <td class="px-4 py-3">{{ $task->title }}</td>
+                                    <td class="px-4 py-3">{{ $task->priority }}</td>
+                                    <td class="px-4 py-3">
+                                        <div class="relative w-[127px] h-4">
+                                            <div class="absolute left-0 top-0 w-[11px] h-[10px] {{ $task->status == 'Completed' ? 'bg-green-500' : ($task->status == 'To do' ? 'bg-red-500' : 'bg-yellow-500') }} rounded-full">
+                                            </div>
+                                            <span
+                                                class="absolute left-4 top-0 w-[110px] h-4 text-[12px] leading-[15px] font-light text-[#444444]">
+                                                {{ $task->status }}
+                                            </span>
                                         </div>
-                                        <span
-                                            class="absolute left-4 top-0 w-[110px] h-4 text-[12px] leading-[15px] font-light text-[#444444]">
-                                            Completed
-                                        </span>
-                                    </div>
-                                </td>
-                                <td class="px-4 py-3">Fri, 03 Jan 7:00 AM</td>
-                                <td class="px-4 py-3 flex space-x-2">
-                                    <button class="text-gray-500 hover:text-black"><i class="ri-refresh-line"></i></button>
-                                    <button class="text-red-500 hover:text-red-700"><i
-                                            class="ri-delete-bin-line"></i></button>
-                                </td>
-                            </tr>
-
-                            <tr class="bg-white border-b hover:bg-gray-50">
-                                <td class="px-4 py-3"><input type="checkbox"></td>
-                                <td class="px-4 py-3">Things to create</td>
-                                <td class="px-4 py-3">High Priority</td>
-                                <td class="px-4 py-3">
-                                    <div class="relative w-[127px] h-4">
-                                        <div class="absolute left-0 top-0 w-[11px] h-[10px] bg-red-500 rounded-full"></div>
-                                        <span
-                                            class="absolute left-4 top-0 w-[110px] h-4 text-[12px] leading-[15px] font-light text-[#444444]">To
-                                            do</span>
-                                    </div>
-                                </td>
-                                <td class="px-4 py-3">Fri, 03 Jan 7:00 AM</td>
-                                <td class="px-4 py-3 flex space-x-2">
-                                    <button class="text-gray-500 hover:text-black"><i class="ri-refresh-line"></i></button>
-                                    <button class="text-red-500 hover:text-red-700"><i
-                                            class="ri-delete-bin-line"></i></button>
-                                </td>
-                            </tr>
-
-                            <tr class="bg-white hover:bg-gray-50">
-                                <td class="px-4 py-3"><input type="checkbox"></td>
-                                <td class="px-4 py-3">Things to create</td>
-                                <td class="px-4 py-3">Low Priority</td>
-                                <td class="px-4 py-3">
-                                    <div class="relative w-[127px] h-4">
-                                        <div class="absolute left-0 top-0 w-[11px] h-[10px] bg-yellow-500 rounded-full">
-                                        </div>
-                                        <span
-                                            class="absolute left-4 top-0 w-[110px] h-4 text-[12px] leading-[15px] font-light text-[#444444]">
-                                            In progress
-                                        </span>
-                                    </div>
-                                </td>
-                                <td class="px-4 py-3">Fri, 03 Jan 7:00 AM</td>
-                                <td class="px-4 py-3 flex space-x-2">
-                                    <button class="text-gray-500 hover:text-black"><i class="ri-refresh-line"></i></button>
-                                    <button class="text-red-500 hover:text-red-700"><i
-                                            class="ri-delete-bin-line"></i></button>
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td class="px-4 py-3">{{ \Carbon\Carbon::parse($task->end_date)->format('D, d M Y h:i A') }}</td>
+                                    <td class="px-4 py-3 flex space-x-2">
+                                        <!-- Permanently delete task -->
+                                        <form action="{{ route('admin.trash.destroy', $task->id) }}" method="POST" class="deleteTaskForm">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-500 hover:text-red-700"><i class="ri-delete-bin-line"></i> Delete Permanently</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
-
         </main>
     </div>
 
-    <script src="//unpkg.com/alpinejs" defer></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.getElementById('deleteAllForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'This will permanently delete all archived tasks!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete all!',
+            customClass: {
+                popup: 'rounded-lg shadow-xl border border-gray-200',
+                title: 'text-lg font-semibold text-gray-800',
+                content: 'text-gray-600 text-sm',
+                confirmButton: 'bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full focus:outline-none',
+                cancelButton: 'bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-full focus:outline-none'
+            },
+            backdrop: true,
+            showCloseButton: true,
+            padding: '20px',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.submit();
+                Swal.fire({
+                    title: 'Deleted!',
+                    text: 'All archived tasks have been deleted.',
+                    icon: 'success',
+                    confirmButtonColor: '#22c55e',
+                    customClass: {
+                        popup: 'rounded-lg shadow-xl border border-green-500',
+                        title: 'text-lg font-semibold text-green-700',
+                        content: 'text-green-600 text-sm',
+                        confirmButton: 'bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full focus:outline-none',
+                    },
+                    backdrop: true,
+                    showCloseButton: true,
+                    padding: '20px',
+                });
+            }
+        });
+    });
+
+    document.querySelectorAll('.deleteTaskForm').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This will permanently delete this task!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!',
+                customClass: {
+                    popup: 'rounded-lg shadow-xl border border-gray-200',
+                    title: 'text-lg font-semibold text-gray-800',
+                    content: 'text-gray-600 text-sm',
+                    confirmButton: 'bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full focus:outline-none',
+                    cancelButton: 'bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-full focus:outline-none'
+                },
+                backdrop: true,
+                showCloseButton: true,
+                padding: '20px',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                    Swal.fire({
+                        title: 'Deleted!',
+                        text: 'The task has been deleted.',
+                        icon: 'success',
+                        confirmButtonColor: '#22c55e',
+                        customClass: {
+                            popup: 'rounded-lg shadow-xl border border-green-500',
+                            title: 'text-lg font-semibold text-green-700',
+                            content: 'text-green-600 text-sm',
+                            confirmButton: 'bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full focus:outline-none',
+                        },
+                        backdrop: true,
+                        showCloseButton: true,
+                        padding: '20px',
+                    });
+                }
+            });
+        });
+    });
+</script>
 
 @endsection

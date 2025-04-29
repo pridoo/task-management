@@ -30,6 +30,8 @@
                                 <h1 class="text-3xl font-extrabold leading-tight tracking-tight text-orange-600 md:text-2xl dark:text-white text-center">
                                     Login
                                 </h1>
+                                
+
                                 @if ($errors->any())
                                     <div class="mb-4 text-red-600 bg-red-100 border border-red-400 rounded p-4">
                                         <ul class="list-disc list-inside text-sm">
@@ -39,6 +41,7 @@
                                         </ul>
                                     </div>
                                 @endif
+
                                 <form method="POST" class="space-y-4 md:space-y-6" action="{{ route('checkLogin') }}">
                                     @csrf
                                     <div>
@@ -85,5 +88,26 @@
         </div>
     </div>
 </section>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    @if ($errors->has('email'))
+        Swal.fire({
+            title: 'Your account is pending approval',
+            text: "Hang tight! We're reviewing your details. You'll be notified once you're approved.",
+            icon: 'info',
+            confirmButtonText: 'Okay / Got it',
+            customClass: {
+                popup: 'rounded-lg shadow-xl border border-blue-500',
+                title: 'text-lg font-semibold text-blue-700',
+                content: 'text-blue-600 text-sm',
+                confirmButton: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full focus:outline-none',
+            },
+            backdrop: true,
+            showCloseButton: true,
+            padding: '20px',
+        });
+    @endif
+</script>
 
 @endsection

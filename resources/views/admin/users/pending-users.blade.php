@@ -72,11 +72,9 @@
         </div>
     </header>
 
-
-
     <main class="pt-24 px-6 ml-64">
-        <div class="flex justify-between items-center mb-6 ">
-            <h2 class="text-2xl font-semibold text-gray-800">Approved Users</h2>
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-semibold text-gray-800">Pending Users</h2>
         </div>
 
         <!-- Legend -->
@@ -102,36 +100,38 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
-
-
+                        @foreach($pendingUsers as $user)
                         <tr class="hover:bg-gray-50 transition">
-                            <td class="px-6 py-4 whitespace-nowrap">Alfred Cabato</td>
-                            <td class="px-6 py-4 whitespace-nowrap">alfredpogi@example.com</td>
-                            <td class="px-6 py-4 whitespace-nowrap">Developer</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ $user->name }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ $user->email }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                {{ $user->role ?? 'Developer' }}
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2 py-1 rounded-full">
                                     Pending
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-center space-x-2">
-          
-                                <form method="POST" action="" class="inline">
+    
+                                <form method="POST" action="{{ route('admin.reject-user', $user->id) }}" class="inline">
                                     @csrf
+                                    @method('PUT') 
                                     <button type="submit" class="text-red-600 hover:text-red-800">
                                         <i class="ri-close-line text-xl"></i>
                                     </button>
                                 </form>
 
-   
-                                <form method="POST" action="" class="inline">
+                                <form method="POST" action="{{ route('admin.approve-user', $user->id) }}" class="inline">
                                     @csrf
-                                    @method('DELETE')
+                                    @method('PUT')
                                     <button type="submit" class="text-green-600 hover:text-green-800">
                                         <i class="ri-check-line text-xl"></i>
                                     </button>
                                 </form>
                             </td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -140,7 +140,64 @@
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script src="//unpkg.com/alpinejs" defer></script>
+@if(session('status') && session('userName'))
+<script>
+    let status = "{{ session('status') }}";
+    let userName = "{{ session('userName') }}";
+
+    if (status === 'approved') {
+        Swal.fire({
+            title: 'User Approved!',
+            text: `${userName} has been approved successfully.`,
+            icon: 'success',
+            confirmButtonText: 'Okay',
+            customClass: {
+                popup: 'rounded-lg shadow-xl border border-green-500',
+                title: 'text-lg font-semibold text-green-700',
+                content: 'text-green-600 text-sm',
+                confirmButton: 'bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full focus:outline-none',
+            },
+            backdrop: true,
+            showCloseButton: true,
+            padding: '20px',
+        });
+    } else if (status === 'rejected') {
+        Swal.fire({
+            title: 'User Rejected!',
+            text: `${userName} has been rejected successfully.`,
+            icon: 'error',
+            confirmButtonText: 'Okay',
+            customClass: {
+                popup: 'rounded-lg shadow-xl border border-red-500',
+                title: 'text-lg font-semibold text-red-700',
+                content: 'text-red-600 text-sm',
+                confirmButton: 'bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full focus:outline-none',
+            },
+            backdrop: true,
+            showCloseButton: true,
+            padding: '20px',
+        });
+    } else {
+        Swal.fire({
+            title: 'Error!',
+            text: `An error occurred. ${userName}`,
+            icon: 'error',
+            confirmButtonText: 'Okay',
+            customClass: {
+                popup: 'rounded-lg shadow-xl border border-gray-500',
+                title: 'text-lg font-semibold text-gray-800',
+                content: 'text-gray-600 text-sm',
+                confirmButton: 'bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-full focus:outline-none',
+            },
+            backdrop: true,
+            showCloseButton: true,
+            padding: '20px',
+        });
+    }
+</script>
+@endif
+
 
 @endsection

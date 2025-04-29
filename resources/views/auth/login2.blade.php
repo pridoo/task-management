@@ -119,4 +119,26 @@
     </div>
 </section>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    @if ($errors->has('id_number'))
+        Swal.fire({
+            title: 'Your account is pending approval',
+            text: "Hang tight! We're reviewing your details. You'll be notified once you're approved.",
+            icon: 'info',
+            confirmButtonText: 'Okay / Got it',
+            customClass: {
+                popup: 'rounded-lg shadow-xl border border-blue-500',
+                title: 'text-lg font-semibold text-blue-700',
+                content: 'text-blue-600 text-sm',
+                confirmButton: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full focus:outline-none',
+            },
+            backdrop: true,
+            showCloseButton: true,
+            padding: '20px',
+        });
+    @endif
+</script>
+
+
 @endsection

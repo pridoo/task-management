@@ -75,11 +75,8 @@
 
 
     <main class="pt-24 px-6 ml-64">
-        <div class="flex justify-between items-center mb-6 ">
+        <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-semibold text-gray-800">Approved Users</h2>
-            <button @click="open = true" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm">
-                + Add Users
-            </button>
         </div>
 
         <!-- Legend -->
@@ -105,34 +102,74 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
-
-
+                        @foreach($approvedUsers as $user)
                         <tr class="hover:bg-gray-50 transition">
-                            <td class="px-6 py-4 whitespace-nowrap">Alfred Cabato</td>
-                            <td class="px-6 py-4 whitespace-nowrap">alfredpogi@example.com</td>
-                            <td class="px-6 py-4 whitespace-nowrap">Developer</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ $user->name }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ $user->email }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ $user->role ?? 'Developer' }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded-full">
                                     Active
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-center space-x-2">
-                                
-                                <button @click.prevent="editOpen = true; console.log('Edit button clicked')" class="text-blue-500 hover:text-blue-700">
-                                    <i class="ri-edit-line text-lg"></i>
-                                </button>
-
-                                <button class="text-red-500 hover:text-red-700">
-                                    <i class="ri-delete-bin-line text-lg"></i>
-                                </button>
+                                <form method="POST" action="{{ route('admin.unapprove-user',  ['userId' => $user->id]) }}" class="inline">
+                                    @csrf
+                                    <button type="submit" class="text-red-500 hover:text-red-700">
+                                        <i class="ri-delete-bin-line text-lg"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
-
+                        @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if(session('status') && session('userName'))
+    <script>
+        let status = "{{ session('status') }}";
+        let userName = "{{ session('userName') }}";
+
+        if (status === 'unapproved') {
+            Swal.fire({
+                title: 'User Unapproved!',
+                text: `${userName} has been removed from the approved list.`,
+                icon: 'warning',
+                confirmButtonText: 'Okay',
+                customClass: {
+                    popup: 'rounded-lg shadow-xl border border-gray-200',
+                    title: 'text-lg font-semibold text-gray-800', 
+                    content: 'text-gray-600 text-sm', 
+                    confirmButton: 'bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-full focus:outline-none', 
+                },
+                backdrop: true,
+                showCloseButton: true,
+                padding: '20px', 
+            });
+        } else if (status === 'error') {
+            Swal.fire({
+                title: 'Error!',
+                text: `${userName} could not be found.`,
+                icon: 'error',
+                confirmButtonText: 'Okay',
+                customClass: {
+                    popup: 'rounded-lg shadow-xl border border-red-500', 
+                    title: 'text-lg font-semibold text-red-700', 
+                    content: 'text-red-600 text-sm', 
+                    confirmButton: 'bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full focus:outline-none', 
+                },
+                backdrop: true,
+                showCloseButton: true,
+                padding: '20px', 
+            });
+        }
+    </script>
+    @endif
 
 
     <div x-show="open" x-cloak x-transition.opacity class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">

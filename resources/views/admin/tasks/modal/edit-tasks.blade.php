@@ -122,26 +122,47 @@
     </div>
 </div>
 
-<!-- JavaScript to handle Select All functionality -->
 <script>
     document.getElementById('editDropdownButton').addEventListener('click', function () {
         const menu = document.getElementById('editDropdownMenu');
         menu.classList.toggle('hidden');
+        menu.style.transition = 'all 0.3s ease-in-out';
+        menu.style.borderRadius = '8px';
+        menu.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+        menu.style.padding = '10px';
     });
 
-    document.getElementById('editSelectAll').addEventListener('change', function() {
+    document.getElementById('editSelectAll').addEventListener('change', function () {
         const checkboxes = document.querySelectorAll('.editUserCheckbox');
         checkboxes.forEach(checkbox => {
             checkbox.checked = this.checked;
         });
     });
 
-    // Optional: Close the dropdown if clicked outside
-    document.addEventListener('click', function(event) {
+    document.addEventListener('click', function (event) {
         const menu = document.getElementById('editDropdownMenu');
         const button = document.getElementById('editDropdownButton');
         if (!menu.contains(event.target) && event.target !== button) {
             menu.classList.add('hidden');
         }
     });
+
+    document.querySelectorAll('.editUserCheckbox').forEach(checkbox => {
+        checkbox.style.accentColor = '#4CAF50';
+        checkbox.style.cursor = 'pointer';
+        checkbox.style.margin = '5px';
+        checkbox.addEventListener('mouseover', function () {
+            checkbox.style.backgroundColor = '#f1f1f1';
+        });
+    });
+
+    document.getElementById('editSelectAll').style.accentColor = '#4CAF50';
+    document.getElementById('editSelectAll').style.cursor = 'pointer';
+
+    document.getElementById('editDropdownButton').addEventListener('mouseover', function () {
+        this.style.backgroundColor = '#f1f1f1';
+        this.style.borderRadius = '5px';
+        this.style.cursor = 'pointer';
+    });
 </script>
+

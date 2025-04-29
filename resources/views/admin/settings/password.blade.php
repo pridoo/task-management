@@ -76,25 +76,27 @@
         <div class="w-full max-w-6xl mx-auto px-4">
             <h2 class="text-3xl font-bold text-gray-800 mb-8">Change Password</h2>
 
-            <div class="bg-white shadow-md rounded-lg p-8 max-w-md mx-auto">
-                <form>
+            <div class="bg-white shadow-lg rounded-2xl p-8 max-w-md mx-auto transition-all hover:shadow-2xl">
+                <form action="{{ route('admin.settings.password.update') }}" method="POST">
+                    @csrf
+                    @method('PUT')
                     <div class="mb-4">
                         <label for="old_password" class="block text-sm font-medium text-gray-700 mb-1">Old Password</label>
                         <input type="password" id="old_password" name="old_password"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200" />
                     </div>
                     <div class="mb-4">
                         <label for="new_password" class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
                         <input type="password" id="new_password" name="new_password"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200" />
                     </div>
                     <div class="mb-6">
                         <label for="confirm_password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
                         <input type="password" id="confirm_password" name="confirm_password"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200" />
                     </div>
 
-                    <div class = "text-center">
+                    <div class="text-center">
                         <button type="submit"
                             class="bg-blue-500 text-white py-2 px-6 rounded-full hover:bg-blue-600 transition duration-200">
                             Save Changes
@@ -104,7 +106,29 @@
             </div>
         </div>
     </main>
+
 </div>
+
+<script>
+    @if(session('success'))
+        Swal.fire({
+            title: 'Success!',
+            text: '{{ session('success') }}',
+            icon: 'success',
+            confirmButtonText: 'Okay',
+            customClass: {
+                popup: 'rounded-lg shadow-xl border border-green-500',
+                title: 'text-lg font-semibold text-green-700',
+                content: 'text-green-600 text-sm',
+                confirmButton: 'bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full focus:outline-none',
+            },
+            backdrop: true,
+            showCloseButton: true,
+            padding: '20px',
+        });
+    @endif
+</script>
+
 
 @endsection
 

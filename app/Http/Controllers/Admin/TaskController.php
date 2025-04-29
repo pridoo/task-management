@@ -124,10 +124,17 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
-      
-        $task->delete();
-
-   
-        return redirect()->back()->with('task_deleted', 'Task deleted successfully!');
+        // Archive the task by setting the 'archived' field to true
+        $task->archived = true;
+        $task->save();
+    
+        // You can optionally count how many tasks have been archived
+        $archivedCount = Task::where('archived', true)->count();
+    
+        // Pass the count to the view if needed, or just use it for logging or alert purposes
+        session()->flash('task_archived', 'Task archived successfully! Archived tasks count: ' . $archivedCount);
+    
+        return redirect()->back();
     }
+    
 }

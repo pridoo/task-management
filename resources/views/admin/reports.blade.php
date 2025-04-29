@@ -76,9 +76,9 @@
     <main class="pt-24 px-6 ml-80">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-semibold text-gray-800">Reports</h2>
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
+            <a href="{{ route('admin.reports.export') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
                 Export CSV
-            </button>
+            </a>
         </div>
 
         <div class="bg-white rounded-md shadow border border-gray-200 w-[95%] ml-[-10px] sm:ml-0 overflow-x-auto">
@@ -86,11 +86,6 @@
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2 sm:gap-0">
                     <div></div>
                     <div class="relative w-full sm:w-72">
-                        <input type="text" placeholder="Search Tasks"
-                               class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-300">
-                        <span class="absolute right-3 top-2.5 text-gray-400">
-                            <i class="ri-search-line"></i>
-                        </span>
                     </div>
                 </div>
 
@@ -107,26 +102,39 @@
                             </tr>
                         </thead>
                         <tbody class="text-gray-600">
+                            @foreach($completedTasks as $task)
                             <tr class="border-t border-gray-100">
-                                <td class="px-4 py-3 text-red-500">Things to create</td>
+                                <!-- Task Content -->
+                                <td class="px-4 py-3 text-red-500">{{ $task->content }}</td>
+
+                                <!-- Assigned To (Placeholder profile pictures) -->
                                 <td class="px-4 py-3">
                                     <div class="flex items-center space-x-1">
-                                        <div class="w-5 h-5 bg-gray-300 rounded-full"></div>
-                                        <div class="w-5 h-5 bg-gray-300 rounded-full"></div>
-                                        <div class="w-5 h-5 bg-gray-300 rounded-full"></div>
+                                        @foreach($task->users as $user)
+                                            <div class="w-8 h-8 bg-gray-300 rounded-full"></div>
+                                        @endforeach
                                         <span class="text-gray-400 text-xs">+</span>
                                     </div>
                                 </td>
-                                <td class="px-4 py-3 text-yellow-600">Medium Priority</td>
+
+                                <!-- Priority -->
+                                <td class="px-4 py-3 text-yellow-600">{{ $task->priority}} Priority</td>
+
+                                <!-- Stage (Always Completed) -->
                                 <td class="px-4 py-3">
                                     <div class="relative w-[127px] h-4">
                                         <div class="absolute left-0 top-0 w-[11px] h-[10px] bg-green-500 rounded-full"></div>
-                                        <span class="absolute left-4 top-0 w-[110px] h-4 text-[12px] leading-[15px] font-light text-[#444444]">completed</span>
+                                        <span class="absolute left-4 top-0 w-[110px] h-4 text-[12px] leading-[15px] font-light text-[#444444]">Completed</span>
                                     </div>
                                 </td>
-                                <td class="px-4 py-3">Fri, 03 Jan 7:00 AM</td>
-                                <td class="px-4 py-3 italic text-gray-500">Late</td>
+
+                                <!-- Deadline -->
+                                <td class="px-4 py-3">{{ \Carbon\Carbon::parse($task->end_date)->format('D, d M h:i A') }}</td>
+                                <td class="px-4 py-3 italic {{ $task->status_class }}">
+                                    {{ $task->status_label }}
+                                </td>
                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -138,8 +146,8 @@
                 </div>
             </div>
         </div>
-
     </main>
+
 
 </div>
 

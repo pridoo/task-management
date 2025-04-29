@@ -145,14 +145,13 @@
                             <a href="#" @click.prevent="editOpen = true; $dispatch('open-edit-modal', { task: @js($task) })" class="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-blue-50">
                                 <i class="ri-edit-line mr-2 text-lg"></i> Edit
                             </a>
-                                                        <a href="#" class="flex items-center px-4 py-2 text-sm text-yellow-600 hover:bg-yellow-50">
-                                <i class="ri-file-copy-line mr-2 text-lg"></i> Duplicate
-                            </a>
-                            <form method="POST" action="{{ route('admin.tasks.destroy', $task->id) }}">
+
+                            <form method="POST" action="{{ route('admin.tasks.destroy', $task->id) }}"
+                                onsubmit="return confirmArchive(event)">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50">
-                                    <i class="ri-delete-bin-line mr-2 text-lg"></i> Delete
+                                <i class="ri-archive-line mr-2 text-lg"></i> Archived
                                 </button>
                             </form>
                         </div>
@@ -191,5 +190,57 @@
 </div>
 
 <script src="//unpkg.com/alpinejs" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function confirmArchive(event) {
+        event.preventDefault(); 
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This task will be archived.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, archive it!',
+            cancelButtonText: 'Cancel',
+            customClass: {
+                popup: 'rounded-lg shadow-xl border border-gray-200', 
+                title: 'text-lg font-semibold text-gray-800', 
+                content: 'text-gray-600 text-sm', 
+                confirmButton: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full focus:outline-none', 
+                cancelButton: 'bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-full focus:outline-none' 
+            },
+            backdrop: true, 
+            showCloseButton: true, 
+            padding: '20px',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                event.target.submit(); 
+                
+    
+                Swal.fire({
+                    title: 'Archived!',
+                    text: 'The task has been archived successfully.',
+                    icon: 'success',
+                    confirmButtonColor: '#22c55e',
+                    customClass: {
+                        popup: 'rounded-lg shadow-xl border border-green-500', 
+                        title: 'text-lg font-semibold text-green-700',
+                        content: 'text-green-600 text-sm',
+                        confirmButton: 'bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full focus:outline-none', 
+                    },
+                    backdrop: true,
+                    showCloseButton: true,
+                    padding: '20px', 
+                });
+            }
+        });
+
+        return false; 
+    }
+</script>
+
 
 @endsection

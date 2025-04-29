@@ -103,22 +103,22 @@
         </form>
     </div>
 </div>
-
 <script>
-  
     document.getElementById('createDropdownButton').addEventListener('click', function() {
         var dropdownMenu = document.getElementById('createDropdownMenu');
         dropdownMenu.classList.toggle('hidden');
+        dropdownMenu.style.transition = 'all 0.3s ease-in-out';
+        dropdownMenu.style.borderRadius = '8px';
+        dropdownMenu.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+        dropdownMenu.style.padding = '10px';
     });
 
-  
     document.getElementById('createSelectAll').addEventListener('change', function() {
         var checkboxes = document.querySelectorAll('.createUserCheckbox');
         checkboxes.forEach(function(checkbox) {
             checkbox.checked = document.getElementById('createSelectAll').checked;
         });
     });
-
 
     document.querySelectorAll('.createUserCheckbox').forEach(function(checkbox) {
         checkbox.addEventListener('change', function() {
@@ -127,5 +127,21 @@
             });
             document.getElementById('createSelectAll').checked = allChecked;
         });
+        checkbox.style.accentColor = '#4CAF50';
+        checkbox.style.cursor = 'pointer';
+        checkbox.style.margin = '5px';
+        checkbox.addEventListener('mouseover', function() {
+            checkbox.style.backgroundColor = '#f1f1f1';
+        });
+    });
+
+    document.getElementById('createSelectAll').style.accentColor = '#4CAF50';
+    document.getElementById('createSelectAll').style.cursor = 'pointer';
+
+    document.getElementById('createDropdownButton').addEventListener('mouseover', function() {
+        this.style.backgroundColor = '#f1f1f1';
+        this.style.borderRadius = '5px';
+        this.style.cursor = 'pointer';
     });
 </script>
+

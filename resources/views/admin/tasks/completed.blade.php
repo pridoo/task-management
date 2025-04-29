@@ -104,7 +104,7 @@
                             <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 <i class="ri-eye-line mr-2 text-lg text-gray-500"></i> Open
                             </a>
-                            <a href="#" @click.prevent="editOpen = true" class="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-blue-50">
+                            <a href="#" @click.prevent="editOpen = true; $dispatch('open-edit-modal', { task: @js($task) })" class="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-blue-50">
                                 <i class="ri-edit-line mr-2 text-lg"></i> Edit
                             </a>
                         </div>
@@ -117,7 +117,7 @@
                         <span class="text-xs text-yellow-500 font-semibold">{{ ucfirst($task->priority) }} Priority</span>
                     </div>
                     <div class="text-xs text-gray-500 mb-2">
-                        📅 {{ \Carbon\Carbon::parse($task->start_date)->format('D, d M Y h:i A') }}
+                        📅 {{ \Carbon\Carbon::parse($task->end_date)->format('D, d M Y h:i A') }}
                     </div>
                     <p class="text-sm text-gray-700 mb-3">{{ $task->content }}</p>
                 </div>

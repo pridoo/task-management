@@ -90,8 +90,8 @@
                             <span class="text-sm font-small text-white ml-3">Approved Users</span>
                         </a>
                     </li>
-                    <li class="mb-1 group {{ Request::is('admin/tasks/to-do') ? 'active' : '' }}">
-                        <a href="{{ url('admin/tasks/to-do') }}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/to-do') ? 'bg-orange-700 text-gray-100' : '' }}">
+                    <li class="mb-1 group {{ Request::is('admin/users/pending-users') ? 'active' : '' }}">
+                        <a href="{{ url('admin/users/pending-users') }}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/to-do') ? 'bg-orange-700 text-gray-100' : '' }}">
                             <img src="{{ asset('css/pictures/Active.png') }}" alt="Pending Users" class="w-7 h-7 rounded ">
                             <span class="text-sm font-small text-white ml-3">Pending Users</span>
                         </a>
@@ -145,6 +145,7 @@
 
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
 
 
