@@ -56,10 +56,10 @@
                         </button>
                         <div id="createDropdownMenu" class="absolute hidden w-full bg-white border border-gray-300 rounded-lg mt-1 max-h-60 overflow-y-auto z-10">
                             <div class="px-4 py-2">
-                                <label class="flex items-center">
-                                    <input type="checkbox" id="createSelectAll" class="mr-2">
-                                    Select All
-                                </label>
+                            <label class="flex items-center mb-2 justify-between">
+                                <span class="text-sm">Select All</span>
+                                <input type="checkbox" id="createSelectAll" class="mr-2 accent-blue-500 cursor-pointer">
+                            </label>
                                 <div class="space-y-2">
                                     @foreach ($users as $user)
                                         <label class="flex items-center justify-between">

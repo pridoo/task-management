@@ -238,7 +238,7 @@
                                 <span>Select All</span>
                                 <input type="checkbox" id="editSelectAll" class="editUserCheckbox">
                             </label>
-                                                            @foreach ($users as $user)
+                                @foreach ($users as $user)
                                     <label class="flex items-center justify-between">
                                         <span>{{ $user->name }}</span>
                                         <input type="checkbox" name="assigned_to[]" value="{{ $user->id }}" class="editUserCheckbox">
