@@ -77,3 +77,4 @@ Route::post('/register', [AuthController::class, 'store'])->name('auth.register.
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('admin/message', fn() => view('admin.message'))->name('message');
+Route::get('admin/message-open', fn() => view('admin.message-open'))->name('message-open');
