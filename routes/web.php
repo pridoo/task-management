@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\PendingUserController;
 use App\Http\Controllers\Admin\ReportsController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\TrashController;
+use App\Http\Controllers\Admin\DashboardController;
 
 Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->group(function () {
 
@@ -46,7 +47,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->gro
         Route::get('/completed', [TaskController::class, 'completed'])->name('tasks.completed');
     });
 
-    Route::get('/dashboard', fn() => view('admin.dashboard'))->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'dynamicTasks'])->name('dashboard');
 });
 
 Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(function () {
