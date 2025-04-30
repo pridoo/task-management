@@ -127,7 +127,7 @@
             <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-lg font-semibold text-gray-700">Task Overview</h2>
-                    <button class="text-sm text-blue-500 hover:underline">View All</button>
+                    <a href="{{ url('admin/tasks/all-tasks') }}" class="text-sm text-blue-500 hover:underline">View All</a>
                 </div>
 
                 <div class="overflow-x-auto rounded-md">

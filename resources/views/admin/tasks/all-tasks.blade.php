@@ -3,6 +3,7 @@
 @section('content')
 
 <link rel="stylesheet" href="{{ asset('css/all-tasks.css') }}">
+<link rel="stylesheet" href="{{ asset('css/modal.css') }}">
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SWEETALERT2 -->
 
 <div class="min-h-screen bg-gray-100"
@@ -102,6 +103,7 @@
 
     <main class="pt-24 px-6 ml-64">
 
+        <!-- Header -->
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-semibold text-gray-800">Tasks</h2>
             <button @click="open = true" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm">
@@ -127,7 +129,7 @@
             </div>
         </div>
 
-
+        <!-- Task List -->
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             @foreach ($tasks as $task)
                 <div class="bg-white shadow rounded-lg p-4 border relative">
@@ -142,18 +144,11 @@
                             <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 <i class="ri-eye-line mr-2 text-lg text-gray-500"></i> Open
                             </a>
-                            <a href="#" @click.prevent="editOpen = true; $dispatch('open-edit-modal', { task: @js($task) })" class="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-blue-50">
+                            <a href="#"
+                            onclick="openEditModal({{ $task->id }}, '{{ addslashes($task->title) }}', '{{ addslashes($task->content) }}', '{{ $task->start_date }}', '{{ $task->end_date }}', '{{ json_encode($assignedUsers[$task->id]) }}')"
+                            class="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-blue-50">
                                 <i class="ri-edit-line mr-2 text-lg"></i> Edit
                             </a>
-
-                            <form method="POST" action="{{ route('admin.tasks.destroy', $task->id) }}"
-                                onsubmit="return confirmArchive(event)">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50">
-                                <i class="ri-archive-line mr-2 text-lg"></i> Archived
-                                </button>
-                            </form>
                         </div>
                     </div>
 
@@ -166,8 +161,7 @@
                         </span>
                     </div>
                     <div class="text-xs text-gray-500 mb-2">
-                        📅
-                        {{ $task->end_date ? \Carbon\Carbon::parse($task->end_date)->format('D, d M Y h:i A') : 'No End Date' }}
+                        📅 {{ $task->end_date ? \Carbon\Carbon::parse($task->end_date)->format('D, d M Y h:i A') : 'No End Date' }}
                     </div>
                     <p class="text-sm text-gray-700 mb-3">{{ $task->content }}</p>
 
@@ -182,6 +176,107 @@
                 </div>
             @endforeach
         </div>
+
+        <!-- Edit Modal -->
+        <div id="editTaskModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm hidden">
+            <div class="w-[90%] sm:w-[480px] max-h-[90vh] overflow-hidden bg-white rounded-xl shadow-xl border border-gray-200">
+                <div class="p-6 overflow-y-auto max-h-[80vh] modal-scroll">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-semibold text-gray-800">Edit Task</h2>
+                        <button onclick="closeEditModal()" class="text-gray-500 hover:text-red-500 text-2xl leading-none">&times;</button>
+                    </div>
+
+                    <!-- Edit Task Form -->
+                    <form method="POST" id="editTaskForm" enctype="multipart/form-data" class="space-y-4 text-sm" action="">
+                        @csrf
+                        @method('PUT')
+
+                        <!-- Title -->
+                        <div>
+                            <label class="block font-medium text-gray-600 mb-1">Title</label>
+                            <input type="text" name="title" id="editTaskTitle" required
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+                        </div>
+
+                        <!-- Description -->
+                        <div>
+                            <label class="block font-medium text-gray-600 mb-1">Description</label>
+                            <textarea name="content" id="editTaskContent" rows="3" required
+                                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"></textarea>
+                        </div>
+
+                        <!-- Start and End Dates -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-medium text-gray-600 mb-1">Start Date</label>
+                                <input type="datetime-local" name="start_date" id="editTaskStartDate" required
+                                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block font-medium text-gray-600 mb-1">End Date</label>
+                                <input type="datetime-local" name="end_date" id="editTaskEndDate" required
+                                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+                            </div>
+                        </div>
+
+                        <!-- Status -->
+                        <div>
+                            <label class="block font-medium text-gray-600 mb-1">Status</label>
+                            <select name="status" id="editTaskStatus" required
+                                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+                                <option value="To do">To Do</option>
+                                <option value="In-progress">In Progress</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+
+                        <!-- Assigned Users -->
+                        <div>
+                            <label class="block font-medium text-gray-600 mb-1">Assigned To</label>
+                            <div class="space-y-2 max-h-40 overflow-y-auto border border-gray-200 rounded-lg p-2">
+                            <label class="flex items-center justify-between">
+                                <span>Select All</span>
+                                <input type="checkbox" id="editSelectAll" class="editUserCheckbox">
+                            </label>
+                                                            @foreach ($users as $user)
+                                    <label class="flex items-center justify-between">
+                                        <span>{{ $user->name }}</span>
+                                        <input type="checkbox" name="assigned_to[]" value="{{ $user->id }}" class="editUserCheckbox">
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Priority & Attachment -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-medium text-gray-600 mb-1">Priority</label>
+                                <select name="priority" id="editTaskPriority" required
+                                        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+                                    <option value="Low">Low</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="High">High</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-medium text-gray-600 mb-1">Replace Attachment</label>
+                                <input type="file" name="attachment"
+                                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+                            </div>
+                        </div>
+
+                        <!-- Submit -->
+                        <div>
+                            <button type="submit"
+                                    class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg font-medium transition">
+                                Update Task
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Create Task Modal -->
@@ -191,12 +286,7 @@
         </div>
     </div>
 
-    <!-- Edit Task Modal -->
-    <div x-show="editOpen" x-cloak x-transition.opacity class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div @click.outside="editOpen = false" class="w-full max-w-lg bg-white p-6 rounded-xl shadow-xl border border-gray-200">
-            @include('admin.tasks.modal.edit-tasks')
-        </div>
-    </div>
+
 
 </div>
 
@@ -229,8 +319,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 event.target.submit(); 
-                
-    
+
                 Swal.fire({
                     title: 'Archived!',
                     text: 'The task has been archived successfully.',
@@ -251,7 +340,80 @@
 
         return false; 
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        
+        const dropdownButton = document.getElementById('editDropdownButton');
+        const dropdownMenu = document.getElementById('editDropdownMenu');
+        const selectAll = document.getElementById('editSelectAll');
+
+        if (dropdownButton && dropdownMenu) {
+            dropdownButton.addEventListener('click', function () {
+                dropdownMenu.classList.toggle('hidden');
+            });
+
+            document.addEventListener('click', function (event) {
+                if (!dropdownMenu.contains(event.target) && event.target !== dropdownButton) {
+                    dropdownMenu.classList.add('hidden');
+                }
+            });
+        }
+
+        if (selectAll) {
+            selectAll.addEventListener('change', function () {
+                const checkboxes = document.querySelectorAll('.editUserCheckbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+        }
+    });
+
+    function openEditModal(taskId, title, content, startDate, endDate, assignedUsers) {
+        const form = document.getElementById('editTaskForm');
+
+        form.action = `/admin/tasks/${taskId}/update`;
+
+        // Set form fields
+        document.getElementById('editTaskTitle').value = title;
+        document.getElementById('editTaskContent').value = content;
+        document.getElementById('editTaskStartDate').value = startDate;
+        document.getElementById('editTaskEndDate').value = endDate;
+
+     
+        let assignedUserIds = JSON.parse(assignedUsers);
+        document.querySelectorAll('.editUserCheckbox').forEach(checkbox => {
+            checkbox.checked = assignedUserIds.includes(parseInt(checkbox.value));
+        });
+
+        document.getElementById('editTaskModal').classList.remove('hidden');
+    }
+
+    function closeEditModal() {
+        document.getElementById('editTaskModal').classList.add('hidden');
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        @if (session('success'))
+            Swal.fire({
+                title: 'Task Updated!',
+                text: '{{ session('task_updated') }}',
+                icon: 'success',
+                confirmButtonColor: '#22c55e',
+                customClass: {
+                    popup: 'rounded-xl shadow-lg border border-green-300',
+                    title: 'text-xl font-semibold text-green-700',
+                    content: 'text-sm text-green-600',
+                    confirmButton: 'bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full focus:outline-none'
+                },
+                timer: 2500,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+        @endif
+    });
 </script>
+
 
 
 @endsection

@@ -12,10 +12,22 @@ class TaskController extends Controller
 {
     public function index()
     {
-        $tasks = Task::with('users')->latest()->get();  
+        // Eager load tasks along with the associated users
+        $tasks = Task::with('users')->latest()->get(); 
+        
+        // Get all users for the task assignment
         $users = User::all(); 
-        return view('admin.tasks.all-tasks', compact('tasks', 'users'));
+        
+        // Prepare an array for assigned users per task
+        $assignedUsers = [];
+        foreach ($tasks as $task) {
+            $assignedUsers[$task->id] = $task->users->pluck('id')->toArray();  // Get user IDs assigned to each task
+        }
+    
+        // Pass tasks, users, and assigned users to the view
+        return view('admin.tasks.all-tasks', compact('tasks', 'users', 'assignedUsers'));
     }
+    
 
     public function todo()
     {
