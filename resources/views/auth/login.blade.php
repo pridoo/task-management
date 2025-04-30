@@ -30,14 +30,22 @@
                                 <h1 class="text-3xl font-extrabold leading-tight tracking-tight text-orange-600 md:text-2xl dark:text-white text-center">
                                     Login
                                 </h1>
-                                
 
+                                <!-- Error Handling -->
                                 @if ($errors->any())
                                     <div class="mb-4 text-red-600 bg-red-100 border border-red-400 rounded p-4">
                                         <ul class="list-disc list-inside text-sm">
                                             @foreach ($errors->all() as $error)
                                                 <li>{{ $error }}</li>
                                             @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+
+                                @if(session('status') && session('message'))
+                                    <div class="mb-4 text-green-600 bg-green-100 border border-green-400 rounded p-4">
+                                        <ul class="list-disc list-inside text-sm">
+                                            <li>{{ session('message') }}</li>
                                         </ul>
                                     </div>
                                 @endif
@@ -55,12 +63,8 @@
                                     </div>
 
                                     <div class="flex items-center">
-                                        <input type="checkbox" name="remember" id="remember"
-                                            class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500 dark:focus:ring-orange-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="remember"
-                                            class="ml-2 text-sm font-light text-gray-500 dark:text-gray-400">
-                                            Remember me
-                                        </label>
+                                        <input type="checkbox" name="remember" id="remember" class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500 dark:focus:ring-orange-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="remember" class="ml-2 text-sm font-light text-gray-500 dark:text-gray-400">Remember me</label>
                                     </div>
                                     
                                     <button type="submit" class="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold shadow-lg hover:bg-orange-600 transition-all duration-300">Log In</button>
@@ -76,6 +80,7 @@
                                             <img src="{{ asset('css/pictures/idcard (1).png') }}" alt="ID Card" class="w-24 h-24 object-contain hover:scale-105 transition-all duration-300">
                                         </a>
                                     </div>
+
                                     <p class="text-center text-sm font-light text-gray-500 dark:text-gray-400">Don't have an account? 
                                         <a href="{{ route('register') }}" class="font-medium text-primary-900 hover:underline hover:text-orange-600 dark:text-primary-500">Sign Up here</a>
                                     </p>
@@ -92,21 +97,26 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     @if ($errors->has('email'))
-        Swal.fire({
-            title: 'Your account is pending approval',
-            text: "Hang tight! We're reviewing your details. You'll be notified once you're approved.",
-            icon: 'info',
-            confirmButtonText: 'Okay / Got it',
-            customClass: {
-                popup: 'rounded-lg shadow-xl border border-blue-500',
-                title: 'text-lg font-semibold text-blue-700',
-                content: 'text-blue-600 text-sm',
-                confirmButton: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full focus:outline-none',
-            },
-            backdrop: true,
-            showCloseButton: true,
-            padding: '20px',
-        });
+        @php
+            $errorMessage = $errors->first('email');
+        @endphp
+        @if (strpos($errorMessage, 'pending') !== false)
+            Swal.fire({
+                title: 'Your account is pending approval',
+                text: "Hang tight! We're reviewing your details. You'll be notified once you're approved.",
+                icon: 'info',
+                confirmButtonText: 'Okay / Got it',
+                customClass: {
+                    popup: 'rounded-lg shadow-xl border border-blue-500',
+                    title: 'text-lg font-semibold text-blue-700',
+                    content: 'text-blue-600 text-sm',
+                    confirmButton: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full focus:outline-none',
+                },
+                backdrop: true,
+                showCloseButton: true,
+                padding: '20px',
+            });
+        @endif
     @endif
 </script>
 

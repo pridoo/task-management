@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class PendingUserController extends Controller
 {
@@ -83,5 +86,38 @@ class PendingUserController extends Controller
             ->with('status', 'error')
             ->with('userName', 'User not found');
     }
+
+    public function changePassword(Request $request, $userId)
+    {
+    
+        $user = User::find($userId);
+    
+    
+        if (!$user) {
+            return redirect()->route('admin.approved-users')
+                ->with('status', 'error')
+                ->with('message', 'User not found');
+        }
+    
+    
+        $validator = Validator::make($request->all(), [
+            'new_password' => 'required|confirmed|min:8',
+        ]);
+    
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+    
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+    
+       
+        return back()
+            ->with('status', 'success')
+            ->with('message', 'Password updated successfully for ' . $user->name . '.');
+    }
+    
+    
+    
     
 }

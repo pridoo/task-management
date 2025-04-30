@@ -16,6 +16,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->gro
     Route::put('reject-user/{userId}', [PendingUserController::class, 'rejectUser'])->name('reject-user');
     Route::get('users/approved-users', [PendingUserController::class, 'showApprovedUsers'])->name('approved-users');
     Route::post('users/unapprove-user/{userId}', [PendingUserController::class, 'unapproveUser'])->name('unapprove-user');
+    Route::put('change-password/{userId}', [PendingUserController::class, 'changePassword'])->name('change-password');
 
     Route::get('reports', [ReportsController::class, 'showCompletedTasks'])->name('reports');
     Route::get('reports/export', [ReportsController::class, 'exportCSV'])->name('reports.export');

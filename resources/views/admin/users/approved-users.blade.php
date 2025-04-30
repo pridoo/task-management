@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{{ asset('css/all-tasks.css') }}">
 
 <div class="min-h-screen bg-gray-100"
-     x-data="{ open: false, editOpen: false }"
+     x-data="{ open: false, editOpen: false, selectedUser: {} }"
      x-init="open = false; editOpen = false">
 
     <header class="fixed top-0 left-[310px] w-[calc(100%-340px)] px-4 z-50">
@@ -119,6 +119,12 @@
                                         <i class="ri-delete-bin-line text-lg"></i>
                                     </button>
                                 </form>
+                                <button 
+                                    @click="editOpen = true; selectedUser = {{ $user->toJson() }}" 
+                                    class="text-blue-500 hover:text-blue-700"
+                                >
+                                    <i class="ri-lock-unlock-line text-lg"></i>
+                                </button>
                             </td>
                         </tr>
                         @endforeach
@@ -170,17 +176,29 @@
         }
     </script>
     @endif
+    
+    @if(session('status') && session('message'))
+    <script>
+        Swal.fire({
+            title: "{{ session('status') == 'success' ? 'Success!' : 'Error!' }}",
+            text: "{{ session('message') }}",
+            icon: "{{ session('status') == 'success' ? 'success' : 'error' }}",
+            confirmButtonText: 'Okay',
+            customClass: {
+                popup: 'rounded-lg shadow-xl border',
+                title: 'text-lg font-semibold',
+                content: 'text-gray-600 text-sm',
+                confirmButton: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full focus:outline-none',
+            },
+        });
+    </script>
+    @endif
 
 
-    <div x-show="open" x-cloak x-transition.opacity class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div @click.outside="open = false" class="w-full max-w-lg bg-white p-6 rounded-xl shadow-xl border border-gray-200">
-            @include('admin.tasks.modal.create-users')
-        </div>
-    </div>
 
     <div x-show="editOpen" x-cloak x-transition.opacity class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
         <div @click.outside="editOpen = false" class="w-full max-w-lg bg-white p-6 rounded-xl shadow-xl border border-gray-200">
-            @include('admin.tasks.modal.edit-users')
+            @include('admin.tasks.modal.edit-password')
         </div>
     </div>
 
