@@ -8,8 +8,8 @@
             <span>Mark as read</span>
         </div>
 
-        <!-- Open (uses url helper) -->
-        <a href="{{ url('admin/message-open') }}"
+
+        <a href="{{ route('admin.messages.show', $message->id) }}"
            class="flex items-center gap-2 hover:bg-gray-100 p-1 rounded text-[#444] no-underline">
             <i class="bi bi-copy w-4 h-4 text-[#444]"></i>
             <span>Open</span>

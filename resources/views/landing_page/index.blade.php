@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
+
     <!-- Hero Section -->
     <section class="px-2 py-32 bg-white md:px-0">
         <div class="container items-center max-w-6xl px-8 mx-auto xl:px-5">
@@ -320,5 +321,37 @@
             </div>
         </div>
     </section>
+
+    <!-- Success Modal -->
+<div id="successModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl p-6 max-w-sm text-center">
+        <h3 class="text-green-600 text-xl font-bold mb-4"> Message Sent Successfully</h3>
+        <p class="text-gray-600 mb-4">Thanks for contacting us. We'll get back to you shortly.</p>
+        <button onclick="closeModal('successModal')" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Close</button>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div id="errorModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl p-6 max-w-sm text-center">
+        <h3 class="text-red-600 text-xl font-bold mb-4"> Submission Failed</h3>
+        <p class="text-gray-600 mb-4">There was an error. Please try again later.</p>
+        <button onclick="closeModal('errorModal')" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Close</button>
+    </div>
+</div>
+
+<script>
+    function closeModal(id) {
+        document.getElementById(id).classList.add('hidden');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        @if (session('success'))
+            document.getElementById('successModal').classList.remove('hidden');
+        @elseif (session('error'))
+            document.getElementById('errorModal').classList.remove('hidden');
+        @endif
+    });
+</script>
 
 @endsection

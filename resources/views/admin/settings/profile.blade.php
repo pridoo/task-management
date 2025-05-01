@@ -20,15 +20,27 @@
                                 <div class="text-gray-600 text-sm font-semibold mb-2">Messages</div>
                             </div>
                             <ul class="my-2 max-h-64 overflow-y-auto">
-                                <li>
-                                    <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <div class="w-8 h-8 bg-blue-500 text-white flex items-center justify-center rounded-full">
-                                            <i class="ri-user-3-line"></i>
-                                        </div>
-                                        <div class="ml-2">
-                                            <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">John Doe</div>
-                                            <div class="text-[11px] text-gray-400">Hello there!</div>
-                                        </div>
+                                @foreach($messages->take(5) as $msg)
+                                    <li>
+                                        <a href="{{ route('admin.messages.show', $msg->id) }}" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
+                                            <div class="w-8 h-8 bg-blue-500 text-white flex items-center justify-center rounded-full">
+                                                <i class="ri-user-3-line"></i>
+                                            </div>
+                                            <div class="ml-2">
+                                                <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">
+                                                    {{ $msg->name }}
+                                                </div>
+                                                <div class="text-[11px] text-gray-400">
+                                                    {{ Str::limit($msg->message, 40) }}
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                @endforeach
+                                <li class="border-t border-gray-100">
+                                    <a href="{{ route('admin.messages.index') }}"
+                                    class="block text-center text-sm text-blue-600 py-2 hover:underline">
+                                        View all messages
                                     </a>
                                 </li>
                             </ul>

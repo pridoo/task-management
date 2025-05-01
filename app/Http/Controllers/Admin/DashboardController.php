@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use App\Models\Message;
 use App\Http\Controllers\Controller;
 use App\Models\Task;
 use Carbon\Carbon;
@@ -10,6 +10,7 @@ class DashboardController extends Controller
 {
     public function dynamicTasks()
     {
+        $messages = Message::latest()->get();
         $allTasks = Task::all();
 
         $completedTasks = Task::where('status', 'completed')->get();
@@ -69,7 +70,8 @@ class DashboardController extends Controller
             'completedTasks',
             'inProgressCount',
             'toDoCount',
-            'totalTasks'
+            'totalTasks',
+            'messages',
         ));
     }
 }

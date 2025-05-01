@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\TrashController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MessageController;
 
+
 Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->group(function () {
 
 
@@ -31,10 +32,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->gro
     });
 
     Route::prefix('settings')->name('settings.')->group(function () {
-        Route::get('/', fn() => view('admin.settings.index'))->name('index');
+        Route::get('/', [ProfileController::class, 'index'])->name('admin.settings.index');
         Route::get('/profile', [ProfileController::class, 'showProfile'])->name('profile');
         Route::post('/profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
-        Route::get('/password', fn() => view('admin.settings.password'))->name('password');
+        Route::get('/password', [ProfileController::class, 'showPassword'])->name('password');
         Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password.update');
     });
 
@@ -49,8 +50,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->gro
         Route::get('/completed', [TaskController::class, 'completed'])->name('tasks.completed');
     });
 
+   
     Route::prefix('messages')->name('messages.')->group(function () {
         Route::get('/', [MessageController::class, 'index'])->name('index'); // Route to show all messages
+        Route::get('/{id}', [MessageController::class, 'show'])->name('show');
         Route::post('/submit', [MessageController::class, 'store'])->name('submit'); // Route to submit a new message
     });
 
@@ -87,6 +90,4 @@ Route::post('/register', [AuthController::class, 'store'])->name('auth.register.
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 //Message
-Route::get('admin/message', fn() => view('admin.message'))->name('message');
-Route::get('admin/message-open', fn() => view('admin.message-open'))->name('message-open');
 Route::get('admin/message-reply', fn() => view('admin.message-reply'))->name('message-reply');

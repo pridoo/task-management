@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,11 +14,10 @@ class PendingUserController extends Controller
     // Fetch all users with 'pending' status
     public function showPendingUsers()
     {
-        // Fetch all users with 'pending' status
         $pendingUsers = User::where('status', 'pending')->get();
-
-        // Return the view and pass the pending users
-        return view('admin.users.pending-users', compact('pendingUsers'));
+        $messages = Message::latest()->get();
+    
+        return view('admin.users.pending-users', compact('pendingUsers', 'messages'));
     }
 
     // Approve user
@@ -62,11 +61,10 @@ class PendingUserController extends Controller
 
     public function showApprovedUsers()
     {
-        // Fetch all users with 'approved' status
         $approvedUsers = User::where('status', 'approved')->get();
+        $messages = Message::latest()->get();
     
-        // Return the view and pass the approved users
-        return view('admin.users.approved-users', compact('approvedUsers'));
+        return view('admin.users.approved-users', compact('approvedUsers', 'messages'));
     }
     // Unapprove user
     public function unapproveUser($userId)
@@ -89,7 +87,7 @@ class PendingUserController extends Controller
 
     public function changePassword(Request $request, $userId)
     {
-    
+      
         $user = User::find($userId);
     
     

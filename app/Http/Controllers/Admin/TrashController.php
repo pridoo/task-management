@@ -5,15 +5,18 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Message;
+
 
 class TrashController extends Controller
 {
     // Display the list of archived tasks (trash)
     public function index()
     {
-        // Retrieve all tasks that are archived (in the trash)
         $tasks = Task::where('archived', true)->latest()->get();
-        return view('admin.trash', compact('tasks'));
+        $messages = Message::latest()->get();
+    
+        return view('admin.trash', compact('tasks', 'messages'));
     }
 
     // Permanently delete a task from trash

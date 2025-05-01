@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use App\Models\Message;
 use App\Models\Task;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -10,29 +10,26 @@ class ReportsController extends Controller
 {
     public function showCompletedTasks()
     {
-
         $completedTasks = Task::where('status', 'completed')->get();
-
-
-        foreach ($completedTasks as $task) {
     
+        foreach ($completedTasks as $task) {
             if ($task->completed_at > $task->end_date) {
                 $task->status_label = 'Done Late';
-                $task->status_class = 'text-red-500';  
+                $task->status_class = 'text-red-500';
             } elseif ($task->completed_at < $task->end_date) {
                 $task->status_label = 'Done Early';
-                $task->status_class = 'text-blue-500';  
+                $task->status_class = 'text-blue-500';
             } else {
                 $task->status_label = 'Done';
-                $task->status_class = 'text-gray-500';  
+                $task->status_class = 'text-gray-500';
             }
         }
-        
-
-      
-        return view('admin.reports', compact('completedTasks'));
+    
+        $messages = Message::latest()->get(); // ✅ Added
+    
+        return view('admin.reports', compact('completedTasks', 'messages'));
     }
-
+    
 
     public function exportCSV(Request $request)
     {

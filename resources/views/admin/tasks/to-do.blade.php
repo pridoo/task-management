@@ -26,15 +26,27 @@
                                 <div class="text-gray-600 text-sm font-semibold mb-2">Messages</div>
                             </div>
                             <ul class="my-2 max-h-64 overflow-y-auto">
-                                <li>
-                                    <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <div class="w-8 h-8 bg-blue-500 text-white flex items-center justify-center rounded-full">
-                                            <i class="ri-user-3-line"></i>
-                                        </div>
-                                        <div class="ml-2">
-                                            <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">John Doe</div>
-                                            <div class="text-[11px] text-gray-400">Hello there!</div>
-                                        </div>
+                                @foreach($messages->take(5) as $msg)
+                                    <li>
+                                        <a href="{{ route('admin.messages.show', $msg->id) }}" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
+                                            <div class="w-8 h-8 bg-blue-500 text-white flex items-center justify-center rounded-full">
+                                                <i class="ri-user-3-line"></i>
+                                            </div>
+                                            <div class="ml-2">
+                                                <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">
+                                                    {{ $msg->name }}
+                                                </div>
+                                                <div class="text-[11px] text-gray-400">
+                                                    {{ Str::limit($msg->message, 40) }}
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                @endforeach
+                                <li class="border-t border-gray-100">
+                                    <a href="{{ route('admin.messages.index') }}"
+                                    class="block text-center text-sm text-blue-600 py-2 hover:underline">
+                                        View all messages
                                     </a>
                                 </li>
                             </ul>
@@ -116,13 +128,26 @@
                     </div>
                     <p class="text-sm text-gray-700 mb-3">{{ $task->content }}</p>
                     <div class="mt-4">
-                        <span class="text-xs text-gray-500">Assigned To: </span>
-                        <span class="text-sm text-gray-700">
+                        <span class="text-xs text-gray-500">Assigned To:</span>
+                        <div class="flex items-center mt-1 space-x-2">
                             @foreach($task->users as $user)
-                                {{ $user->name }}@if(!$loop->last), @endif
+                                @php
+                                    $initial = strtoupper(substr($user->name, 0, 1));
+                                    $colors = ['red', 'green', 'blue', 'indigo', 'purple', 'yellow', 'pink'];
+                                    $bg = $colors[crc32($user->name) % count($colors)];
+                                @endphp
+                                <div class="relative group" title="{{ $user->name }}">
+                                    <div class="w-7 h-7 flex items-center justify-center text-white text-xs font-semibold rounded-full bg-{{ $bg }}-500">
+                                        {{ $initial }}
+                                    </div>
+                                    <div class="absolute bottom-full mb-1 px-2 py-1 bg-gray-800 text-white text-[10px] rounded shadow opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-50">
+                                        {{ $user->name }}
+                                    </div>
+                                </div>
                             @endforeach
-                        </span>
+                        </div>
                     </div>
+
                 </div>
             @empty
                 <div class="text-gray-500 text-center col-span-3">
