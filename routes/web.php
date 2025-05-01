@@ -9,8 +9,10 @@ use App\Http\Controllers\Admin\ReportsController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\TrashController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\MessageController;
 
 Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->group(function () {
+
 
     Route::get('users/pending-users', [PendingUserController::class, 'showPendingUsers'])->name('pending-users');
     Route::put('users/approve-user/{userId}', [PendingUserController::class, 'approveUser'])->name('approve-user');
@@ -46,6 +48,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->gro
         Route::get('/in-progress', [TaskController::class, 'inprogress'])->name('tasks.in-progress');
         Route::get('/completed', [TaskController::class, 'completed'])->name('tasks.completed');
     });
+
+    Route::prefix('messages')->name('messages.')->group(function () {
+        Route::get('/', [MessageController::class, 'index'])->name('index'); // Route to show all messages
+        Route::post('/submit', [MessageController::class, 'store'])->name('submit'); // Route to submit a new message
+    });
+
 
     Route::get('/dashboard', [DashboardController::class, 'dynamicTasks'])->name('dashboard');
 });

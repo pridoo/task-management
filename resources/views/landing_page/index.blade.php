@@ -286,29 +286,33 @@
                             referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
-
                 <div class="w-full md:w-1/2">
-                    <form action="#" method="post" class="p-6 flex flex-col justify-center">
-                        <div class="flex flex-col">
-                            <label for="name" class="hidden">Full Name</label>
-                            <input type="name" name="name" id="name" placeholder="Full Name"
-                                class="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-100 border dark:border-gray-700  text-sm font-light text-gray-500 focus:border-orange-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <form action="{{ route('admin.messages.submit') }}" method="POST" class="p-6 flex flex-col justify-center">
+                        @csrf
+                        <!-- Full Name Input -->
+                        <div class="flex flex-col mt-4">
+                            <label for="name" class="text-sm font-medium text-gray-700">Full Name</label>
+                            <input type="text" name="name" id="name" placeholder="Full Name"
+                                class="mt-2 py-3 px-3 rounded-lg bg-gray-100 border dark:border-gray-700 text-sm font-light text-gray-500 focus:border-orange-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                         </div>
 
-                        <div class="flex flex-col mt-2">
-                            <label for="email" class="hidden">Email</label>
+                        <!-- Email Input -->
+                        <div class="flex flex-col mt-4">
+                            <label for="email" class="text-sm font-medium text-gray-700">Email</label>
                             <input type="email" name="email" id="email" placeholder="Email"
-                                class="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-100 border dark:border-gray-700  text-sm font-light text-gray-500 focus:border-orange-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                class="mt-2 py-3 px-3 rounded-lg bg-gray-100 border dark:border-gray-700 text-sm font-light text-gray-500 focus:border-orange-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                         </div>
 
-                        <div class="flex flex-col mt-2">
-                            <label for="message" class="hidden">Message</label>
+                        <!-- Message Textarea -->
+                        <div class="flex flex-col mt-4">
+                            <label for="message" class="text-sm font-medium text-gray-700">Message</label>
                             <textarea name="message" id="message" placeholder="How can our team help you?"
-                                class="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-100 border dark:border-gray-700  text-sm font-light text-gray-500 focus:border-orange-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                class="mt-2 py-3 px-3 rounded-lg bg-gray-100 border dark:border-gray-700 text-sm font-light text-gray-500 focus:border-orange-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" rows="4" required></textarea>
                         </div>
 
+                        <!-- Submit Button -->
                         <button type="submit"
-                            class="md:w-32 rounded-xl border-2 border-orange-600 px-6 py-2 text-sm sm:text-base font-medium text-white bg-orange-600 hover:bg-white hover:text-orange-600 mt-3">
+                            class="md:w-32 rounded-xl border-2 border-orange-600 px-6 py-2 text-sm sm:text-base font-medium text-white bg-orange-600 hover:bg-white hover:text-orange-600 mt-6">
                             Submit
                         </button>
                     </form>
