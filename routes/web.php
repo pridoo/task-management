@@ -76,5 +76,7 @@ Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/register', [AuthController::class, 'store'])->name('auth.register.store');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+//Message
 Route::get('admin/message', fn() => view('admin.message'))->name('message');
 Route::get('admin/message-open', fn() => view('admin.message-open'))->name('message-open');
+Route::get('admin/message-reply', fn() => view('admin.message-reply'))->name('message-reply');
