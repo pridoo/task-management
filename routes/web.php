@@ -80,3 +80,4 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('admin/message', fn() => view('admin.message'))->name('message');
 Route::get('admin/message-open', fn() => view('admin.message-open'))->name('message-open');
 Route::get('admin/message-reply', fn() => view('admin.message-reply'))->name('message-reply');
+Route::get('admin/task-view', fn() => view('admin.task-view'))->name('task-view');
