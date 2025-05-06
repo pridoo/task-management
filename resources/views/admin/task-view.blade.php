@@ -81,225 +81,29 @@
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-semibold text-gray-800">Task View</h2>
             </div>
-
-            <!-- Adapted Responsive Container -->
-            <div class="mx-auto max-w-[90%] md:max-w-[1050px] p-6 bg-white border border-[#4444] rounded-lg">
-
-                <div class="text-[#444] text-base font-bold mb-4 flex items-center gap-2">
-                    <a href="#" class="hover:text-blue-600">
-                        <i class="bi bi-arrow-left w-4 h-4 text-[#444]"></i>
-                    </a>
-                </div>
-
-                <!-- Title -->
-                <div class="text-[#444] text-base font-bold flex items-center gap-2">
-                    <span class="mt-2">Task Title Example</span>
-                </div>
-
-                <!-- Divider -->
-                <div class="border-t border-gray-200 my-4"></div>
-
-                <div class="flex justify-between items-center">
-                    <!-- Status -->
-                    <button class="mb-4 px-6 py-2 text-white text-xs rounded-lg bg-yellow-400">
-                        In-progress
-                    </button>
-
-                    <!-- Priority -->
-                    <span class="text-[11px] flex items-center gap-1 text-yellow-500">
-                        🟡
-                        <span>Medium Priority</span>
-                    </span>
-                </div>
-
-                <!-- Start and End Dates -->
-                <div class="flex flex-wrap items-center gap-x-8 text-sm text-[#444] mb-4">
-                    <div class="flex gap-1 font-semibold">
-                        <span>Start Date:</span>
-                        <span class="font-light">Monday, April 28, 2025 09:00 AM</span>
-                    </div>
-                    <div class="flex gap-1 font-semibold">
-                        <span>End Date:</span>
-                        <span class="font-light">Friday, May 2, 2025 05:00 PM</span>
-                    </div>
-                </div>
-
-                <!-- Content -->
-                <div class="bg-[#6C757D23] rounded-lg p-4 mb-6">
-                    <div class="text-sm text-[#444] font-light">
-                        This is the task description. You can include any relevant information here.
-                    </div>
-                </div>
-
-                <!-- Divider -->
-                <div class="border-t border-gray-200 my-4"></div>
-
-                <!-- Attachments -->
-                <div class="mb-2 text-[#444] font-bold text-base">Attachments</div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 mb-6">
-                    <a href="#" target="_blank"
-                        class="flex items-center justify-between border border-gray-300 rounded-lg p-3 shadow-sm hover:bg-gray-50 transition">
-                        <div class="flex items-center space-x-3">
-                            <div>
-                                <p class="font-semibold text-sm text-gray-800 truncate max-w-[180px]">document.pdf</p>
-                                <p class="text-xs text-gray-500">1.2 MB</p>
-                            </div>
-                        </div>
-                    </a>
-                    <!-- Add more attachment items here as needed -->
-                </div>
-
-                <!-- Divider -->
-                <div class="border-t border-gray-200 my-4"></div>
-
-                <!-- Assignees -->
-                <div class="mt-6">
-                    <span class="text-[#444] text-[12px] font-semibold">
-                        Assigned to:
-                    </span>
-
-                    <div class="mt-2 flex flex-col space-y-2">
-                        <div class="flex items-center space-x-2">
-                            <div
-                                class="w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center text-xs text-gray-700">
-                                JD
-                            </div>
-                            <span class="text-xs text-gray-700">John Doe</span>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <div
-                                class="w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center text-xs text-gray-700">
-                                AB
-                            </div>
-                            <span class="text-xs text-gray-700">Alice Brown</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <section class="mx-auto max-w-[90%] md:max-w-[1050px] mt-10 p-6 bg-white border border-[#4444] rounded-lg">
-                <div class="container mx-auto px-4">
-                    <h2 class="text-2xl font-bold mb-4">Comments</h2>
-
-                    <div class="max-h-96 overflow-y-auto p-4 bg-gray-100 rounded-lg border">
-                        <div class="space-y-4">
-                            <!-- Comment 1 -->
-                            <div class="bg-white p-4 rounded-lg shadow border-2">
-                                <div class="flex items-center mb-2">
-                                    <img src="https://via.placeholder.com/40" alt="User Avatar"
-                                        class="w-10 h-10 rounded-full mr-3">
-                                    <div>
-                                        <h3 class="font-semibold">John Doe</h3>
-                                        <p class="text-sm text-gray-500">Thursday, April 3, 2025 05:31 PM</p>
-                                    </div>
-                                </div>
-                                <p class="text-gray-700">Great product! I've been using it for a week now and I'm very
-                                    satisfied with its performance.</p>
-                                <div class="flex items-center mt-2">
-                                    <button class="text-blue-500 hover:text-blue-600 mr-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20"
-                                            fill="currentColor">
-                                            <path
-                                                d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                                        </svg>
-                                        Like
-                                    </button>
-                                    <button class="text-gray-500 hover:text-gray-600">Reply</button>
-                                </div>
-                            </div>
-
-                            <!-- Comment 2 -->
-                            <div class="bg-white p-4 rounded-lg shadow border-2">
-                                <div class="flex items-center mb-2">
-                                    <img src="https://via.placeholder.com/40" alt="User Avatar"
-                                        class="w-10 h-10 rounded-full mr-3">
-                                    <div>
-                                        <h3 class="font-semibold">Jane Smith</h3>
-                                        <p class="text-sm text-gray-500">Thursday, April 3, 2025 05:31 PM</p>
-                                    </div>
-                                </div>
-                                <p class="text-gray-700">The shipping was fast and the product arrived in perfect
-                                    condition. Highly recommended!</p>
-                                <div class="flex items-center mt-2">
-                                    <button class="text-blue-500 hover:text-blue-600 mr-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20"
-                                            fill="currentColor">
-                                            <path
-                                                d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                                        </svg>
-                                        Like
-                                    </button>
-                                    <button class="text-gray-500 hover:text-gray-600">Reply</button>
-                                </div>
-                            </div>
-                            <!-- Comment 3 -->
-                            <div class="bg-white p-4 rounded-lg shadow border-2">
-                                <div class="flex items-center mb-2">
-                                    <img src="https://via.placeholder.com/40" alt="User Avatar"
-                                        class="w-10 h-10 rounded-full mr-3">
-                                    <div>
-                                        <h3 class="font-semibold">Jane Smith</h3>
-                                        <p class="text-sm text-gray-500">Thursday, April 3, 2025 05:31 PM</p>
-                                    </div>
-                                </div>
-                                <p class="text-gray-700">The shipping was fast and the product arrived in perfect
-                                    condition. Highly recommended!</p>
-                                <div class="flex items-center mt-2">
-                                    <button class="text-blue-500 hover:text-blue-600 mr-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20"
-                                            fill="currentColor">
-                                            <path
-                                                d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                                        </svg>
-                                        Like
-                                    </button>
-                                    <button class="text-gray-500 hover:text-gray-600">Reply</button>
-                                </div>
-                            </div>
-                            <!-- Comment 4 -->
-                            <div class="bg-white p-4 rounded-lg shadow border-2">
-                                <div class="flex items-center mb-2">
-                                    <img src="https://via.placeholder.com/40" alt="User Avatar"
-                                        class="w-10 h-10 rounded-full mr-3">
-                                    <div>
-                                        <h3 class="font-semibold">Jane Smith</h3>
-                                        <p class="text-sm text-gray-500">Thursday, April 3, 2025 05:31 PM</p>
-                                    </div>
-                                </div>
-                                <p class="text-gray-700">The shipping was fast and the product arrived in perfect
-                                    condition. Highly recommended!</p>
-                                <div class="flex items-center mt-2">
-                                    <button class="text-blue-500 hover:text-blue-600 mr-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20"
-                                            fill="currentColor">
-                                            <path
-                                                d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                                        </svg>
-                                        Like
-                                    </button>
-                                    <button class="text-gray-500 hover:text-gray-600">Reply</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <!-- Add Comment Form -->
-                    <form class="mt-8 bg-white p-4 rounded-lg shadow border-2">
-                        <div class="mb-4">
-                            <label for="comment" class="block text-gray-700 font-medium mb-2">Comment</label>
-                            <textarea id="comment" name="comment" rows="4"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required></textarea>
-                        </div>
-                        <button type="submit"
-                            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                            Post Comment
+            <div x-data="{ tab: 'details' }" class="mx-auto max-w-[90%] md:max-w-[1050px]">
+                 <!-- Tabs Navigation -->
+                 <div class="flex space-x-4 mb-6 border-b border-gray-200">
+                        <button @click="tab = 'details'" :class="tab === 'details' ? 'text-orange-600 border-b-2 border-orange-600' : 'text-gray-500'" class="pb-2 font-semibold text-sm">
+                            Task Details
                         </button>
-                    </form>
-                </div>
-            </section>
+                        <button @click="tab = 'comments'" :class="tab === 'comments' ? 'text-orange-600 border-b-2 border-orange-600' : 'text-gray-500'" class="pb-2 font-semibold text-sm">
+                            Comments
+                        </button>
+                    </div>
+
+
+                    <!-- Task Details Tab -->
+                    <div x-show="tab === 'details'" x-cloak>
+                        @include('admin.task-view-detail')
+                    </div>
+                     <!-- Comments Tab -->
+                     <div x-show="tab === 'comments'" x-cloak>
+                        <!-- Paste your full Comments section here -->
+                        @include('admin.task-comment')
+                    </div>
+
+            </div>
         </main>
     </div>
 
