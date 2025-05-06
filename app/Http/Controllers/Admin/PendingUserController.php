@@ -12,7 +12,7 @@ class PendingUserController extends Controller
     public function showPendingUsers()
     {
         // Fetch all users with 'pending' status
-        $pendingUsers = User::where('status', 'pending')->get();
+        $pendingUsers = User::where('status', 'pending')->paginate(5);
 
         // Return the view and pass the pending users
         return view('admin.users.pending-users', compact('pendingUsers'));
@@ -60,7 +60,7 @@ class PendingUserController extends Controller
     public function showApprovedUsers()
     {
         // Fetch all users with 'approved' status
-        $approvedUsers = User::where('status', 'approved')->get();
+        $approvedUsers = User::where('status', 'approved')->paginate(5);
     
         // Return the view and pass the approved users
         return view('admin.users.approved-users', compact('approvedUsers'));

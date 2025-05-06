@@ -11,7 +11,7 @@ class ReportsController extends Controller
     public function showCompletedTasks()
     {
 
-        $completedTasks = Task::where('status', 'completed')->get();
+        $completedTasks = Task::where('status', 'completed')->paginate(5);
 
 
         foreach ($completedTasks as $task) {

@@ -12,7 +12,7 @@ class TrashController extends Controller
     public function index()
     {
         // Retrieve all tasks that are archived (in the trash)
-        $tasks = Task::where('archived', true)->latest()->get();
+        $tasks = Task::where('archived', true)->latest()->paginate(5);
         return view('admin.trash', compact('tasks'));
     }
 

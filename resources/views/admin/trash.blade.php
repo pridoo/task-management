@@ -128,6 +128,11 @@
                         </tbody>
                     </table>
                 </div>
+                 <!-- Pagination -->
+                 <div class="mt-7 border-2 rounded shadow-none">
+                        {{ $tasks->links('vendor.pagination.tailwind') }}
+                    </div>
+
             </div>
         </main>
     </div>
