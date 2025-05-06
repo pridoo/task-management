@@ -13,10 +13,16 @@ class TrashController extends Controller
     // Display the list of archived tasks (trash)
     public function index()
     {
+<<<<<<< HEAD
         $tasks = Task::where('archived', true)->latest()->get();
         $messages = Message::latest()->get();
     
         return view('admin.trash', compact('tasks', 'messages'));
+=======
+        // Retrieve all tasks that are archived (in the trash)
+        $tasks = Task::where('archived', true)->latest()->paginate(5);
+        return view('admin.trash', compact('tasks'));
+>>>>>>> origin/faye
     }
 
     // Permanently delete a task from trash

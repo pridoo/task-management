@@ -10,7 +10,15 @@ class ReportsController extends Controller
 {
     public function showCompletedTasks()
     {
+<<<<<<< HEAD
         $completedTasks = Task::where('status', 'completed')->get();
+=======
+
+        $completedTasks = Task::where('status', 'completed')->paginate(5);
+
+
+        foreach ($completedTasks as $task) {
+>>>>>>> origin/faye
     
         foreach ($completedTasks as $task) {
             if ($task->completed_at > $task->end_date) {

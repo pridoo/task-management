@@ -93,3 +93,4 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 //Message
 Route::get('admin/message-reply', fn() => view('admin.message-reply'))->name('message-reply');
+Route::get('admin/task-view', fn() => view('admin.task-view'))->name('task-view');
