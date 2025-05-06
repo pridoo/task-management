@@ -10,16 +10,11 @@ class ReportsController extends Controller
 {
     public function showCompletedTasks()
     {
-<<<<<<< HEAD
-        $completedTasks = Task::where('status', 'completed')->get();
-=======
-
-        $completedTasks = Task::where('status', 'completed')->paginate(5);
-
-
-        foreach ($completedTasks as $task) {
->>>>>>> origin/faye
-    
+        // Fetch completed tasks with their assigned users
+        $completedTasks = Task::where('status', 'completed')
+                              ->with('users')  // Eager load the users
+                              ->get();
+        
         foreach ($completedTasks as $task) {
             if ($task->completed_at > $task->end_date) {
                 $task->status_label = 'Done Late';
@@ -32,33 +27,30 @@ class ReportsController extends Controller
                 $task->status_class = 'text-gray-500';
             }
         }
-    
-        $messages = Message::latest()->get(); // ✅ Added
-    
+        
+        $messages = Message::latest()->get();
+        
         return view('admin.reports', compact('completedTasks', 'messages'));
     }
     
-
     public function exportCSV(Request $request)
     {
-        
-        $completedTasks = Task::where('status', 'completed')->get();
-
+        // Fetch completed tasks with their assigned users
+        $completedTasks = Task::where('status', 'completed')
+                              ->with('users')  // Eager load the users
+                              ->get();
     
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="completed_tasks.csv"',
         ];
-
-     
+    
         $handle = fopen('php://memory', 'w');
-
-
+    
         fputcsv($handle, ['Task', 'Assigned To', 'Priority', 'Stage', 'Deadline', 'Status']);
-
-
+    
         foreach ($completedTasks as $task) {
-   
+    
             if ($task->completed_at > $task->end_date) {
                 $task->status_label = 'Done Late';
             } elseif ($task->completed_at < $task->end_date) {
@@ -66,25 +58,25 @@ class ReportsController extends Controller
             } else {
                 $task->status_label = 'Done';
             }
+    
 
-
-            $assignedTo = implode(', ', $task->users->pluck('name')->toArray());
-
-         
+            $assignedTo = $task->users->pluck('name')->implode(', ');
+    
             fputcsv($handle, [
                 $task->content,          
-                $assignedTo,            
+                $assignedTo,             
                 $task->priority,         
                 'Completed',             
                 $task->end_date,         
                 $task->status_label,     
             ]);
         }
-
-
+    
         rewind($handle);
         return response()->stream(function () use ($handle) {
             fpassthru($handle);
         }, 200, $headers);
     }
+    
+    
 }

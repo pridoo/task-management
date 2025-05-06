@@ -147,10 +147,6 @@
                         @endforeach
                     </tbody>
                 </table>
-                  <!-- Pagination -->
-                  <div class="mt-7 border-2 rounded shadow-none">
-                        {{ $pendingUsers->links('vendor.pagination.tailwind') }}
-                    </div>
             </div>
         </div>
     </main>

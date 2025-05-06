@@ -1,29 +1,49 @@
 <?php
+namespace App\Http\Controllers\User;
 
-namespace App\Http\Controllers\Admin;
-use App\Models\Message;
-use App\Http\Controllers\Controller;
 use App\Models\Task;
 use Carbon\Carbon;
+use App\Http\Controllers\Controller;
 
-class DashboardController extends Controller
+class UserDashboardController extends Controller
 {
-    public function dynamicTasks()
+    public function index()
     {
-        $messages = Message::latest()->get();
-        $allTasks = Task::all();
+       
+        $user = auth()->user();
 
-        $completedTasks = Task::where('status', 'completed')->get();
-        $inProgressCount = Task::where('status', 'in-progress')->count();
-        $toDoCount = Task::where('status', 'to do')->count();
-        $totalTasks = $allTasks->count();
+        $assignedTasks = Task::whereHas('users', function($query) use ($user) {
+            $query->where('users.id', $user->id); 
+        })->where('archived', false) 
+          ->get();
 
-        foreach ($allTasks as $task) {
+
+        $totalTasks = $assignedTasks->count();
+
+        $completedTasksCount = Task::whereHas('users', function($query) use ($user) {
+            $query->where('users.id', $user->id);
+        })->where('status', 'completed')
+          ->where('archived', false) 
+          ->count();
+
+        $inProgressCount = Task::whereHas('users', function($query) use ($user) {
+            $query->where('users.id', $user->id);
+        })->where('status', 'in-progress')
+          ->where('archived', false) 
+          ->count();
+
+        $toDoCount = Task::whereHas('users', function($query) use ($user) {
+            $query->where('users.id', $user->id);
+        })->where('status', 'to do')
+          ->where('archived', false) 
+          ->count();
+
+
+        foreach ($assignedTasks as $task) {
             $status = strtolower(trim($task->status ?? ''));
-
-     
-            $task->status_label = 'To do'; 
-            $task->status_class = 'bg-red-500'; 
+            
+            $task->status_label = 'To do';
+            $task->status_class = 'bg-red-500';
             $task->status_detail_label = 'To do';
             $task->status_text_class = 'text-red-500';
 
@@ -32,18 +52,14 @@ class DashboardController extends Controller
                 $task->status_class = 'bg-red-500';
                 $task->status_detail_label = 'To do';
                 $task->status_text_class = 'text-red-500';
-
             } elseif ($status === 'in-progress') {
                 $task->status_label = 'In progress';
                 $task->status_class = 'bg-yellow-500';
                 $task->status_detail_label = 'In progress';
                 $task->status_text_class = 'text-yellow-500';
-
             } elseif ($status === 'completed') {
-                $task->status_label = 'Completed'; 
+                $task->status_label = 'Completed';
                 $task->status_class = 'bg-green-500';
-
-              
                 if (!empty($task->start_date) && !empty($task->end_date)) {
                     $completedAt = Carbon::parse($task->start_date)->startOfMinute();
                     $endDate = Carbon::parse($task->end_date)->startOfMinute();
@@ -65,13 +81,12 @@ class DashboardController extends Controller
             }
         }
 
-        return view('admin.dashboard', compact(
-            'allTasks',
-            'completedTasks',
+        return view('user.dashboard', compact(
+            'assignedTasks',
+            'completedTasksCount',
             'inProgressCount',
             'toDoCount',
-            'totalTasks',
-            'messages',
+            'totalTasks'
         ));
     }
 }

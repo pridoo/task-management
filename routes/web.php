@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\TrashController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\User\TasksController;
+use App\Http\Controllers\User\ProfilesController;
+use App\Http\Controllers\User\UserDashboardController;
 
 
 Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->group(function () {
@@ -63,12 +65,16 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->gro
 });
 
 Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(function () {
-    Route::get('/trash', fn() => view('user.trash'))->name('trash');
+
 
     Route::prefix('settings')->name('settings.')->group(function () {
-        Route::get('/', fn() => view('user.settings.index'))->name('index');
-        Route::get('/profile', fn() => view('user.settings.profile'))->name('profile');
-        Route::get('/password', fn() => view('user.settings.password'))->name('password');
+        Route::get('/', [ProfilesController::class, 'index'])->name('index');
+        Route::get('/profile', [ProfilesController::class, 'showProfile'])->name('profile');
+        Route::post('/profile', [ProfilesController::class, 'updateProfile'])->name('profile.update');
+        Route::get('/password', [ProfilesController::class, 'showPasswordForm'])->name('password');
+        Route::put('/password', [ProfilesController::class, 'updatePassword'])->name('password.update');
+
+       
     });
     
     Route::prefix('tasks')->name('tasks.')->group(function () {
@@ -79,7 +85,8 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(functi
         Route::get('/{id}', [TasksController::class, 'show'])->name('show');
     });
 
-    Route::get('/dashboard', fn() => view('user.dashboard'))->name('dashboard');
+        // Updated dashboard route
+        Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
 });
 
 Route::get('/', fn() => view('landing_page.index'))->name('home');
