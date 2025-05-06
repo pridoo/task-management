@@ -21,7 +21,7 @@
                             <i class="ri-chat-1-line"></i>
                         </button>
                         <div x-show="open" x-cloak @click.outside="open = false"
-                            class="absolute right-0 mt-2 max-w-xs w-80 bg-white rounded-md border border-gray-100 shadow-md z-30">
+                             class="absolute right-0 mt-2 max-w-xs w-80 bg-white rounded-md border border-gray-100 shadow-md z-30">
                             <div class="px-4 pt-4 border-b border-gray-100">
                                 <div class="text-gray-600 text-sm font-semibold mb-2">Messages</div>
                             </div>
@@ -48,7 +48,7 @@
                             <i class="ri-notification-4-line"></i>
                         </button>
                         <div x-show="open" x-cloak @click.outside="open = false"
-                            class="absolute right-0 mt-2 max-w-xs w-80 bg-white rounded-md border border-gray-100 shadow-md z-30">
+                             class="absolute right-0 mt-2 max-w-xs w-80 bg-white rounded-md border border-gray-100 shadow-md z-30">
                             <div class="px-4 pt-4 border-b border-gray-100">
                                 <div class="text-gray-600 text-sm font-semibold mb-2">Notifications</div>
                             </div>
@@ -75,64 +75,65 @@
 
     <main class="pt-24 px-6 ml-64">
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-semibold text-gray-800">Tasks</h2>
+            <h2 class="text-2xl font-semibold text-gray-800">In-Progress Tasks</h2>
         </div>
 
         <div class="mb-4 border border-gray-300 rounded-lg p-4 bg-white shadow-sm w-fit">
             <div class="flex space-x-4">
                 <div class="flex items-center space-x-1">
-                    <span class="w-3 h-3 bg-yellow-500 rounded-full"></span>
+                    <span class="w-3 h-3 bg-yellow-400 rounded-full"></span>
                     <span class="text-sm text-gray-700">In-Progress</span>
                 </div>
             </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            @for ($i = 0; $i < 6; $i++)
+            @forelse ($tasks as $task)
                 <div class="bg-white shadow rounded-lg p-4 border relative">
                     <div class="absolute top-2 right-2" x-data="{ dropdownOpen: false }" x-init="dropdownOpen = false">
- 
                         <button @click="dropdownOpen = !dropdownOpen" class="text-gray-500 hover:text-gray-700">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M6 10a2 2 0 114 0 2 2 0 01-4 0zm6 0a2 2 0 114 0 2 2 0 01-4 0z" />
                             </svg>
                         </button>
-
-
                         <div x-show="dropdownOpen" x-cloak x-transition.opacity @click.outside="dropdownOpen = false"
-                            class="absolute top-full right-0 mt-2 w-40 bg-white border border-gray-200 rounded-xl shadow-lg z-50 py-2">
- 
-                            <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                             class="absolute top-full right-0 mt-2 w-40 bg-white border border-gray-200 rounded-xl shadow-lg z-50 py-2">
+                            <a href="{{ route('user.tasks.show', $task->id) }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 <i class="ri-eye-line mr-2 text-lg text-gray-500"></i> Open
                             </a>
                         </div>
                     </div>
 
-
-
-                    <div class="text-xs font-semibold text-gray-500 uppercase mb-1">Title</div>
+                    <div class="text-xs font-semibold text-gray-500 uppercase mb-1">{{ $task->title }}</div>
                     <hr class="mb-2 border-gray-200">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="bg-yellow-500 text-white px-2 py-0.5 rounded-full text-[11px]">In-Progress</span>
-                        <span class="text-xs text-yellow-500 font-semibold">Medium Priority</span>
+                        @php
+                            $priorityColor = match(strtolower($task->priority)) {
+                                'low' => 'text-green-600 bg-green-100',
+                                'medium' => 'text-yellow-600 bg-yellow-100',
+                                'high' => 'text-red-600 bg-red-100',
+                                default => 'text-gray-600 bg-gray-100',
+                            };
+                        @endphp
+                        <span class="bg-yellow-400 text-white px-2 py-0.5 rounded-full text-[11px]">In-Progress</span>
+                        <span class="px-2 py-0.5 rounded-full text-xs font-semibold {{ $priorityColor }}">
+                            {{ ucfirst($task->priority) }} Priority
+                        </span>
                     </div>
-                    <div class="text-xs text-gray-500 mb-2">📅 Fri, 03 Jan 7:00 AM</div>
-                    <p class="text-sm text-gray-700 mb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <div class="text-xs text-gray-500 mb-2">
+                        📅 {{ \Carbon\Carbon::parse($task->start_date)->format('D, d M h:i A') }}
+                    </div>
+                    <p class="text-sm text-gray-700 mb-3">{{ \Illuminate\Support\Str::limit($task->content, 100) }}</p>
                 </div>
-            @endfor
+            @empty
+                <div class="col-span-3 text-center text-gray-500 text-sm">
+                    No "In-Progress" tasks assigned to you.
+                </div>
+            @endforelse
         </div>
     </main>
-
-    <div x-show="editOpen" x-cloak x-transition.opacity class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div @click.outside="editOpen = false" class="w-full max-w-lg bg-white p-6 rounded-xl shadow-xl border border-gray-200">
-            @include('admin.tasks.modal.edit-tasks')
-        </div>
-    </div>
-
-
 </div>
 
-<!-- AlpineJS -->
 <script src="//unpkg.com/alpinejs" defer></script>
 
 @endsection

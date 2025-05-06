@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\TrashController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MessageController;
+use App\Http\Controllers\User\TasksController;
 
 
 Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->group(function () {
@@ -69,12 +70,13 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(functi
         Route::get('/profile', fn() => view('user.settings.profile'))->name('profile');
         Route::get('/password', fn() => view('user.settings.password'))->name('password');
     });
-
+    
     Route::prefix('tasks')->name('tasks.')->group(function () {
-        Route::get('/all-tasks', fn() => view('user.tasks.all-tasks'))->name('all-tasks');
-        Route::get('/to-do', fn() => view('user.tasks.to-do'))->name('to-do');
-        Route::get('/in-progress', fn() => view('user.tasks.in-progress'))->name('in-progress');
-        Route::get('/completed', fn() => view('user.tasks.completed'))->name('completed');
+        Route::get('/all-tasks', [TasksController::class, 'index'])->name('all-tasks');
+        Route::get('/to-do', [TasksController::class, 'todo'])->name('to-do');
+        Route::get('/in-progress', [TasksController::class, 'inprogress'])->name('in-progress');
+        Route::get('/completed', [TasksController::class, 'completed'])->name('completed');
+        Route::get('/{id}', [TasksController::class, 'show'])->name('show');
     });
 
     Route::get('/dashboard', fn() => view('user.dashboard'))->name('dashboard');

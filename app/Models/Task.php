@@ -35,4 +35,16 @@ class Task extends Model
     {
         return $this->hasMany(TaskUpdate::class);
     }
+
+
+    public function activities()
+    {
+        return $this->hasMany(TaskActivity::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(TaskComment::class);
+    }
+
 }

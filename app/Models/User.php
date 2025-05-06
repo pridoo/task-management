@@ -19,4 +19,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(TaskUpdate::class);
     }
+
+    public function taskActivities()
+    {
+        return $this->hasMany(TaskActivity::class);
+    }
+
+    public function taskComments()
+    {
+        return $this->hasMany(TaskComment::class);
+    }
+
 }
