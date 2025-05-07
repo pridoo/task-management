@@ -125,7 +125,7 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
-        // Archive the task by setting the 'archived' field to true
+        // Archive the task by setting the 'archived' field to tru
         $task->archived = true;
         $task->save();
 
