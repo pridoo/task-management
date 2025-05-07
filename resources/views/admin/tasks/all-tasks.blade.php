@@ -154,15 +154,29 @@
                         </button>
                         <div x-show="dropdownOpen" x-cloak @click.outside="dropdownOpen = false"
                             class="absolute top-full right-0 mt-2 w-40 bg-white border rounded-xl shadow-lg z-50 py-2">
-                            <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <a href="{{route('admin.tasks.tasks.show', $task->id) }}"
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 <i class="ri-eye-line mr-2 text-lg text-gray-500"></i> Open
                             </a>
+
                             <a href="#"
                             onclick="openEditModal({{ $task->id }}, '{{ addslashes($task->title) }}', '{{ addslashes($task->content) }}', '{{ $task->start_date }}', '{{ $task->end_date }}', '{{ json_encode($assignedUsers[$task->id]) }}')"
                             class="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-blue-50">
                                 <i class="ri-edit-line mr-2 text-lg"></i> Edit
                             </a>
+
+        
+                            <form method="POST" action="{{ route('admin.tasks.destroy', $task->id) }}"
+                                    onsubmit="return confirmArchive(event)">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                                        <i class="ri-archive-line mr-2 text-lg"></i> Archived
+                                    </button>
+                                </form>
                         </div>
+                        
                     </div>
 
                     <div class="text-xs font-semibold text-gray-500 uppercase mb-1">{{ $task->title }}</div>

@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use App\Models\Admin;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\Message;
 use Illuminate\Http\Request;
+use App\Models\Comment;
 
 class TaskController extends Controller
 {
@@ -137,4 +138,49 @@ class TaskController extends Controller
 
         return redirect()->back();
     }
+
+    public function show(Task $task)
+    {
+      
+        $task->load('comments.user'); 
+
+    
+        return view('admin.tasks.task-view', compact('task'));
+    }
+
+    public function storeComment(Request $request, $taskId)
+    {
+        // Validate the comment input
+        $request->validate([
+            'comment' => 'required|string|max:500',
+        ]);
+    
+        
+        $task = Task::findOrFail($taskId);
+    
+       
+        if (auth()->guard('admin')->check()) {
+            
+            $user_id = auth()->guard('admin')->id();
+        } else {
+          
+            $user_id = auth()->id();
+        }
+    
+
+        $comment = new Comment([
+            'task_id' => $task->id,
+            'user_id' => $user_id,  
+            'content' => $request->comment,
+        ]);
+    
+
+        $comment->save();
+    
+
+        return redirect()->route('admin.tasks.tasks.show', $task->id)
+                         ->with('success', 'Comment added successfully!');
+    }
+    
+    
 }

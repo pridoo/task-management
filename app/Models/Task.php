@@ -44,7 +44,9 @@ class Task extends Model
 
     public function comments()
     {
-        return $this->hasMany(TaskComment::class);
+        return $this->hasMany(Comment::class);
     }
+
+    
 
 }

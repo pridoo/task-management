@@ -51,6 +51,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->gro
         Route::get('/to-do', [TaskController::class, 'todo'])->name('tasks.to-do');
         Route::get('/in-progress', [TaskController::class, 'inprogress'])->name('tasks.in-progress');
         Route::get('/completed', [TaskController::class, 'completed'])->name('tasks.completed');
+        Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
+        Route::post('/tasks/{task}/comments', [TaskController::class, 'storeComment'])->name('comments.store');
+
     });
 
    
