@@ -14,12 +14,9 @@
             <div class="flex justify-end items-center">
                 <ul class="flex items-center space-x-4">
 
-
-
                     <!-- Notifications -->
                     <li class="relative" x-data="{ open: false }" x-init="open = false">
-                        <button @click="open = !open"
-                                class="notif-btn text-gray-400 w-8 h-8 rounded flex items-center justify-center hover:bg-gray-50 hover:text-gray-600">
+                        <button @click="open = !open" class="notif-btn text-gray-400 w-8 h-8 rounded flex items-center justify-center hover:bg-gray-50 hover:text-gray-600">
                             <i class="ri-notification-4-line"></i>
                         </button>
                         <div x-show="open" x-cloak @click.outside="open = false"
@@ -28,18 +25,36 @@
                                 <div class="text-gray-600 text-sm font-semibold mb-2">Notifications</div>
                             </div>
                             <ul class="my-2 max-h-64 overflow-y-auto">
-                                <li>
-                                    <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <div class="w-8 h-8 bg-yellow-500 text-white flex items-center justify-center rounded-full">
-                                            <i class="ri-checkbox-circle-line"></i>
-                                        </div>
-                                        <div class="ml-2">
-                                            <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Tasks completed</div>
-                                            <div class="text-[11px] text-gray-400">from a user</div>
-                                        </div>
-                                    </a>
-                                </li>
+                                @forelse ($notifications as $notification)
+                                    <li>
+                                        <a href="{{ route('user.notifications.read', $notification->id) }}" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
+                                            <div class="w-10 h-10 bg-yellow-500 text-white flex items-center justify-center rounded-full">
+                            
+                                                <i class="ri-checkbox-circle-line text-lg"></i>  
+                                            </div>
+                                            <div class="ml-2">
+                                    
+                                                <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">
+                                                    {{ $notification->message }}  
+                                                </div>
+
+          
+                                                <div class="text-[10px] text-gray-600 font-medium mt-1">
+                                                    <strong>{{ $notification->task_title }}</strong>  
+                                                </div>
+
+
+                                                <div class="text-[11px] text-gray-400">
+                                                    {{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                @empty
+                                    <li>No new notifications</li>
+                                @endforelse
                             </ul>
+
                         </div>
                     </li>
 
@@ -99,6 +114,30 @@
                         📅 {{ \Carbon\Carbon::parse($task->start_date)->format('D, d M h:i A') }}
                     </div>
                     <p class="text-sm text-gray-700 mb-3">{{ \Illuminate\Support\Str::limit($task->content, 100) }}</p>
+                    <div class="mt-4">
+                        <span class="text-xs text-gray-500">Assigned To:</span>
+                        <div class="flex items-center mt-1 flex-wrap gap-2">
+                            @foreach($task->users as $user)
+                                @php
+                                   
+                                    $initial = strtoupper(substr($user->name, 0, 1));
+                                   
+                                    $colors = ['red', 'green', 'blue', 'indigo', 'purple', 'yellow', 'pink'];
+                                    $bg = $colors[crc32($user->name) % count($colors)];
+                                @endphp
+                                <div class="relative group" title="{{ $user->name }}">
+                                   
+                                    <div class="w-8 h-8 flex items-center justify-center text-white text-xs font-semibold rounded-full bg-{{ $bg }}-500">
+                                        {{ $initial }}
+                                    </div>
+                    
+                                    <div class="absolute bottom-full mb-1 px-2 py-1 bg-gray-800 text-white text-[10px] rounded shadow opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-50">
+                                        {{ $user->name }}
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
             @empty
                 <div class="col-span-3 text-center text-gray-500 text-sm">

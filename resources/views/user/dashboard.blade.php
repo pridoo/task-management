@@ -22,18 +22,35 @@
                             <div class="text-gray-600 text-sm font-semibold mb-2">Notifications</div>
                         </div>
                         <ul class="my-2 max-h-64 overflow-y-auto">
-                            <li>
-                                <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                    <div class="w-8 h-8 bg-yellow-500 text-white flex items-center justify-center rounded-full">
-                                        <i class="ri-checkbox-circle-line"></i>
-                                    </div>
-                                    <div class="ml-2">
-                                        <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Tasks completed</div>
-                                        <div class="text-[11px] text-gray-400">from a user</div>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
+                                @forelse ($notifications as $notification)
+                                    <li>
+                                        <a href="{{ route('user.notifications.read', $notification->id) }}" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
+                                            <div class="w-10 h-10 bg-yellow-500 text-white flex items-center justify-center rounded-full">
+                            
+                                                <i class="ri-checkbox-circle-line text-lg"></i>  
+                                            </div>
+                                            <div class="ml-2">
+                                    
+                                                <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">
+                                                    {{ $notification->message }}  
+                                                </div>
+
+          
+                                                <div class="text-[10px] text-gray-600 font-medium mt-1">
+                                                    <strong>{{ $notification->task_title }}</strong>  
+                                                </div>
+
+
+                                                <div class="text-[11px] text-gray-400">
+                                                    {{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                @empty
+                                    <li>No new notifications</li>
+                                @endforelse
+                            </ul>
                     </div>
                 </li>
             </ul>

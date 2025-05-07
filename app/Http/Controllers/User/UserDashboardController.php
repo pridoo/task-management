@@ -1,47 +1,49 @@
 <?php
+
 namespace App\Http\Controllers\User;
 
 use App\Models\Task;
 use Carbon\Carbon;
+use App\Models\Notification;
 use App\Http\Controllers\Controller;
 
 class UserDashboardController extends Controller
 {
     public function index()
     {
-       
         $user = auth()->user();
 
+        // Fetch tasks assigned to the user
         $assignedTasks = Task::whereHas('users', function($query) use ($user) {
             $query->where('users.id', $user->id); 
-        })->where('archived', false) 
+        })->where('archived', false)
           ->get();
 
-
+        // Count tasks based on their status
         $totalTasks = $assignedTasks->count();
 
         $completedTasksCount = Task::whereHas('users', function($query) use ($user) {
             $query->where('users.id', $user->id);
         })->where('status', 'completed')
-          ->where('archived', false) 
+          ->where('archived', false)
           ->count();
 
         $inProgressCount = Task::whereHas('users', function($query) use ($user) {
             $query->where('users.id', $user->id);
         })->where('status', 'in-progress')
-          ->where('archived', false) 
+          ->where('archived', false)
           ->count();
 
         $toDoCount = Task::whereHas('users', function($query) use ($user) {
             $query->where('users.id', $user->id);
         })->where('status', 'to do')
-          ->where('archived', false) 
+          ->where('archived', false)
           ->count();
 
-
+        // Add status labels to tasks
         foreach ($assignedTasks as $task) {
             $status = strtolower(trim($task->status ?? ''));
-            
+
             $task->status_label = 'To do';
             $task->status_class = 'bg-red-500';
             $task->status_detail_label = 'To do';
@@ -81,12 +83,19 @@ class UserDashboardController extends Controller
             }
         }
 
+
+        $notifications = Notification::where('user_id', $user->id)
+            ->where('is_read', false) 
+            ->orderByDesc('created_at') 
+            ->get();
+
         return view('user.dashboard', compact(
             'assignedTasks',
             'completedTasksCount',
             'inProgressCount',
             'toDoCount',
-            'totalTasks'
+            'totalTasks',
+            'notifications' 
         ));
     }
 }

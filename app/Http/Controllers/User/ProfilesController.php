@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Controllers\User;
-
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +15,13 @@ class ProfilesController extends Controller
     public function index()
     {
         $user = Auth::user(); 
-        return view('user.settings.index', compact('user'));
+
+        $notifications = Notification::where('user_id', $user->id)
+        ->where('is_read', false) 
+        ->orderByDesc('created_at') 
+        ->get();
+
+        return view('user.settings.index', compact('user', 'notifications'));
     }
 
     /**
@@ -24,7 +30,13 @@ class ProfilesController extends Controller
     public function showProfile()
     {
         $user = Auth::user();
-        return view('user.settings.profile', compact('user'));
+
+        $notifications = Notification::where('user_id', $user->id)
+        ->where('is_read', false) 
+        ->orderByDesc('created_at') 
+        ->get();
+
+        return view('user.settings.profile', compact('user', 'notifications'));
     }
 
     /**
@@ -64,7 +76,14 @@ class ProfilesController extends Controller
      */
     public function showPasswordForm()
     {
-        return view('user.settings.password');
+        $user = auth()->user(); 
+
+        $notifications = Notification::where('user_id', $user->id)
+        ->where('is_read', false) 
+        ->orderByDesc('created_at') 
+        ->get();
+
+        return view('user.settings.password', compact('user', 'notifications'));
     }
 
     /**

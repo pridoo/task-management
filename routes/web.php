@@ -55,9 +55,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->gro
 
    
     Route::prefix('messages')->name('messages.')->group(function () {
-        Route::get('/', [MessageController::class, 'index'])->name('index'); // Route to show all messages
+        Route::get('/', [MessageController::class, 'index'])->name('index'); 
         Route::get('/{id}', [MessageController::class, 'show'])->name('show');
-        Route::post('/submit', [MessageController::class, 'store'])->name('submit'); // Route to submit a new message
+        Route::post('/submit', [MessageController::class, 'store'])->name('submit'); 
     });
 
 
@@ -66,15 +66,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->gro
 
 Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(function () {
 
-
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('/', [ProfilesController::class, 'index'])->name('index');
         Route::get('/profile', [ProfilesController::class, 'showProfile'])->name('profile');
         Route::post('/profile', [ProfilesController::class, 'updateProfile'])->name('profile.update');
         Route::get('/password', [ProfilesController::class, 'showPasswordForm'])->name('password');
         Route::put('/password', [ProfilesController::class, 'updatePassword'])->name('password.update');
-
-       
     });
     
     Route::prefix('tasks')->name('tasks.')->group(function () {
@@ -83,11 +80,17 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(functi
         Route::get('/in-progress', [TasksController::class, 'inprogress'])->name('in-progress');
         Route::get('/completed', [TasksController::class, 'completed'])->name('completed');
         Route::get('/{id}', [TasksController::class, 'show'])->name('show');
+        // Route to assign task to a user
+        Route::post('/assign/{taskId}', [TasksController::class, 'assignTaskToUser'])->name('assign');
     });
 
-        // Updated dashboard route
-        Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
+    // Route to mark notification as read
+    Route::get('/notifications/{id}/read', [TasksController::class, 'markAsRead'])->name('notifications.read');
+    
+    // Updated dashboard route
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
 });
+
 
 Route::get('/', fn() => view('landing_page.index'))->name('home');
 Route::get('/login', fn() => view('auth.login'))->name('login');
