@@ -4,11 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class Task extends Model
 {
     protected $fillable = [
-        'title', 'content', 'start_date', 'end_date',
-        'priority', 'status', 'admin_id', 'attachment', 'picture'
+        'title',
+        'content',
+        'start_date',
+        'end_date',
+        'priority',
+        'status',
+        'admin_id',
+        'attachment',
+        'picture'
     ];
 
     /**
@@ -17,7 +25,7 @@ class Task extends Model
     public function users()
     {
         // Many-to-many relationship between tasks and users
-        return $this->belongsToMany(User::class, 'task_user','task_id', 'user_id');
+        return $this->belongsToMany(User::class, 'task_user', 'task_id', 'user_id');
     }
 
     /**
@@ -35,4 +43,6 @@ class Task extends Model
     {
         return $this->hasMany(TaskUpdate::class);
     }
+
+
 }

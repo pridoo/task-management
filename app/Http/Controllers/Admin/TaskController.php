@@ -13,7 +13,7 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::latest()->get();
-        $users = User::all(); 
+        $users = User::all();
         return view('admin.tasks.all-tasks', compact('tasks', 'users'));
     }
 
@@ -45,7 +45,7 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
- 
+
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
@@ -53,36 +53,36 @@ class TaskController extends Controller
             'end_date' => 'nullable|date',
             'priority' => 'required|string',
             'status' => 'required|string',
-            'assigned_to' => 'required|array',  
-            'assigned_to.*' => 'exists:users,id',  
+            'assigned_to' => 'required|array',
+            'assigned_to.*' => 'exists:users,id',
             'attachment' => 'nullable|file',
             'picture' => 'nullable|image',
         ]);
-    
+
         $data = $request->all();
-        $data['admin_id'] = auth()->id(); 
-    
+        $data['admin_id'] = auth()->id();
+
 
         if ($request->hasFile('attachment')) {
             $data['attachment'] = $request->file('attachment')->store('attachments');
         }
-    
+
         if ($request->hasFile('picture')) {
             $data['picture'] = $request->file('picture')->store('pictures');
         }
-    
-   
+
+
         $task = Task::create($data);
-  
-        $task->users()->attach($request->assigned_to);  
-    
-       
+
+        $task->users()->attach($request->assigned_to);
+
+
         return redirect('/admin/tasks/all-tasks')->with('task_created', 'Task created successfully!');
     }
 
     public function update(Request $request, Task $task)
     {
-      
+
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
@@ -92,33 +92,33 @@ class TaskController extends Controller
             'status' => 'required|string',
             'attachment' => 'nullable|file',
             'picture' => 'nullable|image',
-            'assigned_to' => 'nullable|array',  
-            'assigned_to.*' => 'exists:users,id', 
+            'assigned_to' => 'nullable|array',
+            'assigned_to.*' => 'exists:users,id',
         ]);
-    
-     
+
+
         $data = $request->all();
-    
- 
+
+
         if ($request->hasFile('attachment')) {
             $data['attachment'] = $request->file('attachment')->store('attachments');
         }
-    
+
         if ($request->hasFile('picture')) {
             $data['picture'] = $request->file('picture')->store('pictures');
         }
-    
+
 
         $task->update($data);
-    
-  
+
+
         if ($request->has('assigned_to')) {
-          
-            $task->users()->sync($request->assigned_to); 
+
+            $task->users()->sync($request->assigned_to);
         }
 
         return redirect()->back()->with('success', 'Task updated successfully!');
-        
+
     }
 
 
@@ -128,14 +128,22 @@ class TaskController extends Controller
         // Archive the task by setting the 'archived' field to true
         $task->archived = true;
         $task->save();
-    
+
         // You can optionally count how many tasks have been archived
         $archivedCount = Task::where('archived', true)->count();
-    
+
         // Pass the count to the view if needed, or just use it for logging or alert purposes
         session()->flash('task_archived', 'Task archived successfully! Archived tasks count: ' . $archivedCount);
-    
+
         return redirect()->back();
     }
-    
+
+    public function show(Task $task)
+    {
+      
+        return view('admin.tasks.task-view', compact('task'));
+
+    }
+
+
 }
