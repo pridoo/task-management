@@ -18,7 +18,7 @@ class TrashController extends Controller
 
         $activities = UserActivity::with('task')->latest()->get(); 
 
-        return view('admin.trash', compact('tasks', 'messages'));
+        return view('admin.trash', compact('tasks', 'messages', 'activities'));
     }
 
     

@@ -35,7 +35,6 @@ class TaskController extends Controller
         $tasks = Task::with('users')->where('status', 'To do')->latest()->get();
         $messages = Message::latest()->get();
 
-        // Fetching all user activities related to tasks (for Admin)
         $activities = UserActivity::latest()->get();
 
         return view('admin.tasks.to-do', compact('tasks', 'messages', 'activities'));
@@ -183,7 +182,7 @@ class TaskController extends Controller
 
         $task = Task::findOrFail($taskId);
 
-        // Log the user who is commenting
+        
         $user_id = auth()->guard('admin')->check() ? auth()->guard('admin')->id() : auth()->id();
 
         $comment = new Comment([

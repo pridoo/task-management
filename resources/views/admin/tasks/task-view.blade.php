@@ -6,12 +6,11 @@
 
     <div class="min-h-screen bg-gray-100" x-data="{ open: false, editOpen: false }" x-init="open = false; editOpen = false">
 
-        <!-- Header -->
+
         <header class="fixed top-0 left-[310px] w-[calc(100%-340px)] px-4 z-50">
             <div class="max-w-6xl mx-auto bg-white shadow rounded-md border border-gray-200 px-6 py-4">
                 <div class="flex justify-end items-center">
                     <ul class="flex items-center space-x-4">
-                        <!-- Messages and Notifications as before -->
                     </ul>
                 </div>
             </div>

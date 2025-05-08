@@ -64,21 +64,36 @@
                                 <div class="text-gray-600 text-sm font-semibold mb-2">Notifications</div>
                             </div>
                             <ul class="my-2 max-h-64 overflow-y-auto">
-                                <li>
-                                    <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                        <div class="w-8 h-8 bg-yellow-500 text-white flex items-center justify-center rounded-full">
-                                            <i class="ri-checkbox-circle-line"></i>
-                                        </div>
-                                        <div class="ml-2">
-                                            <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Tasks completed</div>
-                                            <div class="text-[11px] text-gray-400">from a user</div>
-                                        </div>
-                                    </a>
-                                </li>
+                                @foreach($activities as $activity)
+                                    @if (!$activity->is_read) 
+                                        <li>
+                                            <a href="{{ route('admin.tasks.tasks.markActivityAsRead', $activity->id) }}" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
+                                                <div class="w-8 h-8 bg-yellow-500 text-white flex items-center justify-center rounded-full">
+                                                    <i class="ri-checkbox-circle-line"></i>
+                                                </div>
+                                                <div class="ml-2">
+                                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">
+                                                        {{ $activity->activity_type }}
+                                                        @if($activity->task) 
+                                                            {{ $activity->task->title }}
+                                                        @else
+                                                            No Task
+                                                        @endif
+                                                    </div>
+                                                    <div class="text-[10px] text-gray-600 font-medium mt-1">
+                                                        <strong>{{ $activity->activity_details }}</strong>
+                                                    </div>
+                                                    <div class="text-[11px] text-gray-400">
+                                                        {{ \Carbon\Carbon::parse($activity->created_at)->diffForHumans() }}
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    @endif
+                                @endforeach
                             </ul>
                         </div>
                     </li>
-
                 </ul>
             </div>
         </div>
@@ -113,7 +128,8 @@
 
                         <div x-show="dropdownOpen" x-cloak @click.outside="dropdownOpen = false"
                             class="absolute top-full right-0 mt-2 w-40 bg-white border rounded-xl shadow-lg z-50 py-2">
-                            <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <a href="{{route('admin.tasks.user.tasks.show', $task->id) }}"
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 <i class="ri-eye-line mr-2 text-lg text-gray-500"></i> Open
                             </a>
                         </div>

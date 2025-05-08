@@ -47,7 +47,7 @@ class MessageController extends Controller
 
         $activities = UserActivity::with('task')->latest()->get(); 
         
-        return view('admin.message.show', compact('message'));
+        return view('admin.message.show', compact('message', 'activities'));
     }
 
 }

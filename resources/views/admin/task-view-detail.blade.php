@@ -63,7 +63,7 @@
             </div>
         </div>
     </a>
-    <!-- Add more attachment items here as needed -->
+
 </div>
 
 <!-- Divider -->

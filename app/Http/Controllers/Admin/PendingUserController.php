@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Models\UserActivity;
 
 
 class PendingUserController extends Controller
@@ -20,7 +21,7 @@ class PendingUserController extends Controller
 
         $activities = UserActivity::with('task')->latest()->get(); 
     
-        return view('admin.users.pending-users', compact('pendingUsers', 'messages'));
+        return view('admin.users.pending-users', compact('pendingUsers', 'messages', 'activities'));
     }
 
     public function approveUser($userId)
@@ -64,8 +65,9 @@ class PendingUserController extends Controller
     {
         $approvedUsers = User::where('status', 'approved')->get();
         $messages = Message::latest()->get();
+        $activities = UserActivity::with('task')->latest()->get(); 
     
-        return view('admin.users.approved-users', compact('approvedUsers', 'messages'));
+        return view('admin.users.approved-users', compact('approvedUsers', 'messages', 'activities'));
     }
   
     public function unapproveUser($userId)
