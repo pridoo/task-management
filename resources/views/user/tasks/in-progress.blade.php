@@ -114,6 +114,18 @@
                         📅 {{ \Carbon\Carbon::parse($task->start_date)->format('D, d M h:i A') }}
                     </div>
                     <p class="text-sm text-gray-700 mb-3">{{ \Illuminate\Support\Str::limit($task->content, 100) }}</p>
+
+                    <div class="mt-4">
+                        <span class="text-xs text-gray-500">Attachments:</span>
+                        <span class="text-sm text-gray-700">
+                            @if ($task->attachment)
+                                1 attachment
+                            @else
+                                No attachments
+                            @endif
+                        </span>
+                    </div>
+
                     <div class="mt-4">
                         <span class="text-xs text-gray-500">Assigned To:</span>
                         <div class="flex items-center mt-1 flex-wrap gap-2">

@@ -4,7 +4,7 @@
 
 <link rel="stylesheet" href="{{ asset('css/all-tasks.css') }}">
 <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SWEETALERT2 -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <div class="min-h-screen bg-gray-100" x-data="{ 
                          open: false, 
@@ -203,6 +203,19 @@
                         📅 {{ $task->end_date ? \Carbon\Carbon::parse($task->end_date)->format('D, d M Y h:i A') : 'No End Date' }}
                     </div>
                     <p class="text-sm text-gray-700 mb-3">{{ $task->content }}</p>
+
+    
+                    <div class="mt-4">
+                        <span class="text-xs text-gray-500">Attachments:</span>
+                        <span class="text-sm text-gray-700">
+                            @if ($task->attachment)
+                                1 attachment
+                            @else
+                                No attachments
+                            @endif
+                        </span>
+                    </div>
+
 
                     <div class="mt-4">
                         <span class="text-xs text-gray-500">Assigned To:</span>
