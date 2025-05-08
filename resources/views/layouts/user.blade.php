@@ -28,7 +28,9 @@
     <div class="fixed left-0 top-0 w-64 h-full bg-orange-500 p-4 z-50 sidebar-menu transition-transform">
         <a href="#" class="flex items-center pb-4 border-b border-b-white">
             <img src="{{ asset('css/pictures/username.png') }}" alt="ID Card" class="w-8 h-8 rounded ">
-            <span class="text-lg font-bold text-white ml-3">Username</span>
+            <span class="text-lg font-bold text-white ml-3">
+                  Hi, {{ Auth::user()->name ?? 'User' }}!
+            </span>
         </a>
         <ul class="mt-4">
             <li class="mb-1 group">
@@ -73,21 +75,15 @@
                     </li>
                 </ul>
             </li>
-            <li class="mb-1 group {{ Request::is('user/trash') ? 'active' : '' }}">
-                <a href="{{ url('user/trash') }}"
-                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('user/trash') ? 'bg-orange-700 text-gray-100' : '' }}">
-                    <img src="{{ asset('css/pictures/Trash.png') }}" alt="Trash" class="w-8 h-8 rounded ">
-                    <span class="text-sm font-bold text-white ml-3">Archived</span>
-                </a>
-            </li>
             <li class="mb-1 group">
                 <a href="{{ url('user/settings') }}" 
                 class="flex items-center py-2 px-4 text-white hover:bg-orange-700 hover:text-gray-100 rounded-md 
-                {{ Request::is('user/settings') ? 'bg-orange-700 text-white' : '' }}">
+                 {{ Request::is('user/settings') ? 'bg-orange-700 text-white' : '' }}">
                     <img src="{{ asset('css/pictures/Settings.png') }}" alt="Settings" class="w-8 h-8 rounded">
                     <span class="text-sm font-bold ml-3">Settings</span>
                 </a>
             </li>
+
             <!-- Log Out -->
             <li class="mb-1 group">
                 <form method="POST" action="{{ route('logout') }}">

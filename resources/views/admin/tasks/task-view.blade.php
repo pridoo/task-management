@@ -11,6 +11,7 @@
             <div class="max-w-6xl mx-auto bg-white shadow rounded-md border border-gray-200 px-6 py-4">
                 <div class="flex justify-end items-center">
                     <ul class="flex items-center space-x-4">
+<<<<<<< HEAD
 
                         <!-- Messages -->
                         <li class="relative" x-data="{ open: false }" x-init="open = false">
@@ -72,6 +73,9 @@
                             </div>
                         </li>
 
+=======
+                        <!-- Messages and Notifications as before -->
+>>>>>>> origin/alfred
                     </ul>
                 </div>
             </div>
@@ -92,7 +96,10 @@
                     </button>
                 </div>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/alfred
                 <!-- Task Details Tab -->
                 <div x-show="tab === 'details'" x-cloak>
                     <!-- Task Detail View -->
@@ -211,7 +218,10 @@
                             @endforelse
                         </div>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/alfred
                         <!-- Divider -->
                         <div class="border-t border-gray-200 my-4"></div>
 
@@ -236,6 +246,7 @@
                             </div>
                         </div>
                     </div>
+<<<<<<< HEAD
 
                     <!-- Comments Tab -->
                     <div x-show="tab === 'comments'" x-cloak>
@@ -369,10 +380,23 @@
                     </div>
 
                 </div>
+=======
+                </div>
+
+                <!-- Comments Tab -->
+                <div x-show="tab === 'comments'" x-cloak>
+                    @include('admin.tasks.comments', ['task' => $task]) 
+                </div>
+            </div>
+>>>>>>> origin/alfred
         </main>
     </div>
 
     <!-- AlpineJS -->
     <script src="//unpkg.com/alpinejs" defer></script>
 
+<<<<<<< HEAD
 @endsection
+=======
+@endsection
+>>>>>>> origin/alfred

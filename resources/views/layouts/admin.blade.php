@@ -29,8 +29,10 @@
 
     <div class="fixed left-0 top-0 w-64 h-full bg-orange-500 p-4 z-50 sidebar-menu transition-transform">
         <a href="#" class="flex items-center pb-4 border-b border-b-white">
-            <img src="{{ asset('css/pictures/username.png') }}" alt="ID Card" class="w-8 h-8 rounded ">
-            <span class="text-lg font-bold text-white ml-3">Username</span>
+            <img src="{{ asset('css/pictures/username.png') }}" alt="Admin Avatar" class="w-8 h-8 rounded">
+            <span class="text-lg font-bold text-white ml-3">
+                Hi, {{ Auth::guard('admin')->user()->name ?? 'Admin' }}!
+            </span>
         </a>
         <ul class="mt-4">
             <li class="mb-1 group">
@@ -105,8 +107,8 @@
                     <span class="text-sm font-bold text-white ml-3">Archived</span>
                 </a>
             </li>
-            <li class="mb-1 group {{ Request::is('admin/message') ? 'active' : '' }}">
-                <a href="{{ url('admin/message') }}"
+            <li class="mb-1 group {{ Request::is('admin/messages') ? 'active' : '' }}">
+                <a href="{{ url('admin/messages') }}"
                     class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/trash') ? 'bg-orange-700 text-gray-100' : '' }}">
                     <img src="{{ asset('css/pictures/message.png') }}" alt="Message" class="w-8 h-8 rounded ">
                     <span class="text-sm font-bold text-white ml-3">Message</span>

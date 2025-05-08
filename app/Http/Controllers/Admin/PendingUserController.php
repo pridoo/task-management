@@ -1,21 +1,23 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class PendingUserController extends Controller
 {
     // Fetch all users with 'pending' status
     public function showPendingUsers()
     {
-        // Fetch all users with 'pending' status
-        $pendingUsers = User::where('status', 'pending')->paginate(5);
-
-        // Return the view and pass the pending users
-        return view('admin.users.pending-users', compact('pendingUsers'));
+        $pendingUsers = User::where('status', 'pending')->get();
+        $messages = Message::latest()->get();
+    
+        return view('admin.users.pending-users', compact('pendingUsers', 'messages'));
     }
 
     // Approve user
@@ -59,11 +61,10 @@ class PendingUserController extends Controller
 
     public function showApprovedUsers()
     {
-        // Fetch all users with 'approved' status
-        $approvedUsers = User::where('status', 'approved')->paginate(5);
+        $approvedUsers = User::where('status', 'approved')->get();
+        $messages = Message::latest()->get();
     
-        // Return the view and pass the approved users
-        return view('admin.users.approved-users', compact('approvedUsers'));
+        return view('admin.users.approved-users', compact('approvedUsers', 'messages'));
     }
     // Unapprove user
     public function unapproveUser($userId)
@@ -83,5 +84,38 @@ class PendingUserController extends Controller
             ->with('status', 'error')
             ->with('userName', 'User not found');
     }
+
+    public function changePassword(Request $request, $userId)
+    {
+      
+        $user = User::find($userId);
+    
+    
+        if (!$user) {
+            return redirect()->route('admin.approved-users')
+                ->with('status', 'error')
+                ->with('message', 'User not found');
+        }
+    
+    
+        $validator = Validator::make($request->all(), [
+            'new_password' => 'required|confirmed|min:8',
+        ]);
+    
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+    
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+    
+       
+        return back()
+            ->with('status', 'success')
+            ->with('message', 'Password updated successfully for ' . $user->name . '.');
+    }
+    
+    
+    
     
 }

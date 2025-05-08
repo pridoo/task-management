@@ -8,14 +8,22 @@ use App\Http\Controllers\Admin\PendingUserController;
 use App\Http\Controllers\Admin\ReportsController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\TrashController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\MessageController;
+use App\Http\Controllers\User\TasksController;
+use App\Http\Controllers\User\ProfilesController;
+use App\Http\Controllers\User\UserDashboardController;
+
 
 Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->group(function () {
+
 
     Route::get('users/pending-users', [PendingUserController::class, 'showPendingUsers'])->name('pending-users');
     Route::put('users/approve-user/{userId}', [PendingUserController::class, 'approveUser'])->name('approve-user');
     Route::put('reject-user/{userId}', [PendingUserController::class, 'rejectUser'])->name('reject-user');
     Route::get('users/approved-users', [PendingUserController::class, 'showApprovedUsers'])->name('approved-users');
     Route::post('users/unapprove-user/{userId}', [PendingUserController::class, 'unapproveUser'])->name('unapprove-user');
+    Route::put('change-password/{userId}', [PendingUserController::class, 'changePassword'])->name('change-password');
 
     Route::get('reports', [ReportsController::class, 'showCompletedTasks'])->name('reports');
     Route::get('reports/export', [ReportsController::class, 'exportCSV'])->name('reports.export');
@@ -27,10 +35,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->gro
     });
 
     Route::prefix('settings')->name('settings.')->group(function () {
-        Route::get('/', fn() => view('admin.settings.index'))->name('index');
+        Route::get('/', [ProfileController::class, 'index'])->name('admin.settings.index');
         Route::get('/profile', [ProfileController::class, 'showProfile'])->name('profile');
         Route::post('/profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
-        Route::get('/password', fn() => view('admin.settings.password'))->name('password');
+        Route::get('/password', [ProfileController::class, 'showPassword'])->name('password');
         Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password.update');
     });
 
@@ -44,29 +52,51 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->gro
         Route::get('/in-progress', [TaskController::class, 'inprogress'])->name('tasks.in-progress');
         Route::get('/completed', [TaskController::class, 'completed'])->name('tasks.completed');
         Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
+<<<<<<< HEAD
+=======
+        Route::post('/tasks/{task}/comments', [TaskController::class, 'storeComment'])->name('comments.store');
+
+>>>>>>> origin/alfred
     });
 
-    Route::get('/dashboard', fn() => view('admin.dashboard'))->name('dashboard');
+   
+    Route::prefix('messages')->name('messages.')->group(function () {
+        Route::get('/', [MessageController::class, 'index'])->name('index'); 
+        Route::get('/{id}', [MessageController::class, 'show'])->name('show');
+        Route::post('/submit', [MessageController::class, 'store'])->name('submit'); 
+    });
+
+
+    Route::get('/dashboard', [DashboardController::class, 'dynamicTasks'])->name('dashboard');
 });
 
 Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(function () {
-    Route::get('/trash', fn() => view('user.trash'))->name('trash');
 
     Route::prefix('settings')->name('settings.')->group(function () {
-        Route::get('/', fn() => view('user.settings.index'))->name('index');
-        Route::get('/profile', fn() => view('user.settings.profile'))->name('profile');
-        Route::get('/password', fn() => view('user.settings.password'))->name('password');
+        Route::get('/', [ProfilesController::class, 'index'])->name('index');
+        Route::get('/profile', [ProfilesController::class, 'showProfile'])->name('profile');
+        Route::post('/profile', [ProfilesController::class, 'updateProfile'])->name('profile.update');
+        Route::get('/password', [ProfilesController::class, 'showPasswordForm'])->name('password');
+        Route::put('/password', [ProfilesController::class, 'updatePassword'])->name('password.update');
     });
-
+    
     Route::prefix('tasks')->name('tasks.')->group(function () {
-        Route::get('/all-tasks', fn() => view('user.tasks.all-tasks'))->name('all-tasks');
-        Route::get('/to-do', fn() => view('user.tasks.to-do'))->name('to-do');
-        Route::get('/in-progress', fn() => view('user.tasks.in-progress'))->name('in-progress');
-        Route::get('/completed', fn() => view('user.tasks.completed'))->name('completed');
+        Route::get('/all-tasks', [TasksController::class, 'index'])->name('all-tasks');
+        Route::get('/to-do', [TasksController::class, 'todo'])->name('to-do');
+        Route::get('/in-progress', [TasksController::class, 'inprogress'])->name('in-progress');
+        Route::get('/completed', [TasksController::class, 'completed'])->name('completed');
+        Route::get('/{id}', [TasksController::class, 'show'])->name('show');
+        // Route to assign task to a user
+        Route::post('/assign/{taskId}', [TasksController::class, 'assignTaskToUser'])->name('assign');
     });
 
-    Route::get('/dashboard', fn() => view('user.dashboard'))->name('dashboard');
+    // Route to mark notification as read
+    Route::get('/notifications/{id}/read', [TasksController::class, 'markAsRead'])->name('notifications.read');
+    
+    // Updated dashboard route
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
 });
+
 
 Route::get('/', fn() => view('landing_page.index'))->name('home');
 Route::get('/login', fn() => view('auth.login'))->name('login');
@@ -78,7 +108,5 @@ Route::post('/register', [AuthController::class, 'store'])->name('auth.register.
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 //Message
-Route::get('admin/message', fn() => view('admin.message'))->name('message');
-Route::get('admin/message-open', fn() => view('admin.message-open'))->name('message-open');
 Route::get('admin/message-reply', fn() => view('admin.message-reply'))->name('message-reply');
 Route::get('admin/task-view', fn() => view('admin.task-view'))->name('task-view');

@@ -1,8 +1,13 @@
 @extends('layouts.app')
+
 @section('content')
 
+<link rel="stylesheet" href="{{ asset('css/all-tasks.css') }}">
+<!-- Alpine.js -->
+<script src="https://unpkg.com/alpinejs" defer></script>
+
 <!-- Hero Section -->
-<section class="px-2 py-2 bg-white md:px-0 dark:bg-gray-900">
+<section class="px-2 py-2 bg-white md:px-0 dark:bg-gray-900" x-data="{ showModal: false }">
     <div class="container items-center max-w-6xl px-3 mx-auto xl:px-5">
         <div class="flex flex-wrap items-center sm:-mx-3">
             <div class="w-full px-4 md:w-1/2 md:px-6">
@@ -25,13 +30,13 @@
             <div class="w-full md:w-1/2">
                 <section class="bg-gray-50 dark:bg-gray-900">
                     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-                        <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+                        <div class="w-full bg-white rounded-lg shadow dark:border sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                                 <h1 class="text-3xl font-extrabold leading-tight tracking-tight text-orange-600 md:text-2xl dark:text-white text-center">
                                     Login
                                 </h1>
-                                
 
+                                <!-- Error Handling -->
                                 @if ($errors->any())
                                     <div class="mb-4 text-red-600 bg-red-100 border border-red-400 rounded p-4">
                                         <ul class="list-disc list-inside text-sm">
@@ -42,42 +47,64 @@
                                     </div>
                                 @endif
 
+                                @if(session('status') && session('message'))
+                                    <div class="mb-4 text-green-600 bg-green-100 border border-green-400 rounded p-4">
+                                        <ul class="list-disc list-inside text-sm">
+                                            <li>{{ session('message') }}</li>
+                                        </ul>
+                                    </div>
+                                @endif
+
+                                <!-- Login Form -->
                                 <form method="POST" class="space-y-4 md:space-y-6" action="{{ route('checkLogin') }}">
                                     @csrf
                                     <div>
-                                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"></label>
-                                        <input type="email" name="email" id="email" class="rounded-lg bg-gray-100 border dark:border-gray-700 text-sm font-light text-gray-500 dark:text-gray-400 focus:border-orange-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Email" required="">
+                                        <input type="email" name="email" id="email" placeholder="Email"
+                                            class="rounded-lg bg-gray-100 border dark:border-gray-700 text-sm font-light text-gray-500 dark:text-gray-400 focus:border-orange-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            required="">
                                     </div>
 
                                     <div>
-                                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"></label>
-                                        <input type="password" name="password" id="password" placeholder="Password" class="rounded-lg bg-gray-100 border dark:border-gray-700 text-sm font-light text-gray-500 dark:text-gray-400 focus:border-orange-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
+                                        <input type="password" name="password" id="password" placeholder="Password"
+                                            class="rounded-lg bg-gray-100 border dark:border-gray-700 text-sm font-light text-gray-500 dark:text-gray-400 focus:border-orange-500 focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            required="">
                                     </div>
 
                                     <div class="flex items-center">
                                         <input type="checkbox" name="remember" id="remember"
                                             class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500 dark:focus:ring-orange-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                         <label for="remember"
-                                            class="ml-2 text-sm font-light text-gray-500 dark:text-gray-400">
-                                            Remember me
-                                        </label>
+                                            class="ml-2 text-sm font-light text-gray-500 dark:text-gray-400">Remember me</label>
                                     </div>
-                                    
-                                    <button type="submit" class="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold shadow-lg hover:bg-orange-600 transition-all duration-300">Log In</button>
 
+                                    <button type="submit"
+                                        class="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold shadow-lg hover:bg-orange-600 transition-all duration-300">
+                                        Log In
+                                    </button>
+
+                              
                                     <div class="text-center mt-4">
-                                        <a href="#" class="text-sm font-light text-gray-500 dark:text-gray-400 hover:underline">Forgot your password?</a>
+                                        <a href="#" @click.prevent="showModal = true"
+                                            class="text-sm font-light text-gray-500 dark:text-gray-400 hover:underline">
+                                            Forgot your password?
+                                        </a>
                                         <p class="text-gray-500 mt-2">or</p>
                                         <p class="text-sm font-light text-gray-500 dark:text-gray-400 py-2">Login with ID Number</p>
                                     </div>
 
                                     <div class="flex justify-center">
                                         <a href="{{ route('login2') }}">
-                                            <img src="{{ asset('css/pictures/idcard (1).png') }}" alt="ID Card" class="w-24 h-24 object-contain hover:scale-105 transition-all duration-300">
+                                            <img src="{{ asset('css/pictures/idcard (1).png') }}" alt="ID Card"
+                                                class="w-24 h-24 object-contain hover:scale-105 transition-all duration-300">
                                         </a>
                                     </div>
-                                    <p class="text-center text-sm font-light text-gray-500 dark:text-gray-400">Don't have an account? 
-                                        <a href="{{ route('register') }}" class="font-medium text-primary-900 hover:underline hover:text-orange-600 dark:text-primary-500">Sign Up here</a>
+
+                                    <p class="text-center text-sm font-light text-gray-500 dark:text-gray-400">
+                                        Don't have an account?
+                                        <a href="{{ route('register') }}"
+                                            class="font-medium text-primary-900 hover:underline hover:text-orange-600 dark:text-primary-500">
+                                            Sign Up here
+                                        </a>
                                     </p>
                                 </form>
                             </div>
@@ -87,26 +114,53 @@
             </div>
         </div>
     </div>
+
+    <div x-show="showModal" x-cloak x-transition.opacity
+         class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div @click.outside="showModal = false"
+             class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md p-6 relative">
+            <button @click="showModal = false"
+                    class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white">
+                ✕
+            </button>
+            <h2 class="text-xl font-semibold text-orange-600 dark:text-white text-center">Password Reset Info</h2>
+            <p class="mt-4 text-sm text-gray-600 dark:text-gray-300 text-center">
+                Please go to your <strong>IT Manager</strong> to reset your password.
+            </p>
+            <div class="mt-6 flex justify-center">
+                <button @click="showModal = false"
+                        class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-all">
+                    Got it
+                </button>
+            </div>
+        </div>
+    </div>
 </section>
 
+<!-- SweetAlert for account pending notice -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     @if ($errors->has('email'))
-        Swal.fire({
-            title: 'Your account is pending approval',
-            text: "Hang tight! We're reviewing your details. You'll be notified once you're approved.",
-            icon: 'info',
-            confirmButtonText: 'Okay / Got it',
-            customClass: {
-                popup: 'rounded-lg shadow-xl border border-blue-500',
-                title: 'text-lg font-semibold text-blue-700',
-                content: 'text-blue-600 text-sm',
-                confirmButton: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full focus:outline-none',
-            },
-            backdrop: true,
-            showCloseButton: true,
-            padding: '20px',
-        });
+        @php
+            $errorMessage = $errors->first('email');
+        @endphp
+        @if (strpos($errorMessage, 'pending') !== false)
+            Swal.fire({
+                title: 'Your account is pending approval',
+                text: "Hang tight! We're reviewing your details. You'll be notified once you're approved.",
+                icon: 'info',
+                confirmButtonText: 'Okay / Got it',
+                customClass: {
+                    popup: 'rounded-lg shadow-xl border border-blue-500',
+                    title: 'text-lg font-semibold text-blue-700',
+                    content: 'text-blue-600 text-sm',
+                    confirmButton: 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full focus:outline-none',
+                },
+                backdrop: true,
+                showCloseButton: true,
+                padding: '20px',
+            });
+        @endif
     @endif
 </script>
 
