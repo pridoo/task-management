@@ -51,8 +51,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->gro
         Route::get('/to-do', [TaskController::class, 'todo'])->name('tasks.to-do');
         Route::get('/in-progress', [TaskController::class, 'inprogress'])->name('tasks.in-progress');
         Route::get('/completed', [TaskController::class, 'completed'])->name('tasks.completed');
-        Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
+        Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('user.tasks.show');
         Route::post('/tasks/{task}/comments', [TaskController::class, 'storeComment'])->name('comments.store');
+        Route::put('/notifications/mark-as-read/{id}', [TaskController::class, 'markAsRead'])->name('notifications.markAsRead');
+        Route::get('/activity/{id}/read', [TaskController::class, 'markActivityAsRead'])->name('tasks.markActivityAsRead');
+
+        
 
     });
 
@@ -78,13 +82,24 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(functi
     });
     
     Route::prefix('tasks')->name('tasks.')->group(function () {
-        Route::get('/all-tasks', [TasksController::class, 'index'])->name('all-tasks');
+        Route::get('/all-tasks', [TasksController::class, 'index'])->name('index'); 
         Route::get('/to-do', [TasksController::class, 'todo'])->name('to-do');
         Route::get('/in-progress', [TasksController::class, 'inprogress'])->name('in-progress');
         Route::get('/completed', [TasksController::class, 'completed'])->name('completed');
-        Route::get('/{id}', [TasksController::class, 'show'])->name('show');
+        
+        // For User Task Details
+        Route::get('/user/tasks/{task}', [TasksController::class, 'showForUser'])->name('user.tasks.show');
+
+        Route::post('/tasks/{task}/comments', [TasksController::class, 'storeComments'])->name('comments.stores');
+        
         // Route to assign task to a user
         Route::post('/assign/{taskId}', [TasksController::class, 'assignTaskToUser'])->name('assign');
+        
+        // Add the Start Now functionality
+        Route::get('/start/{task}', [TasksController::class, 'startTask'])->name('start');
+
+        // Add the Complete functionality
+        Route::get('/complete/{task}', [TasksController::class, 'completeTask'])->name('complete');
     });
 
     // Route to mark notification as read
@@ -93,6 +108,7 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(functi
     // Updated dashboard route
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
 });
+
 
 
 Route::get('/', fn() => view('landing_page.index'))->name('home');

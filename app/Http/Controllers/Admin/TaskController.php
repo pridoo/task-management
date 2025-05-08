@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-use App\Models\Admin;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
+
 use App\Models\Task;
 use App\Models\User;
 use App\Models\Message;
-use Illuminate\Http\Request;
 use App\Models\Comment;
+use App\Models\UserActivity; // Importing the UserActivity model
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
@@ -24,7 +24,10 @@ class TaskController extends Controller
 
         $messages = Message::latest()->get();
 
-        return view('admin.tasks.all-tasks', compact('tasks', 'users', 'assignedUsers', 'messages'));
+        // Fetching all user activities related to tasks (for Admin)
+        $activities = UserActivity::with('task')->latest()->get(); 
+
+        return view('admin.tasks.all-tasks', compact('tasks', 'users', 'assignedUsers', 'messages', 'activities'));
     }
 
     public function todo()
@@ -32,7 +35,10 @@ class TaskController extends Controller
         $tasks = Task::with('users')->where('status', 'To do')->latest()->get();
         $messages = Message::latest()->get();
 
-        return view('admin.tasks.to-do', compact('tasks', 'messages'));
+        // Fetching all user activities related to tasks (for Admin)
+        $activities = UserActivity::latest()->get();
+
+        return view('admin.tasks.to-do', compact('tasks', 'messages', 'activities'));
     }
 
     public function inprogress()
@@ -41,7 +47,10 @@ class TaskController extends Controller
         $users = User::all();
         $messages = Message::latest()->get();
 
-        return view('admin.tasks.in-progress', compact('tasks', 'users', 'messages'));
+        // Fetching all user activities related to tasks (for Admin)
+        $activities = UserActivity::latest()->get();
+
+        return view('admin.tasks.in-progress', compact('tasks', 'users', 'messages', 'activities'));
     }
 
     public function completed()
@@ -50,16 +59,20 @@ class TaskController extends Controller
         $users = User::all();
         $messages = Message::latest()->get();
 
-        return view('admin.tasks.completed', compact('tasks', 'users', 'messages'));
+        // Fetching all user activities related to tasks (for Admin)
+        $activities = UserActivity::latest()->get();
+
+        return view('admin.tasks.completed', compact('tasks', 'users', 'messages', 'activities'));
     }
 
-    public function edit($taskId)
+    public function show(Task $task)
     {
-        $task = Task::with('users')->findOrFail($taskId);
-        $users = User::all();
-        $messages = Message::latest()->get();
+        $task->load('comments.user');
 
-        return view('admin.tasks.edit', compact('task', 'users', 'messages'));
+        // Fetching all user activities related to tasks (for Admin)
+        $activities = UserActivity::latest()->get();
+
+        return view('admin.tasks.task-view', compact('task', 'activities'));
     }
 
     public function store(Request $request)
@@ -90,6 +103,14 @@ class TaskController extends Controller
 
         $task = Task::create($data);
         $task->users()->attach($request->assigned_to);
+
+        // Logging task creation activity
+        UserActivity::create([
+            'user_id' => auth()->id(),
+            'activity_type' => 'Created Task',
+            'task_id' => $task->id,
+            'activity_details' => 'Created a new task: ' . $task->title,
+        ]);
 
         return redirect('/admin/tasks/all-tasks')->with('task_created', 'Task created successfully!');
     }
@@ -125,6 +146,14 @@ class TaskController extends Controller
             $task->users()->sync($request->assigned_to);
         }
 
+        // Logging task update activity
+        UserActivity::create([
+            'user_id' => auth()->id(),
+            'activity_type' => 'Updated Task',
+            'task_id' => $task->id,
+            'activity_details' => 'Updated task: ' . $task->title,
+        ]);
+
         return redirect()->back()->with('success', 'Task updated successfully!');
     }
 
@@ -133,19 +162,16 @@ class TaskController extends Controller
         $task->archived = true;
         $task->save();
 
-        $archivedCount = Task::where('archived', true)->count();
-        session()->flash('task_archived', 'Task archived successfully! Archived tasks count: ' . $archivedCount);
+        // Logging task archiving activity
+        UserActivity::create([
+            'user_id' => auth()->id(),
+            'activity_type' => 'Archived Task',
+            'task_id' => $task->id,
+            'activity_details' => 'Archived task: ' . $task->title,
+        ]);
 
+        session()->flash('task_archived', 'Task archived successfully!');
         return redirect()->back();
-    }
-
-    public function show(Task $task)
-    {
-      
-        $task->load('comments.user'); 
-
-    
-        return view('admin.tasks.task-view', compact('task'));
     }
 
     public function storeComment(Request $request, $taskId)
@@ -154,33 +180,42 @@ class TaskController extends Controller
         $request->validate([
             'comment' => 'required|string|max:500',
         ]);
-    
-        
+
         $task = Task::findOrFail($taskId);
-    
-       
-        if (auth()->guard('admin')->check()) {
-            
-            $user_id = auth()->guard('admin')->id();
-        } else {
-          
-            $user_id = auth()->id();
-        }
-    
+
+        // Log the user who is commenting
+        $user_id = auth()->guard('admin')->check() ? auth()->guard('admin')->id() : auth()->id();
 
         $comment = new Comment([
             'task_id' => $task->id,
-            'user_id' => $user_id,  
+            'user_id' => $user_id,
             'content' => $request->comment,
         ]);
-    
 
         $comment->save();
-    
 
-        return redirect()->route('admin.tasks.tasks.show', $task->id)
+        // Logging comment creation activity
+        UserActivity::create([
+            'user_id' => $user_id,
+            'activity_type' => 'Commented on Task',
+            'task_id' => $task->id,
+            'activity_details' => 'Commented on task: ' . $task->title . '. Comment: ' . $request->comment,
+        ]);
+
+        return redirect()->route('admin.tasks.show', $task->id)
                          ->with('success', 'Comment added successfully!');
     }
+
+    public function markActivityAsRead($id)
+    {
+        // Find the activity and mark it as read
+        $activity = UserActivity::find($id);
+        if ($activity) {
+            $activity->is_read = true;  // Set the is_read flag to true
+            $activity->save();  // Save the changes
+        }
     
-    
+        // Redirect to the related task based on the activity's task ID
+        return redirect()->route('admin.tasks.user.tasks.show', $activity->task_id);
+    }
 }
