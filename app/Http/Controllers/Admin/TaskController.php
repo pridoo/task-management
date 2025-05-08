@@ -202,7 +202,7 @@ class TaskController extends Controller
             'activity_details' => 'Commented on task: ' . $task->title . '. Comment: ' . $request->comment,
         ]);
 
-        return redirect()->route('admin.tasks.show', $task->id)
+        return redirect()->route('admin.tasks.user.tasks.show', $task->id)
                          ->with('success', 'Comment added successfully!');
     }
 
