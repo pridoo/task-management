@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Comment;
 
 
 class Task extends Model
@@ -24,8 +25,8 @@ class Task extends Model
      */
     public function users()
     {
-        
-        return $this->belongsToMany(User::class, 'task_user','task_id', 'user_id');
+
+        return $this->belongsToMany(User::class, 'task_user', 'task_id', 'user_id');
         // Many-to-many relationship between tasks and users
         return $this->belongsToMany(User::class, 'task_user', 'task_id', 'user_id');
     }
@@ -45,4 +46,12 @@ class Task extends Model
     {
         return $this->hasMany(TaskUpdate::class);
     }
+
+    // siguraduhing may ganito sa taas ng file
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
 }

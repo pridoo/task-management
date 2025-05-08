@@ -33,7 +33,7 @@ class ReportsController extends Controller
         
         $messages = Message::latest()->get();
         
-        return view('admin.reports', compact('completedTasks', 'messages'));
+        return view('admin.reports', compact('completedTasks', 'messages','activities'));
     }
     
     public function exportCSV(Request $request)

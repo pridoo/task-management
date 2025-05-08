@@ -14,11 +14,6 @@ class TaskController extends Controller
 {
     public function index()
     {
-<<<<<<< HEAD
-        $tasks = Task::latest()->get();
-        $users = User::all();
-        return view('admin.tasks.all-tasks', compact('tasks', 'users'));
-=======
         $tasks = Task::with('users')->latest()->get();
         $users = User::all();
 
@@ -29,15 +24,10 @@ class TaskController extends Controller
 
         $messages = Message::latest()->get();
 
-<<<<<<< HEAD
-        return view('admin.tasks.all-tasks', compact('tasks', 'users', 'assignedUsers', 'messages'));
->>>>>>> origin/alfred
-=======
         // Fetching all user activities related to tasks (for Admin)
         $activities = UserActivity::with('task')->latest()->get(); 
 
         return view('admin.tasks.all-tasks', compact('tasks', 'users', 'assignedUsers', 'messages', 'activities'));
->>>>>>> origin/alfred
     }
 
     public function todo()
@@ -86,10 +76,6 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/alfred
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
@@ -105,10 +91,6 @@ class TaskController extends Controller
 
         $data = $request->all();
         $data['admin_id'] = auth()->id();
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/alfred
 
         if ($request->hasFile('attachment')) {
             $data['attachment'] = $request->file('attachment')->store('attachments');
@@ -118,20 +100,9 @@ class TaskController extends Controller
             $data['picture'] = $request->file('picture')->store('pictures');
         }
 
-<<<<<<< HEAD
-
-        $task = Task::create($data);
-
-        $task->users()->attach($request->assigned_to);
-
-
-=======
         $task = Task::create($data);
         $task->users()->attach($request->assigned_to);
 
-<<<<<<< HEAD
->>>>>>> origin/alfred
-=======
         // Logging task creation activity
         UserActivity::create([
             'user_id' => auth()->id(),
@@ -140,16 +111,11 @@ class TaskController extends Controller
             'activity_details' => 'Created a new task: ' . $task->title,
         ]);
 
->>>>>>> origin/alfred
         return redirect('/admin/tasks/all-tasks')->with('task_created', 'Task created successfully!');
     }
 
     public function update(Request $request, Task $task)
     {
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/alfred
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
@@ -163,15 +129,8 @@ class TaskController extends Controller
             'assigned_to.*' => 'exists:users,id',
         ]);
 
-<<<<<<< HEAD
-
         $data = $request->all();
 
-
-=======
-        $data = $request->all();
-
->>>>>>> origin/alfred
         if ($request->hasFile('attachment')) {
             $data['attachment'] = $request->file('attachment')->store('attachments');
         }
@@ -179,20 +138,10 @@ class TaskController extends Controller
         if ($request->hasFile('picture')) {
             $data['picture'] = $request->file('picture')->store('pictures');
         }
-<<<<<<< HEAD
-
-
-        $task->update($data);
-
-
-        if ($request->has('assigned_to')) {
-
-=======
 
         $task->update($data);
 
         if ($request->has('assigned_to')) {
->>>>>>> origin/alfred
             $task->users()->sync($request->assigned_to);
         }
 
@@ -205,32 +154,13 @@ class TaskController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Task updated successfully!');
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/alfred
     }
 
     public function destroy(Task $task)
     {
-<<<<<<< HEAD
-        // Archive the task by setting the 'archived' field to tru
         $task->archived = true;
         $task->save();
 
-        // You can optionally count how many tasks have been archived
-        $archivedCount = Task::where('archived', true)->count();
-
-        // Pass the count to the view if needed, or just use it for logging or alert purposes
-=======
-        $task->archived = true;
-        $task->save();
-
-<<<<<<< HEAD
-        $archivedCount = Task::where('archived', true)->count();
->>>>>>> origin/alfred
-        session()->flash('task_archived', 'Task archived successfully! Archived tasks count: ' . $archivedCount);
-=======
         // Logging task archiving activity
         UserActivity::create([
             'user_id' => auth()->id(),
@@ -238,31 +168,11 @@ class TaskController extends Controller
             'task_id' => $task->id,
             'activity_details' => 'Archived task: ' . $task->title,
         ]);
->>>>>>> origin/alfred
 
         session()->flash('task_archived', 'Task archived successfully!');
         return redirect()->back();
     }
 
-<<<<<<< HEAD
-    public function show(Task $task)
-    {
-      
-<<<<<<< HEAD
-        return view('admin.tasks.task-view', compact('task'));
-
-    }
-
-
-=======
-        $task->load('comments.user'); 
-
-    
-        return view('admin.tasks.task-view', compact('task'));
-    }
-
-=======
->>>>>>> origin/alfred
     public function storeComment(Request $request, $taskId)
     {
         // Validate the comment input
@@ -304,12 +214,7 @@ class TaskController extends Controller
             $activity->save();  // Save the changes
         }
     
-<<<<<<< HEAD
-    
->>>>>>> origin/alfred
-=======
         // Redirect to the related task based on the activity's task ID
         return redirect()->route('admin.tasks.user.tasks.show', $activity->task_id);
     }
->>>>>>> origin/alfred
 }

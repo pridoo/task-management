@@ -7,34 +7,34 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SWEETALERT2 -->
 
     <div class="min-h-screen bg-gray-100" x-data="{ 
-                             open: false, 
-                             editOpen: false, 
-                             showCreated: {{ session()->pull('task_created') ? 'true' : 'false' }},
-                             showDeleted: {{ session()->pull('task_deleted') ? 'true' : 'false' }}
-                         }" x-init="
-                             if (showCreated) {
-                                 Swal.fire({
-                                     icon: 'success',
-                                     title: 'Task Created Successfully!',
-                                     text: '{{ session('task_created') }}',
-                                     confirmButtonColor: '#22c55e',
-                                     timer: 2000,
-                                     timerProgressBar: true,
-                                     showConfirmButton: false
-                                 });
-                             }
-                             if (showDeleted) {
-                                 Swal.fire({
-                                     icon: 'success',
-                                     title: 'Deleted Successfully!',
-                                     text: '{{ session('task_deleted') }}',
-                                     confirmButtonColor: '#22c55e',
-                                     timer: 2000,
-                                     timerProgressBar: true,
-                                     showConfirmButton: false
-                                 });
-                             }
-                         ">
+                         open: false, 
+                         editOpen: false, 
+                         showCreated: {{ session()->pull('task_created') ? 'true' : 'false' }},
+                         showDeleted: {{ session()->pull('task_deleted') ? 'true' : 'false' }}
+                     }" x-init="
+                         if (showCreated) {
+                             Swal.fire({
+                                 icon: 'success',
+                                 title: 'Task Created Successfully!',
+                                 text: '{{ session('task_created') }}',
+                                 confirmButtonColor: '#22c55e',
+                                 timer: 2000,
+                                 timerProgressBar: true,
+                                 showConfirmButton: false
+                             });
+                         }
+                         if (showDeleted) {
+                             Swal.fire({
+                                 icon: 'success',
+                                 title: 'Deleted Successfully!',
+                                 text: '{{ session('task_deleted') }}',
+                                 confirmButtonColor: '#22c55e',
+                                 timer: 2000,
+                                 timerProgressBar: true,
+                                 showConfirmButton: false
+                             });
+                         }
+                     ">
 
 
         <header class="fixed top-0 left-[310px] w-[calc(100%-340px)] px-4 z-50">
@@ -171,34 +171,11 @@
                                 <i class="ri-eye-line mr-2 text-lg text-gray-500"></i> Open
                             </a>
 
-<<<<<<< HEAD
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                @foreach ($tasks as $task)
-                    <div class="bg-white shadow rounded-lg p-4 border relative">
-                        <div class="absolute top-2 right-2" x-data="{ dropdownOpen: false }">
-                            <button @click="dropdownOpen = !dropdownOpen" class="text-gray-500 hover:text-gray-700">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M6 10a2 2 0 114 0 2 2 0 01-4 0zm6 0a2 2 0 114 0 2 2 0 01-4 0z" />
-                                </svg>
-                            </button>
-                            <div x-show="dropdownOpen" x-cloak @click.outside="dropdownOpen = false"
-                                class="absolute top-full right-0 mt-2 w-40 bg-white border rounded-xl shadow-lg z-50 py-2">
-                                <a href="{{route('admin.tasks.tasks.show', $task->id) }}"
-                                    class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                    <i class="ri-eye-line mr-2 text-lg text-gray-500"></i> Open
-                                </a>
-
-                                <a href="#" @click.prevent="editOpen = true; $dispatch('open-edit-modal', { task: @js($task) })"
-                                    class="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-blue-50">
-                                    <i class="ri-edit-line mr-2 text-lg"></i> Edit
-                                </a>
-=======
                             <a href="#"
                             onclick="openEditModal({{ $task->id }}, '{{ addslashes($task->title) }}', '{{ addslashes($task->content) }}', '{{ $task->start_date }}', '{{ $task->end_date }}', '{{ json_encode($assignedUsers[$task->id]) }}')"
                             class="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-blue-50">
                                 <i class="ri-edit-line mr-2 text-lg"></i> Edit
                             </a>
->>>>>>> origin/alfred
 
         
                             <form method="POST" action="{{ route('admin.tasks.destroy', $task->id) }}"
