@@ -88,21 +88,21 @@ class TaskController extends Controller
             'attachment' => 'nullable|file',
             'picture' => 'nullable|image',
         ]);
-
+    
         $data = $request->all();
         $data['admin_id'] = auth()->id();
-
+    
         if ($request->hasFile('attachment')) {
-            $data['attachment'] = $request->file('attachment')->store('attachments');
+            $data['attachment'] = $request->file('attachment')->store('attachments', 'public');
         }
-
+    
         if ($request->hasFile('picture')) {
-            $data['picture'] = $request->file('picture')->store('pictures');
+            $data['picture'] = $request->file('picture')->store('pictures', 'public');
         }
-
+    
         $task = Task::create($data);
         $task->users()->attach($request->assigned_to);
-
+    
         // Logging task creation activity
         UserActivity::create([
             'user_id' => auth()->id(),
@@ -110,9 +110,10 @@ class TaskController extends Controller
             'task_id' => $task->id,
             'activity_details' => 'Created a new task: ' . $task->title,
         ]);
-
+    
         return redirect('/admin/tasks/all-tasks')->with('task_created', 'Task created successfully!');
     }
+    
 
     public function update(Request $request, Task $task)
     {
@@ -128,23 +129,27 @@ class TaskController extends Controller
             'assigned_to' => 'nullable|array',
             'assigned_to.*' => 'exists:users,id',
         ]);
-
+    
         $data = $request->all();
-
+    
+        // Handle the attachment upload
         if ($request->hasFile('attachment')) {
-            $data['attachment'] = $request->file('attachment')->store('attachments');
+            $data['attachment'] = $request->file('attachment')->store('attachments', 'public');
         }
-
+    
+        // Handle the picture upload
         if ($request->hasFile('picture')) {
-            $data['picture'] = $request->file('picture')->store('pictures');
+            $data['picture'] = $request->file('picture')->store('pictures', 'public');
         }
-
+    
+        // Update the task with the new data
         $task->update($data);
-
+    
+        // Sync the assigned users if provided
         if ($request->has('assigned_to')) {
             $task->users()->sync($request->assigned_to);
         }
-
+    
         // Logging task update activity
         UserActivity::create([
             'user_id' => auth()->id(),
@@ -152,9 +157,10 @@ class TaskController extends Controller
             'task_id' => $task->id,
             'activity_details' => 'Updated task: ' . $task->title,
         ]);
-
+    
         return redirect()->back()->with('success', 'Task updated successfully!');
     }
+    
 
     public function destroy(Task $task)
     {
