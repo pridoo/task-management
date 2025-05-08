@@ -16,7 +16,7 @@ class Task extends Model
      */
     public function users()
     {
-        // Many-to-many relationship between tasks and users
+        
         return $this->belongsToMany(User::class, 'task_user','task_id', 'user_id');
     }
 
