@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use App\Models\UserActivity; 
 use App\Models\Admin;
 use App\Models\Message;
 use Illuminate\Http\Request;
@@ -13,10 +13,15 @@ class ProfileController extends Controller
 {
     public function index()
     {
+  
+
         $admin = auth('admin')->user();
         $messages = Message::latest()->get();
 
-        return view('admin.settings.index', compact('admin', 'messages'));
+        $activities = UserActivity::with('task')->latest()->get(); 
+
+
+        return view('admin.settings.index', compact('admin', 'messages', 'activities'));
     }
 
     public function showProfile()
@@ -24,7 +29,9 @@ class ProfileController extends Controller
         $admin = auth('admin')->user();
         $messages = Message::latest()->get();
 
-        return view('admin.settings.profile', compact('admin', 'messages'));
+        $activities = UserActivity::with('task')->latest()->get(); 
+
+        return view('admin.settings.profile', compact('admin', 'messages', 'activities'));
     }
 
     public function updateProfile(Request $request)
@@ -61,7 +68,9 @@ class ProfileController extends Controller
         $admin = auth('admin')->user();
         $messages = Message::latest()->get();
 
-        return view('admin.settings.password', compact('admin', 'messages'));
+        $activities = UserActivity::with('task')->latest()->get(); 
+
+        return view('admin.settings.password', compact('admin', 'messages', 'activities'));
     }
 
 

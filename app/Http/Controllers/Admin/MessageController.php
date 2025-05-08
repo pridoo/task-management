@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Message;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\UserActivity;
 
 class MessageController extends Controller
 {
@@ -11,7 +12,9 @@ class MessageController extends Controller
     {
         $messages = Message::orderBy('sent_at', 'desc')->get();
 
-        return view('admin.message.index', compact('messages'));
+        $activities = UserActivity::with('task')->latest()->get(); 
+
+        return view('admin.message.index', compact('messages', 'activities'));
     }
 
     public function store(Request $request)
@@ -40,8 +43,11 @@ class MessageController extends Controller
     public function show($id)
     {
         $message = Message::findOrFail($id);
+
+
+        $activities = UserActivity::with('task')->latest()->get(); 
         
-        return view('admin.message.show', compact('message'));
+        return view('admin.message.show', compact('message', 'activities'));
     }
 
 }

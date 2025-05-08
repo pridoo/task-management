@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use App\Models\UserActivity; 
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -9,17 +9,19 @@ use App\Models\Message;
 
 class TrashController extends Controller
 {
-    // Display the list of archived tasks (trash)
+    
     public function index()
     {
-        // Use pagination instead of get()
+      
         $tasks = Task::where('archived', true)->latest()->paginate(10); 
         $messages = Message::latest()->get(); 
 
-        return view('admin.trash', compact('tasks', 'messages'));
+        $activities = UserActivity::with('task')->latest()->get(); 
+
+        return view('admin.trash', compact('tasks', 'messages', 'activities'));
     }
 
-    // Permanently delete a task from trash
+    
     public function destroy($id)
     {
         $task = Task::findOrFail($id);

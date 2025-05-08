@@ -5,6 +5,7 @@ use App\Models\Message;
 use App\Http\Controllers\Controller;
 use App\Models\Task;
 use Carbon\Carbon;
+use App\Models\UserActivity;
 
 class DashboardController extends Controller
 {
@@ -12,6 +13,8 @@ class DashboardController extends Controller
     {
         $messages = Message::latest()->get();
         $allTasks = Task::all();
+
+        $activities = UserActivity::with('task')->latest()->get(); 
 
         $completedTasks = Task::where('status', 'completed')->get();
         $inProgressCount = Task::where('status', 'in-progress')->count();
@@ -72,6 +75,7 @@ class DashboardController extends Controller
             'toDoCount',
             'totalTasks',
             'messages',
+            'activities',
         ));
     }
 }

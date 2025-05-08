@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use App\Models\UserActivity;
 
 class ProfilesController extends Controller
 {
@@ -20,6 +21,10 @@ class ProfilesController extends Controller
         ->where('is_read', false) 
         ->orderByDesc('created_at') 
         ->get();
+
+
+
+        
 
         return view('user.settings.index', compact('user', 'notifications'));
     }

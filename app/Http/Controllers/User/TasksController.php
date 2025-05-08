@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\UserActivity;
+use App\Models\Task;
+use App\Models\User;
+use App\Models\Comment;
+use App\Models\Notification;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Notification;
 
 class TasksController extends Controller
 {
@@ -21,28 +25,29 @@ class TasksController extends Controller
             ->orderByDesc('tasks.created_at')
             ->get();
 
-
         $notifications = DB::table('notifications')
             ->where('user_id', $userId)
             ->where('is_read', false)
-            ->orderByDesc('created_at') 
+            ->orderByDesc('created_at')
             ->get();
 
+        $activities = UserActivity::where('user_id', $userId)
+        ->where('is_read', false)
+        ->orderByDesc('created_at')->get();
+
+        // Create notification if task is new
         foreach ($tasks as $task) {
-        
             $existingNotification = DB::table('notifications')
                 ->where('user_id', $userId)
-                ->where('message', 'A new task has been assigned to you') 
-                ->where('task_title', $task->title) 
+                ->where('message', 'A new task has been assigned to you')
+                ->where('task_title', $task->title)
                 ->first();
 
-     
             if (!$existingNotification) {
-         
                 Notification::create([
                     'user_id' => $userId,
-                    'message' => 'A new task has been assigned to you',  
-                    'task_title' => $task->title,  
+                    'message' => 'A new task has been assigned to you',
+                    'task_title' => $task->title,
                 ]);
             }
         }
@@ -55,7 +60,77 @@ class TasksController extends Controller
                 ->get();
         }
 
-        return view('user.tasks.all-tasks', compact('tasks', 'notifications'));
+        return view('user.tasks.all-tasks', compact('tasks', 'notifications', 'activities'));
+    }
+
+    public function startTask($id)
+    {
+        $task = Task::find($id);
+
+        if ($task->start_date && now()->greaterThanOrEqualTo($task->start_date)) {
+            if ($task->status == 'To do') {
+                $task->status = 'In-progress';
+                $task->started_date = now();
+                $task->save();
+
+                Notification::create([
+                    'user_id' => auth('web')->id(),
+                    'message' => 'You have started the task: ' . $task->title,
+                    'task_title' => $task->title,
+                ]);
+
+                $userName = auth('web')->user()->name;
+                UserActivity::create([
+                    'user_id' => auth('web')->id(),
+                    'activity_type' => 'Started Task',
+                    'task_id' => $task->id,
+                    'activity_details' => "{$userName} started the task: '{$task->title}'",
+                ]);
+            }
+        } else {
+            return redirect()->route('user.tasks.index')->with('error', 'The start date has not yet been reached.');
+        }
+
+        return redirect()->route('user.tasks.index');
+    }
+
+    public function completeTask($id)
+    {
+        $task = Task::find($id);
+
+        if ($task->status == 'In-progress') {
+            $task->status = 'Completed';
+            $task->end_date = now();
+            $task->save();
+
+            Notification::create([
+                'user_id' => auth('web')->id(),
+                'message' => 'You have completed the task: ' . $task->title,
+                'task_title' => $task->title,
+            ]);
+
+            $userName = auth('web')->user()->name;
+            UserActivity::create([
+                'user_id' => auth('web')->id(),
+                'activity_type' => 'Completed Task',
+                'task_id' => $task->id,
+                'activity_details' => "{$userName} completed the task: '{$task->title}'",
+            ]);
+
+            $isLate = $this->isTaskLate($task);
+            if ($isLate) {
+                $task->is_late = true;
+                $task->save();
+            }
+        }
+
+        return redirect()->route('user.tasks.index');
+    }
+
+    public function isTaskLate($task)
+    {
+        $currentDate = now();
+        return $currentDate > $task->end_date && $task->end_date < $task->deadline;
     }
 
     public function todo()
@@ -71,12 +146,15 @@ class TasksController extends Controller
             ->orderByDesc('tasks.created_at')
             ->get();
 
-
         $notifications = DB::table('notifications')
             ->where('user_id', $userId)
             ->where('is_read', false)
-            ->orderByDesc('created_at') 
+            ->orderByDesc('created_at')
             ->get();
+
+        $activities = UserActivity::where('user_id', $userId)
+        ->where('is_read', false)
+        ->orderByDesc('created_at')->get();
 
         foreach ($tasks as $task) {
             $task->users = DB::table('users')
@@ -86,7 +164,7 @@ class TasksController extends Controller
                 ->get();
         }
 
-        return view('user.tasks.to-do', compact('tasks', 'notifications'));
+        return view('user.tasks.to-do', compact('tasks', 'notifications', 'activities'));
     }
 
     public function inprogress()
@@ -102,12 +180,15 @@ class TasksController extends Controller
             ->orderByDesc('tasks.created_at')
             ->get();
 
-       
         $notifications = DB::table('notifications')
             ->where('user_id', $userId)
             ->where('is_read', false)
-            ->orderByDesc('created_at') 
+            ->orderByDesc('created_at')
             ->get();
+
+        $activities = UserActivity::where('user_id', $userId)
+        ->where('is_read', false)
+        ->orderByDesc('created_at')->get();
 
         foreach ($tasks as $task) {
             $task->users = DB::table('users')
@@ -117,7 +198,7 @@ class TasksController extends Controller
                 ->get();
         }
 
-        return view('user.tasks.in-progress', compact('tasks', 'notifications'));
+        return view('user.tasks.in-progress', compact('tasks', 'notifications', 'activities'));
     }
 
     public function completed()
@@ -133,12 +214,15 @@ class TasksController extends Controller
             ->orderByDesc('tasks.created_at')
             ->get();
 
-        // Fetch notifications in latest to oldest order
         $notifications = DB::table('notifications')
             ->where('user_id', $userId)
             ->where('is_read', false)
-            ->orderByDesc('created_at') // Latest notifications first
+            ->orderByDesc('created_at')
             ->get();
+
+        $activities = UserActivity::where('user_id', $userId)
+        ->where('is_read', false)
+        ->orderByDesc('created_at')->get();
 
         foreach ($tasks as $task) {
             $task->users = DB::table('users')
@@ -148,46 +232,27 @@ class TasksController extends Controller
                 ->get();
         }
 
-        return view('user.tasks.completed', compact('tasks', 'notifications'));
-    }
-
-    public function show($id)
-    {
-        $userId = auth('web')->id();
-
-        $task = DB::table('tasks')
-            ->join('task_user', 'tasks.id', '=', 'task_user.task_id')
-            ->where('task_user.user_id', $userId)
-            ->where('tasks.id', $id)
-            ->where('tasks.archived', false)
-            ->select('tasks.*')
-            ->first();
-
-        abort_if(!$task, 404, 'Task not found or not assigned to you.');
-
-        return view('user.tasks.show', compact('task'));
+        return view('user.tasks.completed', compact('tasks', 'notifications', 'activities'));
     }
 
     public function assignTaskToUser(Request $request, $taskId)
     {
-        $userId = $request->input('user_id'); 
-    
-        // Insert the task-user relationship
+        $userId = $request->input('user_id');
+
         DB::table('task_user')->insert([
             'task_id' => $taskId,
             'user_id' => $userId,
         ]);
-    
-        // Send notification
+
         Notification::create([
             'user_id' => $userId,
             'message' => 'A new task has been assigned to you.',
+            'task_title' => 'New Task Assigned',
         ]);
-    
+
         return redirect()->route('tasks.index');
     }
 
-    
     public function markAsRead($id)
     {
         $notification = Notification::find($id);
@@ -195,5 +260,52 @@ class TasksController extends Controller
         $notification->save();
 
         return redirect()->back();
+    }
+
+    public function showForUser($id)
+    {
+        $userId = auth('web')->id();
+
+        $task = Task::whereHas('users', function ($query) use ($userId) {
+            $query->where('users.id', $userId);
+        })->findOrFail($id);
+
+        $comments = Comment::with('user')->where('task_id', $id)->get();
+
+        return view('user.tasks.tasks-view', compact('task', 'comments'));
+    }
+
+    public function storeComments(Request $request, $taskId)
+    {
+        $request->validate([
+            'comment' => 'required|string|max:500',
+        ]);
+
+        $task = Task::findOrFail($taskId);
+        $user_id = auth()->guard('admin')->check() ? auth()->guard('admin')->id() : auth()->id();
+        $userName = auth()->user()->name;
+
+        $comment = new Comment([
+            'task_id' => $task->id,
+            'user_id' => $user_id,
+            'content' => $request->comment,
+        ]);
+        $comment->save();
+
+        Notification::create([
+            'user_id' => $task->user_id ?? $user_id,
+            'message' => 'A new comment has been added to your task: ' . $task->title,
+            'task_title' => $task->title,
+        ]);
+
+        UserActivity::create([
+            'activity_type' => 'Commented on Task',
+            'activity_details' => "{$userName} commented on task: '{$task->title}'. Comment: '{$request->comment}'",
+            'user_id' => $user_id,
+            'task_id' => $task->id,
+        ]);
+
+        return redirect()->route('user.tasks.user.tasks.show', $task->id)
+                         ->with('success', 'Comment added successfully!');
     }
 }

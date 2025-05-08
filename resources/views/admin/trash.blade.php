@@ -53,7 +53,7 @@
                         <!-- Notifications -->
                         <li class="relative" x-data="{ open: false }" x-init="open = false">
                             <button @click="open = !open"
-                                class="notif-btn text-gray-400 w-8 h-8 rounded flex items-center justify-center hover:bg-gray-50 hover:text-gray-600">
+                                    class="notif-btn text-gray-400 w-8 h-8 rounded flex items-center justify-center hover:bg-gray-50 hover:text-gray-600">
                                 <i class="ri-notification-4-line"></i>
                             </button>
                             <div x-show="open" x-cloak @click.outside="open = false"
@@ -62,20 +62,33 @@
                                     <div class="text-gray-600 text-sm font-semibold mb-2">Notifications</div>
                                 </div>
                                 <ul class="my-2 max-h-64 overflow-y-auto">
-                                    <li>
-                                        <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                            <div
-                                                class="w-8 h-8 bg-yellow-500 text-white flex items-center justify-center rounded-full">
-                                                <i class="ri-checkbox-circle-line"></i>
-                                            </div>
-                                            <div class="ml-2">
-                                                <div
-                                                    class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">
-                                                    Tasks completed</div>
-                                                <div class="text-[11px] text-gray-400">from a user</div>
-                                            </div>
-                                        </a>
-                                    </li>
+                                    @foreach($activities as $activity)
+                                        @if (!$activity->is_read) 
+                                            <li>
+                                                <a href="{{ route('admin.tasks.tasks.markActivityAsRead', $activity->id) }}" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
+                                                    <div class="w-8 h-8 bg-yellow-500 text-white flex items-center justify-center rounded-full">
+                                                        <i class="ri-checkbox-circle-line"></i>
+                                                    </div>
+                                                    <div class="ml-2">
+                                                        <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">
+                                                            {{ $activity->activity_type }}
+                                                            @if($activity->task) 
+                                                                {{ $activity->task->title }}
+                                                            @else
+                                                                No Task
+                                                            @endif
+                                                        </div>
+                                                        <div class="text-[10px] text-gray-600 font-medium mt-1">
+                                                            <strong>{{ $activity->activity_details }}</strong>
+                                                        </div>
+                                                        <div class="text-[11px] text-gray-400">
+                                                            {{ \Carbon\Carbon::parse($activity->created_at)->diffForHumans() }}
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        @endif
+                                    @endforeach
                                 </ul>
                             </div>
                         </li>

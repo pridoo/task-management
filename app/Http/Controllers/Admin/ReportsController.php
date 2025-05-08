@@ -5,14 +5,15 @@ use App\Models\Message;
 use App\Models\Task;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\UserActivity; 
 
 class ReportsController extends Controller
 {
     public function showCompletedTasks()
     {
-        // Fetch completed tasks with their assigned users
+       
         $completedTasks = Task::where('status', 'completed')
-                              ->with('users')  // Eager load the users
+                              ->with('users')  
                               ->get();
         
         foreach ($completedTasks as $task) {
@@ -27,6 +28,8 @@ class ReportsController extends Controller
                 $task->status_class = 'text-gray-500';
             }
         }
+
+        $activities = UserActivity::with('task')->latest()->get(); 
         
         $messages = Message::latest()->get();
         

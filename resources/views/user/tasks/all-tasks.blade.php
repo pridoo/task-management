@@ -4,7 +4,7 @@
 
 <link rel="stylesheet" href="{{ asset('css/all-tasks.css') }}">
 
-<div class="min-h-screen bg-gray-100" x-data="{ open: false, editOpen: false }" x-init="open = false; editOpen = false">
+<div class="min-h-screen bg-gray-100" x-data="{ open: false, editOpen: false, modalOpen: false }" x-init="open = false; editOpen = false; modalOpen = false">
 
     <!-- Header -->
     <header class="fixed top-0 left-[310px] w-[calc(100%-340px)] px-4 z-50">
@@ -27,20 +27,16 @@
                                     <li>
                                         <a href="{{ route('user.notifications.read', $notification->id) }}" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                             <div class="w-10 h-10 bg-yellow-500 text-white flex items-center justify-center rounded-full">
-                            
-                                                <i class="ri-checkbox-circle-line text-lg"></i>  
+                                                <i class="ri-checkbox-circle-line text-lg"></i>
                                             </div>
                                             <div class="ml-2">
-                                    
                                                 <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">
-                                                    {{ $notification->message }}  
+                                                    {{ $notification->message }}
                                                 </div>
 
-          
                                                 <div class="text-[10px] text-gray-600 font-medium mt-1">
-                                                    <strong>{{ $notification->task_title }}</strong>  
+                                                    <strong>{{ $notification->task_title }}</strong>
                                                 </div>
-
 
                                                 <div class="text-[11px] text-gray-400">
                                                     {{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}
@@ -97,7 +93,31 @@
                         </button>
                         <div x-show="dropdownOpen" x-cloak x-transition.opacity @click.outside="dropdownOpen = false"
                              class="absolute top-full right-0 mt-2 w-40 bg-white border border-gray-200 rounded-xl shadow-lg z-50 py-2">
-                            <a href="{{ route('user.tasks.show', $task->id) }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            @php
+                                $startDateInPhilippines = \Carbon\Carbon::parse($task->start_date)->setTimezone('Asia/Manila');
+                            @endphp
+
+                            @if ($startDateInPhilippines && now()->greaterThanOrEqualTo($startDateInPhilippines) && $task->status == 'To do')
+                                <a href="{{ route('user.tasks.start', $task->id) }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    <i class="ri-checkbox-circle-line mr-2 text-lg text-gray-500"></i> Start Now
+                                </a>
+                            @else
+                                <button @click="modalOpen = true" class="flex items-center px-4 py-2 text-sm text-gray-400 cursor-not-allowed">
+                                    <i class="ri-checkbox-circle-line mr-2 text-lg text-gray-500"></i> Start Now (Not Available Yet)
+                                </button>
+                            @endif
+
+                            @if ($task->status == 'In-progress')
+                                <a href="{{ route('user.tasks.complete', $task->id) }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    <i class="ri-checkbox-circle-line mr-2 text-lg text-gray-500"></i> Complete
+                                </a>
+                            @else
+                                <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-400 cursor-not-allowed">
+                                    <i class="ri-checkbox-circle-line mr-2 text-lg text-gray-500"></i> Complete
+                                </a>
+                            @endif
+
+                            <a href="{{ route('user.tasks.user.tasks.show', $task->id) }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 <i class="ri-eye-line mr-2 text-lg text-gray-500"></i> Open
                             </a>
                         </div>
@@ -127,7 +147,7 @@
                         </span>
                     </div>
                     <div class="text-xs text-gray-500 mb-2">
-                        📅 {{ \Carbon\Carbon::parse($task->start_date)->format('D, d M h:i A') }}
+                    📅 {{ $task->end_date ? \Carbon\Carbon::parse($task->end_date)->format('D, d M Y h:i A') : 'No End Date' }}
                     </div>
                     <p class="text-sm text-gray-700 mb-3">{{ \Illuminate\Support\Str::limit($task->content, 100) }}</p>
                     <div class="mt-4">
@@ -150,6 +170,7 @@
                             @endforeach
                         </div>
                     </div>
+
                 </div>
             @empty
                 <div class="col-span-3 text-center text-gray-500 text-sm">
@@ -157,7 +178,20 @@
                 </div>
             @endforelse
         </div>
+
     </main>
+
+
+    <div x-show="modalOpen" x-cloak @click.away="modalOpen = false" class="fixed inset-0 flex justify-center items-center z-50 bg-gray-500 bg-opacity-50">
+        <div class="bg-white rounded-lg p-6 shadow-lg max-w-xs">
+            <h3 class="text-lg font-semibold text-gray-800">Cannot Start Now</h3>
+            <p class="mt-2 text-sm text-gray-600">The task's start date has not yet been reached. Please wait until the start date to begin the task.</p>
+            <div class="mt-4 flex justify-end space-x-2">
+                <button @click="modalOpen = false" class="bg-gray-300 text-gray-700 px-4 py-2 rounded">Close</button>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script src="//unpkg.com/alpinejs" defer></script>
