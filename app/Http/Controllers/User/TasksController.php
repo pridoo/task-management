@@ -31,7 +31,9 @@ class TasksController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-        $activities = UserActivity::where('user_id', $userId)->orderByDesc('created_at')->get();
+        $activities = UserActivity::where('user_id', $userId)
+        ->where('is_read', false)
+        ->orderByDesc('created_at')->get();
 
         // Create notification if task is new
         foreach ($tasks as $task) {
@@ -150,7 +152,9 @@ class TasksController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-        $activities = UserActivity::where('user_id', $userId)->orderByDesc('created_at')->get();
+        $activities = UserActivity::where('user_id', $userId)
+        ->where('is_read', false)
+        ->orderByDesc('created_at')->get();
 
         foreach ($tasks as $task) {
             $task->users = DB::table('users')
@@ -182,7 +186,9 @@ class TasksController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-        $activities = UserActivity::where('user_id', $userId)->orderByDesc('created_at')->get();
+        $activities = UserActivity::where('user_id', $userId)
+        ->where('is_read', false)
+        ->orderByDesc('created_at')->get();
 
         foreach ($tasks as $task) {
             $task->users = DB::table('users')
@@ -214,7 +220,9 @@ class TasksController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-        $activities = UserActivity::where('user_id', $userId)->orderByDesc('created_at')->get();
+        $activities = UserActivity::where('user_id', $userId)
+        ->where('is_read', false)
+        ->orderByDesc('created_at')->get();
 
         foreach ($tasks as $task) {
             $task->users = DB::table('users')

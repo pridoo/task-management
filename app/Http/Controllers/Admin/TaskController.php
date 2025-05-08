@@ -6,7 +6,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Models\Message;
 use App\Models\Comment;
-use App\Models\UserActivity; // Importing the UserActivity model
+use App\Models\UserActivity; 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 

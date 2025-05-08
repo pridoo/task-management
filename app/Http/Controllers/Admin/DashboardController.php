@@ -13,6 +13,8 @@ class DashboardController extends Controller
         $messages = Message::latest()->get();
         $allTasks = Task::all();
 
+        $activities = UserActivity::with('task')->latest()->get(); 
+
         $completedTasks = Task::where('status', 'completed')->get();
         $inProgressCount = Task::where('status', 'in-progress')->count();
         $toDoCount = Task::where('status', 'to do')->count();
