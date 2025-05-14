@@ -14,17 +14,22 @@ class ReplyToMessageMail extends Mailable
     use Queueable, SerializesModels;
 
     public $replyBody;
+    public $recipientName;
 
-    public function __construct($replyBody)
+    public function __construct($replyBody, $recipientName)
     {
         $this->replyBody = $replyBody;
+        $this->recipientName = $recipientName;
     }
 
     public function build()
     {
         return $this->subject('Reply from Admin')
                     ->view('emails.reply')
-                    ->with(['replyBody' => $this->replyBody]);
+                    ->with([
+                        'replyBody' => $this->replyBody,
+                        'recipientName' => $this->recipientName,
+                    ]);
     }
 }
 

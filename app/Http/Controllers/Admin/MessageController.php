@@ -67,7 +67,9 @@ class MessageController extends Controller
         $message = Message::findOrFail($id);
     
         try {
-            Mail::to($message->email)->send(new ReplyToMessageMail($request->reply_body));
+            Mail::to($message->email)->send(
+                new ReplyToMessageMail($request->reply_body, $message->name)
+            );
             return redirect()->route('admin.messages.reply-form', $id)->with('success', 'Reply sent to ' . $message->email);
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to send email: ' . $e->getMessage());

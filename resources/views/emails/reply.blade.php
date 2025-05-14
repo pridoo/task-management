@@ -61,7 +61,7 @@
         </div>
 
         <div class="email-body">
-            <p>Hello,</p>
+            <p>Hello, {{ $recipientName }} 👋</p>
 
             <p>{{ $replyBody }}</p>
 
