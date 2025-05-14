@@ -50,9 +50,9 @@
         <div
             class="hidden peer-checked:flex flex-col sm:flex sm:flex-row gap-4 sm:gap-4 mt-4 sm:mt-0 absolute sm:static top-full right-6 sm:right-0 bg-white sm:bg-transparent p-4 sm:p-0 rounded-lg shadow sm:shadow-none z-10">
             <a class="rounded-xl border-2 border-orange-600 px-6 py-2 font-medium text-orange-600 bg-white hover:bg-orange-600 hover:text-white"
-            href="{{ route('login') }}">Login</a>
+                href="{{ route('login') }}">Login</a>
             <a class=" rounded-xl border-2 border-orange-600 px-6 py-2 font-medium text-white bg-orange-600 hover:bg-white hover:text-orange-600"
-            href="{{ route('register') }}">Get Started</a>
+                href="{{ route('register') }}">Get Started</a>
         </div>
     </nav>
 
@@ -70,6 +70,20 @@
                 class="w-16 h-16">
         </div>
     </footer>
+
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/681c2d76bb34c9190ac188fd/1iqn13639';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
 
     <script src="https://unpkg.com/flowbite@1.4.0/dist/flowbite.js"></script>
     <script>
