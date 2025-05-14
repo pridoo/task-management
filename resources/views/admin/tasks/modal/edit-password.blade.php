@@ -1,6 +1,7 @@
 <div x-show="editOpen" x-cloak x-transition.opacity class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
     <div @click.outside="editOpen = false" class="w-full max-w-lg bg-white p-6 rounded-xl shadow-xl border border-gray-200">
         <form :action="`/admin/change-password/${selectedUser.id}`" method="POST" onsubmit="return validatePasswords();">
+
             @csrf
             @method('PUT')
 
@@ -32,6 +33,7 @@
             <div class="flex justify-end">
                 <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600">Update Password</button>
             </div>
+
 
 
             

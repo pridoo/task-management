@@ -64,9 +64,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'admin'])->gro
     Route::prefix('messages')->name('messages.')->group(function () {
         Route::get('/', [MessageController::class, 'index'])->name('index'); 
         Route::get('/{id}', [MessageController::class, 'show'])->name('show');
-        Route::post('/submit', [MessageController::class, 'store'])->name('submit'); 
+        Route::delete('/{id}/delete', [MessageController::class, 'destroy'])->name('delete');;
+        
+    
+        // New routes added:
+        Route::get('/{id}/reply-form', [MessageController::class, 'replyForm'])->name('reply-form');
+        Route::post('/{id}/reply', [MessageController::class, 'reply'])->name('reply');
     });
-
 
     Route::get('/dashboard', [DashboardController::class, 'dynamicTasks'])->name('dashboard');
 });
@@ -120,6 +124,8 @@ Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/register', [AuthController::class, 'store'])->name('auth.register.store');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-//Message
-Route::get('admin/message-reply', fn() => view('admin.message-reply'))->name('message-reply');
+
 Route::get('admin/task-view', fn() => view('admin.task-view'))->name('task-view');
+
+
+Route::post('/admin/messages/submit', [MessageController::class, 'store'])->name('admin.messages.submit');

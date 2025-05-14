@@ -5,6 +5,8 @@ use App\Models\Message;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\UserActivity;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReplyToMessageMail;
 
 class MessageController extends Controller
 {
@@ -48,6 +50,40 @@ class MessageController extends Controller
         $activities = UserActivity::with('task')->latest()->get(); 
         
         return view('admin.message.show', compact('message', 'activities'));
+    }
+
+    public function replyForm($id)
+    {
+        $message = Message::findOrFail($id);
+        return view('admin.message-reply', compact('message'));
+    }
+    
+    public function reply(Request $request, $id)
+    {
+        $request->validate([
+            'reply_body' => 'required|string',
+        ]);
+    
+        $message = Message::findOrFail($id);
+    
+        try {
+            Mail::to($message->email)->send(new ReplyToMessageMail($request->reply_body));
+            return redirect()->route('admin.messages.reply-form', $id)->with('success', 'Reply sent to ' . $message->email);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to send email: ' . $e->getMessage());
+        }
+    }
+
+    public function destroy($id)
+    {
+        $message = Message::findOrFail($id);
+
+        try {
+            $message->delete();
+            return back()->with('success', 'Message deleted successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to delete message: ' . $e->getMessage());
+        }
     }
 
 }

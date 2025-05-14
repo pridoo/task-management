@@ -1,187 +1,143 @@
 @extends('layouts.admin')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/all-tasks.css') }}">
 
-    <link rel="stylesheet" href="{{ asset('css/all-tasks.css') }}">
+<style>
+    .modal-enter { opacity: 0; transform: scale(0.95); }
+    .modal-enter-active { opacity: 1; transform: scale(1); transition: all 0.3s ease-in-out; }
+</style>
 
-    <div class="min-h-screen bg-gray-100" x-data="{ open: false, editOpen: false }" x-init="open = false; editOpen = false">
+<div class="min-h-screen bg-gray-100">
+    <main class="pt-24 px-6 ml-64">
 
-        <!-- Header -->
-        <header class="fixed top-0 left-[310px] w-[calc(100%-340px)] px-4 z-50">
-            <div class="max-w-6xl mx-auto bg-white shadow rounded-md border border-gray-200 px-6 py-4">
-                <div class="flex justify-end items-center">
-                    <ul class="flex items-center space-x-4">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-semibold text-gray-800">Reply to Message</h2>
+        </div>
 
-                        <!-- Messages -->
-                        <li class="relative" x-data="{ open: false }" x-init="open = false">
-                            <button @click="open = !open"
-                                class="msg-btn text-gray-400 w-8 h-8 rounded flex items-center justify-center hover:bg-gray-50 hover:text-gray-600">
-                                <i class="ri-chat-1-line"></i>
-                            </button>
-                            <div x-show="open" x-cloak @click.outside="open = false"
-                                class="absolute right-0 mt-2 max-w-xs w-80 bg-white rounded-md border border-gray-100 shadow-md z-30">
-                                <div class="px-4 pt-4 border-b border-gray-100">
-                                    <div class="text-gray-600 text-sm font-semibold mb-2">Messages</div>
-                                </div>
-                                <ul class="my-2 max-h-64 overflow-y-auto">
-                                    <li>
-                                        <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                            <div
-                                                class="w-8 h-8 bg-blue-500 text-white flex items-center justify-center rounded-full">
-                                                <i class="ri-user-3-line"></i>
-                                            </div>
-                                            <div class="ml-2">
-                                                <div
-                                                    class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">
-                                                    John Doe</div>
-                                                <div class="text-[11px] text-gray-400">Hello there!</div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+        <div class="w-full bg-white border shadow-xl rounded-lg p-6">
+            <!-- Back Button -->
+            <div class="mb-6">
+                <button onclick="showUnsavedModal('{{ route('admin.messages.index') }}')"
+                        class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm font-medium rounded-lg shadow-sm transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M15 19l-7-7 7-7"/>
+                    </svg>
+                    Back to Inbox
+                </button>
+            </div>
 
-                        <!-- Notifications -->
-                        <li class="relative" x-data="{ open: false }" x-init="open = false">
-                            <button @click="open = !open"
-                                class="notif-btn text-gray-400 w-8 h-8 rounded flex items-center justify-center hover:bg-gray-50 hover:text-gray-600">
-                                <i class="ri-notification-4-line"></i>
-                            </button>
-                            <div x-show="open" x-cloak @click.outside="open = false"
-                                class="absolute right-0 mt-2 max-w-xs w-80 bg-white rounded-md border border-gray-100 shadow-md z-30">
-                                <div class="px-4 pt-4 border-b border-gray-100">
-                                    <div class="text-gray-600 text-sm font-semibold mb-2">Notifications</div>
-                                </div>
-                                <ul class="my-2 max-h-64 overflow-y-auto">
-                                    <li>
-                                        <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                            <div
-                                                class="w-8 h-8 bg-yellow-500 text-white flex items-center justify-center rounded-full">
-                                                <i class="ri-checkbox-circle-line"></i>
-                                            </div>
-                                            <div class="ml-2">
-                                                <div
-                                                    class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">
-                                                    Tasks completed</div>
-                                                <div class="text-[11px] text-gray-400">from a user</div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                    </ul>
+            <!-- Reply Form -->
+            <form id="replyForm" action="{{ route('admin.messages.reply', $message->id) }}" method="POST">
+                @csrf
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2">To:</label>
+                    <input type="text" name="to" value="{{ $message->email }}" readonly
+                           class="w-full px-4 py-2 border border-gray-300 rounded bg-gray-100 text-gray-700">
                 </div>
-            </div>
-        </header>
 
-        <main class="pt-24 px-6 ml-64">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-semibold text-gray-800">Messages</h2>
-            </div>
-
-            <div class="w-full bg-white border-2 shadow-xl rounded-lg flex overflow-x-auto custom-scrollbar">
-                <div class="flex-1 px-2">
-                    <div class="h-16 flex items-center">
-                        <h4 class="text-lg font-bold">New Message</h4>
-                    </div>
-                    <div class="mb-6 pt-4">
-                        <div>
-                            <input type="text" name="to" id="to"
-                                class="w-full text-gray-700 py-1 border-b border-b-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:border-b-gray-300"
-                                placeholder="To">
-                        </div>
-                        <div>
-                            <input type="text" name="cc" id="cc"
-                                class="w-full text-gray-700 py-1 border-b border-b-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:border-b-gray-300"
-                                placeholder="Cc">
-                        </div>
-                        <div>
-                            <input type="text" name="bcc" id="bcc"
-                                class="w-full text-gray-700 py-1 border-b border-b-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:border-b-gray-300"
-                                placeholder="Bcc">
-                        </div>
-                        <div>
-                            <textarea id="body"
-                                class="w-full h-64 text-gray-700 border-b border-b-gray-300 focus:outline-none focus:ring-0 focus:border-transparent focus:border-b-gray-300"
-                                placeholder="Message..."></textarea>
-                        </div>
-                        <div class="flex items-center space-x-2 my-2">
-                            <div
-                                class="w-40 flex items-center justify-between text-gray-600 px-2 py-1.5  border border-gray-400 rounded-lg hover:bg-gray-200">
-                                <div class="w-28 flex items-center space-x-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                                            d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z">
-                                        </path>
-                                    </svg>
-                                    <span class="text-sm truncate">Review.zip</span>
-                                </div>
-                                <button class="hover:text-gray-900" title="Remove">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
-                                        fill="currentColor">
-                                        <path fill-rule="evenodd"
-                                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                            clip-rule="evenodd"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div
-                                class="w-40 flex items-center justify-between text-gray-600 px-2 py-1.5  border border-gray-400 rounded-lg hover:bg-gray-200">
-                                <div class="w-28 flex items-center space-x-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                                            d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z">
-                                        </path>
-                                    </svg>
-                                    <span class="text-sm truncate">Approve.zip</span>
-                                </div>
-                                <button class="hover:text-gray-900" title="Remove">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
-                                        fill="currentColor">
-                                        <path fill-rule="evenodd"
-                                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                            clip-rule="evenodd"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between mt-4">
-                            <div class="flex items-center space-x-2">
-                                <button
-                                    class="bg-blue-500 hover:bg-blue-700 rounded-lg px-12 py-1.5 text-gray-100 hover:shadow-xl transition duration-150">Send</button>
-                                <button title="Attach Files">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="h-6 w-6 text-gray-500 hover:text-gray-700" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13">
-                                        </path>
-                                    </svg>
-                                </button>
-                            </div>
-                            <button class="mr-4 text-gray-700 hover:text-gray-900" title="Delete">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                    </path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2">Your Reply:</label>
+                    <textarea name="reply_body" id="replyBody" rows="8" required
+                              class="w-full px-4 py-2 border border-gray-300 rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              placeholder="Type your reply here..."></textarea>
                 </div>
+
+                <button type="submit"
+                        class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+                    Send Reply
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Success/Error Modal -->
+    @if(session('success') || session('error'))
+    <div id="feedbackModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white w-full max-w-md p-6 rounded-lg shadow-lg text-center border
+            {{ session('success') ? 'border-green-500' : 'border-red-500' }}">
+            <h3 class="text-lg font-bold mb-4 text-center
+                {{ session('success') ? 'text-green-600' : 'text-red-600' }}">
+                {{ session('success') ? 'Success!' : 'Error!' }}
+            </h3>
+            <p class="text-gray-700 text-sm text-center mb-4">
+                {{ session('success') ?? session('error') }}
+            </p>
+            <div class="flex justify-center">
+                <button onclick="document.getElementById('feedbackModal').remove()"
+                        class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 transition">
+                    Close
+                </button>
             </div>
-
-
-        </main>
+        </div>
     </div>
 
-    <!-- AlpineJS -->
-    <script src="//unpkg.com/alpinejs" defer></script>
+    @if(session('success'))
+    <script>
+        setTimeout(function () {
+            window.location.href = "{{ route('admin.messages.index') }}";
+        }, 2000);
+    </script>
+    @endif
+    @endif
 
+    <!-- Unsaved Changes Modal -->
+    <div id="unsavedModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white w-full max-w-md p-6 rounded-lg shadow-xl text-center">
+            <h2 class="text-xl font-semibold text-red-600 mb-2">Unsaved Changes</h2>
+            <p class="text-gray-700 text-sm mb-6">You have unsaved changes. Are you sure you want to leave?</p>
+            <div class="flex justify-center gap-4">
+                <button id="confirmLeaveBtn"
+                        class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition">
+                    Leave Anyway
+                </button>
+                <button onclick="closeUnsavedModal()"
+                        class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition">
+                    Stay Here
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let isDirty = false;
+    let leaveUrl = null;
+
+    document.getElementById('replyBody').addEventListener('input', () => {
+        isDirty = true;
+    });
+
+    document.getElementById('replyForm').addEventListener('submit', () => {
+        isDirty = false;
+    });
+
+    window.addEventListener('beforeunload', function (e) {
+        if (isDirty) {
+            e.preventDefault();
+            e.returnValue = '';
+        }
+    });
+
+    function showUnsavedModal(targetUrl) {
+        if (isDirty) {
+            leaveUrl = targetUrl;
+            document.getElementById('unsavedModal').classList.remove('hidden');
+            document.getElementById('unsavedModal').classList.add('flex');
+        } else {
+            window.location.href = targetUrl;
+        }
+    }
+
+    function closeUnsavedModal() {
+        document.getElementById('unsavedModal').classList.remove('flex');
+        document.getElementById('unsavedModal').classList.add('hidden');
+    }
+
+    document.getElementById('confirmLeaveBtn')?.addEventListener('click', function () {
+        if (leaveUrl) window.location.href = leaveUrl;
+    });
+</script>
 @endsection

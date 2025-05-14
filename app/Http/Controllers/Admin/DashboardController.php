@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Models\Message;
 use App\Http\Controllers\Controller;
 use App\Models\Task;
@@ -24,7 +25,7 @@ class DashboardController extends Controller
         foreach ($allTasks as $task) {
             $status = strtolower(trim($task->status ?? ''));
 
-     
+            // Default display values
             $task->status_label = 'To do'; 
             $task->status_class = 'bg-red-500'; 
             $task->status_detail_label = 'To do';
@@ -46,19 +47,18 @@ class DashboardController extends Controller
                 $task->status_label = 'Completed'; 
                 $task->status_class = 'bg-green-500';
 
-              
-                if (!empty($task->start_date) && !empty($task->end_date)) {
-                    $completedAt = Carbon::parse($task->start_date)->startOfMinute();
-                    $endDate = Carbon::parse($task->end_date)->startOfMinute();
+                if (!empty($task->completed_date) && !empty($task->end_date)) {
+                    $completedAt = Carbon::parse($task->completed_date)->startOfMinute();
+                    $deadline = Carbon::parse($task->end_date)->startOfMinute();
 
-                    if ($completedAt->gt($endDate)) {
+                    if ($completedAt->gt($deadline)) {
                         $task->status_detail_label = 'Done late';
                         $task->status_text_class = 'text-red-500';
-                    } elseif ($completedAt->lt($endDate)) {
+                    } elseif ($completedAt->lt($deadline)) {
                         $task->status_detail_label = 'Done early';
                         $task->status_text_class = 'text-blue-500';
                     } else {
-                        $task->status_detail_label = 'Done';
+                        $task->status_detail_label = 'Done on time';
                         $task->status_text_class = 'text-green-500';
                     }
                 } else {

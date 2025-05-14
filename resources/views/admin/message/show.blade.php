@@ -69,7 +69,7 @@
                                                 </div>
                                                 <div class="ml-2">
                                                     <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">
-                                                        {{ $activity->activity_type }}
+                                           
                                                         @if($activity->task) 
                                                             {{ $activity->task->title }}
                                                         @else
@@ -80,7 +80,7 @@
                                                         <strong>{{ $activity->activity_details }}</strong>
                                                     </div>
                                                     <div class="text-[11px] text-gray-400">
-                                                        {{ \Carbon\Carbon::parse($activity->created_at)->diffForHumans() }}
+                                                        {{ Carbon::parse($activity->created_at)->diffForHumans() }}
                                                     </div>
                                                 </div>
                                             </a>
@@ -138,7 +138,7 @@
                     </div>
 
                     <div class="mt-8 flex items-center space-x-4">
-                        <a href="{{ url('admin/message-reply') }}"
+                        <a href="{{ route('admin.messages.reply-form', $message->id) }}"
                             class="w-32 flex items-center justify-center space-x-2 py-1.5 text-gray-600 border border-gray-400 rounded-lg hover:bg-gray-200">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd"
