@@ -17,7 +17,8 @@ class Task extends Model
         'status',
         'admin_id',
         'attachment',
-        'picture'
+        'completed_date',
+        'is_late',
     ];
 
     /**
@@ -27,8 +28,7 @@ class Task extends Model
     {
 
         return $this->belongsToMany(User::class, 'task_user', 'task_id', 'user_id');
-        // Many-to-many relationship between tasks and users
-        return $this->belongsToMany(User::class, 'task_user', 'task_id', 'user_id');
+
     }
 
     /**

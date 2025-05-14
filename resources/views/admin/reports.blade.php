@@ -73,7 +73,7 @@
                                                 </div>
                                                 <div class="ml-2">
                                                     <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">
-                                                        {{ $activity->activity_type }}
+                                                  
                                                         @if($activity->task) 
                                                             {{ $activity->task->title }}
                                                         @else

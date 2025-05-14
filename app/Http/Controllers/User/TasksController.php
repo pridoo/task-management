@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\User;
-
+use Carbon\Carbon;
 use App\Models\UserActivity;
 use App\Models\Task;
 use App\Models\User;
@@ -35,7 +35,7 @@ class TasksController extends Controller
         ->where('is_read', false)
         ->orderByDesc('created_at')->get();
 
-        // Create notification if task is new
+     
         foreach ($tasks as $task) {
             $existingNotification = DB::table('notifications')
                 ->where('user_id', $userId)
@@ -65,50 +65,56 @@ class TasksController extends Controller
 
     public function startTask($id)
     {
-        $task = Task::find($id);
-
-        if ($task->start_date && now()->greaterThanOrEqualTo($task->start_date)) {
-            if ($task->status == 'To do') {
+        $task = Task::findOrFail($id);
+    
+   
+        $nowPH = Carbon::now('Asia/Manila');
+        $startPH = Carbon::parse($task->start_date)->timezone('Asia/Manila');
+    
+        if ($startPH && $nowPH->greaterThanOrEqualTo($startPH)) {
+            if ($task->status === 'To do') {
                 $task->status = 'In-progress';
-                $task->started_date = now();
+                $task->started_date = $nowPH; 
                 $task->save();
-
+    
                 Notification::create([
                     'user_id' => auth('web')->id(),
                     'message' => 'You have started the task: ' . $task->title,
                     'task_title' => $task->title,
                 ]);
-
-                $userName = auth('web')->user()->name;
+    
                 UserActivity::create([
                     'user_id' => auth('web')->id(),
                     'activity_type' => 'Started Task',
                     'task_id' => $task->id,
-                    'activity_details' => "{$userName} started the task: '{$task->title}'",
+                    'activity_details' => auth('web')->user()->name . " started the task: '{$task->title}'",
                 ]);
             }
         } else {
-            return redirect()->route('user.tasks.index')->with('error', 'The start date has not yet been reached.');
+            return redirect()->route('user.tasks.index')->with('error', 'The start date and time has not yet been reached.');
         }
-
+    
         return redirect()->route('user.tasks.index');
     }
-
+    
     public function completeTask($id)
     {
-        $task = Task::find($id);
-
-        if ($task->status == 'In-progress') {
+        $task = Task::findOrFail($id);
+    
+        if ($task->status === 'In-progress') {
+            $nowPH = Carbon::now('Asia/Manila');
+    
             $task->status = 'Completed';
-            $task->end_date = now();
+            $task->completed_date = $nowPH; 
+            $task->is_late = $this->isTaskLate($task); 
             $task->save();
-
+    
             Notification::create([
                 'user_id' => auth('web')->id(),
                 'message' => 'You have completed the task: ' . $task->title,
                 'task_title' => $task->title,
             ]);
-
+    
             $userName = auth('web')->user()->name;
             UserActivity::create([
                 'user_id' => auth('web')->id(),
@@ -116,21 +122,15 @@ class TasksController extends Controller
                 'task_id' => $task->id,
                 'activity_details' => "{$userName} completed the task: '{$task->title}'",
             ]);
-
-            $isLate = $this->isTaskLate($task);
-            if ($isLate) {
-                $task->is_late = true;
-                $task->save();
-            }
         }
-
+    
         return redirect()->route('user.tasks.index');
     }
+    
 
-    public function isTaskLate($task)
+    private function isTaskLate($task)
     {
-        $currentDate = now();
-        return $currentDate > $task->end_date && $task->end_date < $task->deadline;
+        return $task->end_date && now()->greaterThan($task->end_date);
     }
 
     public function todo()

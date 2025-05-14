@@ -100,7 +100,7 @@
                                                     </div>
                                                     <div class="ml-2">
                                                         <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">
-                                                            {{ $activity->activity_type }}
+                                                           
                                                             @if($activity->task) 
                                                                 {{ $activity->task->title }}
                                                             @else
@@ -326,9 +326,21 @@
                             </div>
                             <div>
                                 <label class="block font-medium text-gray-600 mb-1">Replace Attachment</label>
-                                <input type="file" name="attachment"
-                                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+
+            
+                                <input type="file" name="attachment" id="replaceAttachment" class="hidden" />
+                             
+                                <label for="replaceAttachment"
+                                    class="w-full flex items-center justify-between px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-100 transition h-[42px] cursor-pointer">
+                                    <span>Replace Attachment</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16.88 3.549a5.5 5.5 0 00-7.78 0L3.514 9.135a5.5 5.5 0 007.778 7.778l6.364-6.364a2.5 2.5 0 10-3.536-3.536L8.464 10.95" />
+                                    </svg>
+                                </label>
                             </div>
+
                         </div>
 
                         <!-- Submit -->
@@ -445,8 +457,16 @@
         // Set form fields
         document.getElementById('editTaskTitle').value = title;
         document.getElementById('editTaskContent').value = content;
-        document.getElementById('editTaskStartDate').value = startDate;
-        document.getElementById('editTaskEndDate').value = endDate;
+
+        const formatDateTimeLocal = (dateTimeString) => {
+            const date = new Date(dateTimeString);
+            const pad = (n) => n.toString().padStart(2, '0');
+            return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+        };
+
+        document.getElementById('editTaskStartDate').value = formatDateTimeLocal(startDate);
+        document.getElementById('editTaskEndDate').value = formatDateTimeLocal(endDate);
+
 
      
         let assignedUserIds = JSON.parse(assignedUsers);

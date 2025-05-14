@@ -85,13 +85,23 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">Upload A Picture</label>
-                    <input type="file" name="picture" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" />
-                </div>
-                <div>
                     <label class="block text-sm font-medium text-gray-600 mb-1">Attachment</label>
-                    <input type="file" name="attachment" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" />
+                    <div class="relative">
+                  
+                        <input type="file" name="attachment" id="attachment" class="hidden" />
+                        
+                 
+                        <label for="attachment" class="w-full flex items-center justify-between px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-100 transition h-[42px]">
+                            <span>Attachment</span>
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.88 3.549a5.5 5.5 0 00-7.78 0L3.514 9.135a5.5 5.5 0 007.778 7.778l6.364-6.364a2.5 2.5 0 10-3.536-3.536L8.464 10.95" />
+                            </svg>
+                        </label>
+
+                    </div>
                 </div>
+
             </div>
 
             <!-- Submit -->

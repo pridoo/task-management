@@ -6,7 +6,7 @@
 
             <h3 class="text-xl font-semibold mb-4">Change Password for <span x-text="selectedUser.name"></span></h3>
 
-            <!-- New Password -->
+       
             <div class="mb-4">
                 <label for="new_password" class="block text-sm font-medium text-gray-700">New Password</label>
                 <input type="password" name="new_password" id="new_password" 
@@ -17,7 +17,7 @@
                        title="Password must be at least 8 characters long and contain at least one number.">
             </div>
 
-            <!-- Confirm New Password -->
+
             <div class="mb-4">
                 <label for="new_password_confirmation" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
                 <input type="password" name="new_password_confirmation" id="new_password_confirmation" 
@@ -32,6 +32,9 @@
             <div class="flex justify-end">
                 <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600">Update Password</button>
             </div>
+
+
+            
         </form>
     </div>
 </div>
@@ -46,5 +49,9 @@
         }
 
         return true;
+    }
+
+    function closeModal() {
+        document.querySelector('.fixed.inset-0').style.display = 'none';
     }
 </script>

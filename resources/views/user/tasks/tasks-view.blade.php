@@ -93,19 +93,16 @@
                         <div class="mb-2 text-[#444] font-bold text-base">Attachments</div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 mb-6">
-                            @php
-                                // Decode the attachment if it's a JSON string, otherwise wrap in array
-                                $attachments = is_string($task->attachment) ? json_decode($task->attachment, true) : [$task->attachment];
-                            @endphp
-
-                            @forelse ($attachments as $file)
+                            @if($task->attachment)
                                 @php
+                                    $file = $task->attachment;
                                     $filename = basename($file);
-                                    $url = Storage::url($file); // Generate the public URL for the attachment
-                                    $size = round(Storage::size($file) / 1024 / 1024, 1) . ' MB'; // Get file size
                                     $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-                                    
-                                    // Icon mapping for different file extensions
+                                    $size = \Illuminate\Support\Facades\Storage::exists($file)
+                                        ? round(\Illuminate\Support\Facades\Storage::size($file) / 1024 / 1024, 1) . ' MB'
+                                        : 'Unknown size';
+                                    $url = \Illuminate\Support\Facades\Storage::url($file);
+
                                     $iconMap = [
                                         'pdf' => 'pdf-icon.png',
                                         'doc' => 'word-icon.png',
@@ -118,27 +115,35 @@
                                         'txt' => 'text-icon.png',
                                         'zip' => 'zip-icon.png',
                                     ];
+
                                     $icon = asset('icons/' . ($iconMap[$extension] ?? 'file-icon.svg'));
                                 @endphp
 
-                                <a href="{{ $url }}" target="_blank" class="flex items-center justify-between border border-gray-300 rounded-lg p-3 shadow-sm hover:bg-gray-50 transition">
+                                <a href="{{ $url }}" target="_blank"
+                                    class="flex items-center justify-between border border-gray-300 rounded-lg p-3 shadow-sm hover:bg-gray-50 transition">
                                     <div class="flex items-center space-x-3">
                                         <!-- File Icon -->
                                         <img src="{{ $icon }}" alt="File icon" class="w-4 h-4" />
+
                                         <!-- File Info -->
                                         <div>
-                                            <p class="font-semibold text-sm text-gray-800 truncate max-w-[180px]">{{ $filename }}</p>
+                                            <p class="font-semibold text-sm text-gray-800 truncate max-w-[180px]">
+                                                {{ $filename }}
+                                            </p>
                                             <p class="text-xs text-gray-500">{{ $size }}</p>
                                         </div>
                                     </div>
+
                                     <!-- View Icon -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-gray-500 hover:text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-gray-500 hover:text-gray-700"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                 </a>
-                            @empty
+                            @else
                                 <p class="text-sm text-gray-500">No attachments uploaded.</p>
-                            @endforelse
+                            @endif
                         </div>
 
                         <!-- Divider -->

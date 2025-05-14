@@ -11,7 +11,6 @@
         <div class="max-w-6xl mx-auto bg-white shadow rounded-md border border-gray-200 px-6 py-4">
             <div class="flex justify-end items-center">
                 <ul class="flex items-center space-x-4">
-
                     <!-- Notifications -->
                     <li class="relative" x-data="{ open: false }" x-init="open = false">
                         <button @click="open = !open" class="notif-btn text-gray-400 w-8 h-8 rounded flex items-center justify-center hover:bg-gray-50 hover:text-gray-600">
@@ -33,11 +32,9 @@
                                                 <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">
                                                     {{ $notification->message }}
                                                 </div>
-
                                                 <div class="text-[10px] text-gray-600 font-medium mt-1">
                                                     <strong>{{ $notification->task_title }}</strong>
                                                 </div>
-
                                                 <div class="text-[11px] text-gray-400">
                                                     {{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}
                                                 </div>
@@ -48,10 +45,8 @@
                                     <li>No new notifications</li>
                                 @endforelse
                             </ul>
-
                         </div>
                     </li>
-
                 </ul>
             </div>
         </div>
@@ -95,9 +90,10 @@
                              class="absolute top-full right-0 mt-2 w-40 bg-white border border-gray-200 rounded-xl shadow-lg z-50 py-2">
                             @php
                                 $startDateInPhilippines = \Carbon\Carbon::parse($task->start_date)->setTimezone('Asia/Manila');
+                                $nowInPhilippines = now('Asia/Manila');
                             @endphp
 
-                            @if ($startDateInPhilippines && now()->greaterThanOrEqualTo($startDateInPhilippines) && $task->status == 'To do')
+                            @if ($startDateInPhilippines && $nowInPhilippines->greaterThanOrEqualTo($startDateInPhilippines) && $task->status == 'To do')
                                 <a href="{{ route('user.tasks.start', $task->id) }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                     <i class="ri-checkbox-circle-line mr-2 text-lg text-gray-500"></i> Start Now
                                 </a>
@@ -147,7 +143,7 @@
                         </span>
                     </div>
                     <div class="text-xs text-gray-500 mb-2">
-                    📅 {{ $task->end_date ? \Carbon\Carbon::parse($task->end_date)->format('D, d M Y h:i A') : 'No End Date' }}
+                        📅 {{ $task->end_date ? \Carbon\Carbon::parse($task->end_date)->format('D, d M Y h:i A') : 'No End Date' }}
                     </div>
                     <p class="text-sm text-gray-700 mb-3">{{ \Illuminate\Support\Str::limit($task->content, 100) }}</p>
 
@@ -190,10 +186,9 @@
                 </div>
             @endforelse
         </div>
-
     </main>
 
-
+    <!-- Modal -->
     <div x-show="modalOpen" x-cloak @click.away="modalOpen = false" class="fixed inset-0 flex justify-center items-center z-50 bg-gray-500 bg-opacity-50">
         <div class="bg-white rounded-lg p-6 shadow-lg max-w-xs">
             <h3 class="text-lg font-semibold text-gray-800">Cannot Start Now</h3>

@@ -113,7 +113,6 @@
                     <table class="min-w-[700px] w-full text-sm text-left text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
-                                <th class="px-4 py-3"><input type="checkbox"></th>
                                 <th class="px-4 py-3">Title</th>
                                 <th class="px-4 py-3">Priority</th>
                                 <th class="px-4 py-3">Stage</th>
@@ -124,7 +123,6 @@
                         <tbody>
                             @foreach ($tasks as $task)
                                 <tr class="bg-white border-b hover:bg-gray-50">
-                                    <td class="px-4 py-3"><input type="checkbox"></td>
                                     <td class="px-4 py-3">{{ $task->title }}</td>
                                     <td class="px-4 py-3">{{ $task->priority }}</td>
                                     <td class="px-4 py-3">

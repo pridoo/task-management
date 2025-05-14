@@ -24,7 +24,7 @@ class TaskController extends Controller
 
         $messages = Message::latest()->get();
 
-        // Fetching all user activities related to tasks (for Admin)
+
         $activities = UserActivity::with('task')->latest()->get(); 
 
         return view('admin.tasks.all-tasks', compact('tasks', 'users', 'assignedUsers', 'messages', 'activities'));
@@ -86,7 +86,6 @@ class TaskController extends Controller
             'assigned_to' => 'required|array',
             'assigned_to.*' => 'exists:users,id',
             'attachment' => 'nullable|file',
-            'picture' => 'nullable|image',
         ]);
     
         $data = $request->all();
@@ -213,14 +212,14 @@ class TaskController extends Controller
 
     public function markActivityAsRead($id)
     {
-        // Find the activity and mark it as read
+    
         $activity = UserActivity::find($id);
         if ($activity) {
-            $activity->is_read = true;  // Set the is_read flag to true
-            $activity->save();  // Save the changes
+            $activity->is_read = true;  
+            $activity->save();  
         }
     
-        // Redirect to the related task based on the activity's task ID
+        
         return redirect()->route('admin.tasks.user.tasks.show', $activity->task_id);
     }
 }
