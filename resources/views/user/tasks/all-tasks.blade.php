@@ -113,7 +113,7 @@
                                 </a>
                             @endif
 
-                            <a href="{{ route('user.tasks.user.tasks.show', $task->id) }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <a href="{{ route('user.tasks.show', $task->id) }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 <i class="ri-eye-line mr-2 text-lg text-gray-500"></i> Open
                             </a>
                         </div>

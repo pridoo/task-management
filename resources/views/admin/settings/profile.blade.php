@@ -107,6 +107,7 @@
                         <form action="{{ route('admin.settings.profile.update') }}" method="POST" enctype="multipart/form-data" class="w-full space-y-4 mt-4" id="profileForm">
                             @csrf
 
+                            
                             <div class="relative group mb-18 flex justify-center">
                                 <div class="relative">
                                     <div class="relative w-40 h-40 rounded-full bg-gray-200 flex items-center justify-center text-5xl text-gray-400 border-4 border-white shadow-inner ml-5">

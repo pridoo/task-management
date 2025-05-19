@@ -92,7 +92,7 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'user'])->group(functi
         Route::get('/completed', [TasksController::class, 'completed'])->name('completed');
         
         // For User Task Details
-        Route::get('/user/tasks/{task}', [TasksController::class, 'showForUser'])->name('user.tasks.show');
+        Route::get('/user/tasks/{task}', [TasksController::class, 'showForUser'])->name('show');
 
         Route::post('/tasks/{task}/comments', [TasksController::class, 'storeComments'])->name('comments.stores');
         
