@@ -3,13 +3,11 @@
 
 <body class="text-gray-800 font-inter">
     <main class="w-full md:w-[calc(100%-256px)] md:ml-64 bg-gray-50 min-h-screen transition-all main overflow-y-auto">
-        <div class="py-2 px-6 bg-white flex items-center shadow-md shadow-black/5 sticky top-0 left-0 z-30">
-            <button type="button" class="text-lg text-gray-600 sidebar-toggle">
-                <i class="ri-menu-line"></i>
-            </button>
+        <div class="py-2 pr-6 pl-2 bg-white flex items-center shadow-md shadow-black/5 sticky top-0 left-0 z-30">
+            
             <ul class="flex items-center text-sm ml-4">
                 <li class="mr-2">
-                    <a href="#" class="text-gray-400 hover:text-gray-600 font-medium">Admin Dashboard</a>
+                    <a href="#" class="text-gray-400 hover:text-gray-600 font-medium">Super Admin Dashboard</a>
                 </li>
             </ul>
             <ul class="ml-auto flex items-center">

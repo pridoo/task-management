@@ -75,7 +75,7 @@
 
                             <div class="relative group mb-18 flex justify-center">
                                 <div class="relative">
-                                    <div class="relative w-40 h-40 rounded-full bg-gray-200 flex items-center justify-center text-5xl text-gray-400 border-4 border-white shadow-inner ml-5">
+                                    <div class="relative ">
                                         <img id="profilePicPreview" src="{{ $user->profile_picture ? asset('storage/' . $user->profile_picture) : asset('css/pictures/default.png') }}" alt="Profile Picture" class="w-40 h-60 rounded-full object-contain">
                                     
                                         <button type="button" id="editProfilePicBtn" class="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full text-xs opacity-0 group-hover:opacity-100 transition hover:bg-blue-700 shadow">
