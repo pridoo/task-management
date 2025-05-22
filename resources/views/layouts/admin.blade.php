@@ -36,8 +36,7 @@
         </a>
         <ul class="mt-4">
             <li class="mb-1 group">
-                <a href="{{ url('admin/dashboard') }}" 
-                class="flex items-center py-2 px-4 text-white hover:bg-orange-700 hover:text-gray-100 rounded-md 
+                <a href="{{ url('admin/dashboard') }}" class="flex items-center py-2 px-4 text-white hover:bg-orange-700 hover:text-gray-100 rounded-md 
                 {{ Request::is('admin/dashboard') ? 'bg-orange-700 text-white' : '' }}">
                     <img src="{{ asset('css/pictures/home.png') }}" alt="Home" class="w-8 h-8 rounded">
                     <span class="text-sm font-bold ml-3">Home</span>
@@ -52,26 +51,33 @@
                 </a>
                 <ul class="pl-7 mt-2 hidden group-[.selected]:block">
                     <li class="mb-1 group {{ Request::is('admin/tasks/all-tasks') ? 'active' : '' }}">
-                    <a href="{{ url('admin/tasks/all-tasks') }}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/all-tasks') ? 'bg-orange-700 text-gray-100' : '' }}">
-                            <img src="{{ asset('css/pictures/all task.png') }}" alt="All Tasks" class="w-7 h-7 rounded ">
+                        <a href="{{ url('admin/tasks/all-tasks') }}"
+                            class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/all-tasks') ? 'bg-orange-700 text-gray-100' : '' }}">
+                            <img src="{{ asset('css/pictures/all task.png') }}" alt="All Tasks"
+                                class="w-7 h-7 rounded ">
                             <span class="text-sm font-small text-white ml-3">All Tasks</span>
                         </a>
                     </li>
                     <li class="mb-1 group {{ Request::is('admin/tasks/to-do') ? 'active' : '' }}">
-                        <a href="{{ url('admin/tasks/to-do') }}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/to-do') ? 'bg-orange-700 text-gray-100' : '' }}">
+                        <a href="{{ url('admin/tasks/to-do') }}"
+                            class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/to-do') ? 'bg-orange-700 text-gray-100' : '' }}">
                             <img src="{{ asset('css/pictures/To do (1).png') }}" alt="To do" class="w-7 h-7 rounded ">
                             <span class="text-sm font-small text-white ml-3">To do</span>
                         </a>
                     </li>
                     <li class="mb-1 group {{ Request::is('admin/tasks/in-progress') ? 'active' : '' }}">
-                        <a href="{{ url('admin/tasks/in-progress') }}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/in-progress') ? 'bg-orange-700 text-gray-100' : '' }}">
-                            <img src="{{ asset('css/pictures/In progress.png') }}" alt="In progress" class="w-7 h-7 rounded ">
+                        <a href="{{ url('admin/tasks/in-progress') }}"
+                            class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/in-progress') ? 'bg-orange-700 text-gray-100' : '' }}">
+                            <img src="{{ asset('css/pictures/In progress.png') }}" alt="In progress"
+                                class="w-7 h-7 rounded ">
                             <span class="text-sm font-small text-white ml-3">In progress</span>
                         </a>
                     </li>
                     <li class="mb-1 group {{ Request::is('admin/tasks/completed') ? 'active' : '' }}">
-                        <a href="{{ url('admin/tasks/completed') }}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/completed') ? 'bg-orange-700 text-gray-100' : '' }}">
-                            <img src="{{ asset('css/pictures/completed.png') }}" alt="Completed" class="w-7 h-7 rounded ">
+                        <a href="{{ url('admin/tasks/completed') }}"
+                            class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/completed') ? 'bg-orange-700 text-gray-100' : '' }}">
+                            <img src="{{ asset('css/pictures/completed.png') }}" alt="Completed"
+                                class="w-7 h-7 rounded ">
                             <span class="text-sm font-small text-white ml-3">Completed</span>
                         </a>
                     </li>
@@ -87,14 +93,18 @@
                 </a>
                 <ul class="pl-7 mt-2 hidden group-[.selected]:block">
                     <li class="mb-1 group {{ Request::is('admin/users/active-users') ? 'active' : '' }}">
-                    <a href="{{ url('admin/users/approved-users') }}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/all-tasks') ? 'bg-orange-700 text-gray-100' : '' }}">
-                            <img src="{{ asset('css/pictures/Approved.png') }}" alt="Approved Users" class="w-7 h-7 rounded ">
+                        <a href="{{ url('admin/users/approved-users') }}"
+                            class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/all-tasks') ? 'bg-orange-700 text-gray-100' : '' }}">
+                            <img src="{{ asset('css/pictures/Approved.png') }}" alt="Approved Users"
+                                class="w-7 h-7 rounded ">
                             <span class="text-sm font-small text-white ml-3">Approved Users</span>
                         </a>
                     </li>
                     <li class="mb-1 group {{ Request::is('admin/users/pending-users') ? 'active' : '' }}">
-                        <a href="{{ url('admin/users/pending-users') }}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/to-do') ? 'bg-orange-700 text-gray-100' : '' }}">
-                            <img src="{{ asset('css/pictures/Active.png') }}" alt="Pending Users" class="w-7 h-7 rounded ">
+                        <a href="{{ url('admin/users/pending-users') }}"
+                            class="flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md {{ Request::is('admin/tasks/to-do') ? 'bg-orange-700 text-gray-100' : '' }}">
+                            <img src="{{ asset('css/pictures/Active.png') }}" alt="Pending Users"
+                                class="w-7 h-7 rounded ">
                             <span class="text-sm font-small text-white ml-3">Pending Users</span>
                         </a>
                     </li>
@@ -122,8 +132,7 @@
                 </a>
             </li>
             <li class="mb-1 group">
-                <a href="{{ url('admin/settings') }}" 
-                class="flex items-center py-2 px-4 text-white hover:bg-orange-700 hover:text-gray-100 rounded-md 
+                <a href="{{ url('admin/settings') }}" class="flex items-center py-2 px-4 text-white hover:bg-orange-700 hover:text-gray-100 rounded-md 
                 {{ Request::is('admin/settings') ? 'bg-orange-700 text-white' : '' }}">
                     <img src="{{ asset('css/pictures/Settings.png') }}" alt="Settings" class="w-8 h-8 rounded">
                     <span class="text-sm font-bold ml-3">Settings</span>
@@ -131,14 +140,14 @@
             </li>
             <!-- Log Out -->
             <li class="mb-1 group">
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit"
-                    class="w-full text-left flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md">
-                    <img src="{{ asset('css/pictures/Log Out.png') }}" alt="Log Out" class="w-8 h-8 rounded">
-                    <span class="text-sm font-bold text-white ml-3">Log Out</span>
-                </button>
-            </form>
+                <form method="POST" action="{{ route('logout') }}" id="logout-form">
+                    @csrf
+                    <button type="button" id="logout-btn"
+                        class="w-full text-left flex items-center py-2 px-4 text-gray-300 hover:bg-orange-700 hover:text-gray-100 rounded-md">
+                        <img src="{{ asset('/css/pictures/Log Out.png') }}" alt="Log Out" class="w-8 h-8 rounded">
+                        <span class="text-sm font-bold text-white ml-3">Log Out</span>
+                    </button>
+                </form>
             </li>
         </ul>
     </div>
@@ -149,7 +158,7 @@
     <main class="w-full min-h-screen">
         @yield('content')
     </main>
-    
+
     <!-- Scripts -->
 
     <script src="https://unpkg.com/@popperjs/core@2"></script>
@@ -194,11 +203,33 @@
                 });
             }
 
-            window.onload = function() {
+            window.onload = function () {
                 document.getElementById('loadingScreen').style.display = 'none';
             };
         });
     </script>
+
+    <script>
+        document.getElementById('logout-btn').addEventListener('click', function (e) {
+            Swal.fire({
+                title: 'Are you sure you want to logout?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, logout',
+                cancelButtonText: 'Cancel',
+                customClass: {
+                    confirmButton: 'bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2',
+                    cancelButton: 'bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+                },
+                buttonsStyling: false // IMPORTANT: required to apply custom classes
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logout-form').submit();
+                }
+            });
+        });
+    </script>
+
 </body>
 
 </html>
